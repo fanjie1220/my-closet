@@ -6,7 +6,8 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>我的衣橱 Demo</title>
+  <meta name="description" content="管理你的衣橱，记录衣物，搭配并收藏每天的穿搭灵感。" />
+  <title>我的衣橱</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
     :root{
@@ -16,41 +17,47 @@
     body{min-height:100vh;background:#101010;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--text);display:flex;align-items:center;justify-content:center;overflow:hidden}
     .phone{width:min(100vw,430px);height:min(100vh,920px);background:var(--bg);border-radius:34px;overflow:hidden;position:relative;box-shadow:0 0 0 10px #111,0 0 0 12px #292929,0 26px 70px rgba(0,0,0,.45)}
     .screen{height:100%;padding:22px 18px 82px;overflow:hidden;position:relative;background:#fbfbfb}
+    .topbar{gap:12px}.topbar-heading{flex:1;min-width:0}.topbar-heading .subtitle{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.topbar-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}.topbar-actions>[hidden]{display:none}
+    .import-summary{margin:4px 0 10px;padding:10px 12px;border:1px solid #eee;border-radius:14px;background:#f4f4f4;color:#777;font-size:11px;line-height:1.6}.import-summary[hidden]{display:none}.import-picker-note{font-size:12px;color:#888;line-height:1.7;margin:0 0 12px}.import-picker-hint{font-size:10px;line-height:1.6;color:#aaa;margin-top:13px}#addSheet.import-picker{padding-bottom:18px}.import-overlay{position:absolute;inset:0;background:rgba(0,0,0,.36);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;padding:10px;text-align:center;font-size:11px;font-weight:750;line-height:1.5}.import-overlay .cutout-spinner{border-color:rgba(255,255,255,.3);border-top-color:#fff;width:25px;height:25px}.import-progress{height:3px;width:72%;border-radius:99px;background:rgba(255,255,255,.25);overflow:hidden}.import-progress>span{display:block;height:100%;background:#fff;transition:width .2s}.import-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}.import-actions button{border:0;border-radius:999px;background:#f0f0f0;padding:6px 9px;color:#444;font-size:10px;font-weight:700;cursor:pointer}.import-actions button:first-child{background:#111;color:#fff}.import-local-note{font-size:10px;color:#987445;line-height:1.5;margin-top:5px}
     .topbar{display:flex;align-items:center;justify-content:space-between;height:34px;margin-bottom:10px}.title{font-size:18px;font-weight:800;letter-spacing:.04em}.subtitle{font-size:12px;color:#9b9b9b;margin-top:2px}.icon-btn{width:34px;height:34px;border-radius:50%;border:0;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;box-shadow:0 8px 22px rgba(0,0,0,.14);cursor:pointer}.ghost-btn{background:#fff;color:#111;border:1px solid var(--line);box-shadow:none}.weather-pill{width:auto;min-width:68px;height:36px;border-radius:999px;padding:0 11px;gap:6px;background:rgba(255,255,255,.86);border:1px solid #ededed;color:#555;box-shadow:0 8px 22px rgba(0,0,0,.05)}.weather-pill-emoji{font-size:18px;line-height:1;opacity:.78}.weather-pill-temp{font-size:13px;font-weight:900;color:#555;letter-spacing:-.02em}
     .tabs{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;padding:3px 0 8px;scrollbar-width:none;max-width:100%;-webkit-overflow-scrolling:touch}.tabs::-webkit-scrollbar{display:none}.chip{border:0;background:#f0f0f0;color:#858585;border-radius:999px;padding:7px 13px;font-size:12px;white-space:nowrap;cursor:pointer;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:5px;touch-action:pan-x}.chip.active{background:#111;color:#fff;font-weight:700}.chip.small{padding:6px 12px;font-size:11px}.chip.add-chip{min-width:34px;padding:7px 12px;background:#111;color:#fff;font-weight:900;font-size:15px;line-height:1}.chip-delete{display:none;width:16px;height:16px;border-radius:50%;align-items:center;justify-content:center;background:#ff4b63;color:#fff;font-size:12px;font-weight:900;line-height:1}.chip.deleting .chip-delete{display:inline-flex}.chip.deleting{box-shadow:0 0 0 2px rgba(255,75,99,.18)}
-    .filter-panel{background:#fff;border:1px solid #f1f1f1;border-radius:22px;padding:12px 12px 9px;margin:4px 0 12px;box-shadow:0 10px 28px rgba(0,0,0,.04)}.filter-row{margin-bottom:8px}.filter-row:last-child{margin-bottom:0}.filter-label{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#999;margin:0 2px 6px}.filter-label strong{font-size:12px;color:#333}.filter-tip{font-size:10px;color:#bbb}.filter-summary{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 2px 2px;padding-top:9px;border-top:1px solid #f4f4f4;font-size:11px;color:#aaa}.filter-summary-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}.reset-filter,.wardrobe-search-toggle{border:0;background:#f3f3f3;color:#555;border-radius:999px;height:30px;padding:0 10px;font-size:11px;font-weight:700;white-space:nowrap}.wardrobe-search-toggle{width:30px;padding:0;display:flex;align-items:center;justify-content:center}.wardrobe-search-toggle.active{background:#111;color:#fff}.wardrobe-search-toggle svg{width:15px;height:15px;stroke:currentColor}.filter-summary b{color:#111}.wardrobe-search-row{display:none;align-items:center;gap:7px;margin:9px 2px 2px}.wardrobe-search-row.show{display:flex}.wardrobe-search-box{height:38px;min-width:0;flex:1;display:flex;align-items:center;gap:7px;border:1px solid #e8e8e8;border-radius:14px;background:#fafafa;padding:0 10px}.wardrobe-search-box svg{width:15px;height:15px;stroke:#999;flex:0 0 auto}.wardrobe-search-input{width:100%;min-width:0;border:0;outline:none;background:transparent;color:#222;font-size:12px}.wardrobe-search-clear{width:26px;height:26px;border:0;border-radius:50%;background:#ededed;color:#888;font-size:16px;line-height:26px;flex:0 0 auto}.wardrobe-search-clear:disabled{visibility:hidden}
+    .filter-panel{background:#fff;border:1px solid #f1f1f1;border-radius:22px;padding:12px 12px 9px;margin:4px 0 12px;box-shadow:0 10px 28px rgba(0,0,0,.04)}.filter-row{margin-bottom:8px}.filter-row:last-child{margin-bottom:0}.filter-label{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#999;margin:0 2px 6px}.filter-label strong{font-size:12px;color:#333}.filter-summary{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 2px 2px;padding-top:9px;border-top:1px solid #f4f4f4;font-size:11px;color:#aaa}.filter-summary-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}.reset-filter,.wardrobe-search-toggle{border:0;background:#f3f3f3;color:#555;border-radius:999px;height:30px;padding:0 10px;font-size:11px;font-weight:700;white-space:nowrap}.wardrobe-search-toggle{width:30px;padding:0;display:flex;align-items:center;justify-content:center}.wardrobe-search-toggle.active{background:#111;color:#fff}.wardrobe-search-toggle svg{width:15px;height:15px;stroke:currentColor}.filter-summary b{color:#111}.wardrobe-search-row{display:none;align-items:center;gap:7px;margin:9px 2px 2px}.wardrobe-search-row.show{display:flex}.wardrobe-search-box{height:38px;min-width:0;flex:1;display:flex;align-items:center;gap:7px;border:1px solid #e8e8e8;border-radius:14px;background:#fafafa;padding:0 10px}.wardrobe-search-box svg{width:15px;height:15px;stroke:#999;flex:0 0 auto}.wardrobe-search-input{width:100%;min-width:0;border:0;outline:none;background:transparent;color:#222;font-size:12px}.wardrobe-search-clear{width:26px;height:26px;border:0;border-radius:50%;background:#ededed;color:#888;font-size:16px;line-height:26px;flex:0 0 auto}.wardrobe-search-clear:disabled{visibility:hidden}
     .view{display:none;height:100%;overflow-y:auto;padding-bottom:18px;scrollbar-width:none}.view::-webkit-scrollbar{display:none}.view.active{display:block}
-    .empty{height:58vh;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#c9c9c9;text-align:center}.empty svg{width:42px;height:42px;margin-bottom:14px;opacity:.65}.empty p{font-size:13px}.hint{margin-top:8px;font-size:12px;color:#aaa;line-height:1.6}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:12px}.item-card{background:#fff;border-radius:22px;padding:12px;min-height:176px;box-shadow:0 12px 30px rgba(0,0,0,.05);position:relative;cursor:pointer;border:1px solid #f1f1f1;transition:transform .18s,box-shadow .18s;touch-action:pan-y}.item-card.pressing{transform:scale(.97);box-shadow:0 8px 20px rgba(0,0,0,.09)}.item-img{height:116px;border-radius:18px;background:#fafafa;display:flex;align-items:center;justify-content:center;margin-bottom:10px;position:relative;overflow:hidden}.item-name{font-size:12px;color:#555}.item-meta{font-size:10px;color:#aaa;margin-top:3px}.item-edit-tip{font-size:9px;color:#c1c1c1;margin-top:5px}.tag-dot{position:absolute;right:13px;top:13px;width:9px;height:9px;border-radius:50%;background:#111}
+    .empty{height:58vh;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#c9c9c9;text-align:center}.empty svg{width:42px;height:42px;margin-bottom:14px;opacity:.65}.empty p{font-size:13px}.hint{margin-top:8px;font-size:12px;color:#aaa;line-height:1.6}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:12px}.item-card{background:#fff;border-radius:22px;padding:12px;min-height:176px;box-shadow:0 12px 30px rgba(0,0,0,.05);position:relative;cursor:pointer;border:1px solid #f1f1f1;transition:transform .18s,box-shadow .18s;touch-action:pan-y}.item-card.pressing{transform:scale(.97);box-shadow:0 8px 20px rgba(0,0,0,.09)}.item-img{height:116px;border-radius:18px;background:#fafafa;display:flex;align-items:center;justify-content:center;margin-bottom:10px;position:relative;overflow:hidden}.item-name{font-size:12px;color:#555}.item-meta{font-size:10px;color:#aaa;margin-top:3px}.tag-dot{position:absolute;right:13px;top:13px;width:9px;height:9px;border-radius:50%;background:#111}
     .cloth{position:relative;display:inline-block}.top-cloth{width:76px;height:76px;border-radius:10px 10px 22px 22px;background:linear-gradient(135deg,#8db057,#c8d68a)}.top-cloth:before,.top-cloth:after{content:"";position:absolute;top:5px;width:25px;height:18px;background:#fafafa;border-radius:0 0 12px 12px}.top-cloth:before{left:-8px;transform:rotate(-28deg)}.top-cloth:after{right:-8px;transform:rotate(28deg)}.tank{width:68px;height:82px;border-radius:7px 7px 18px 18px;background:linear-gradient(150deg,#b70f36,#ec6b7b)}.tank:before,.tank:after{content:"";position:absolute;top:-3px;width:18px;height:28px;border:5px solid #fafafa;border-bottom:0;border-radius:12px 12px 0 0}.tank:before{left:9px}.tank:after{right:9px}.skirt{width:90px;height:58px;background:linear-gradient(160deg,#555b68,#202431);clip-path:polygon(22% 0,78% 0,100% 100%,0 100%);border-radius:8px}.skirt:before{content:"";position:absolute;top:8px;left:13px;width:64px;height:2px;background:rgba(255,255,255,.25);box-shadow:9px 14px 0 rgba(255,255,255,.12),-8px 30px 0 rgba(255,255,255,.1);transform:rotate(82deg)}.shoe{width:82px;height:36px;background:linear-gradient(135deg,#2f2523,#111);border-radius:60% 20% 30% 14px;transform:rotate(-8deg)}.shoe:after{content:"";position:absolute;right:-12px;bottom:0;width:32px;height:13px;background:#111;border-radius:0 14px 12px 0}.bag{width:78px;height:58px;background:linear-gradient(135deg,#6f3e2d,#9c5f49);border-radius:18px 18px 14px 14px}.bag:before{content:"";position:absolute;left:18px;top:-21px;width:42px;height:32px;border:6px solid #6b3d30;border-bottom:0;border-radius:25px 25px 0 0}.stripe{width:76px;height:78px;border-radius:12px 12px 22px 22px;background:repeating-linear-gradient(0deg,#b2a48d 0 7px,#e8e1d2 7px 14px)}.pants{width:82px;height:84px;background:linear-gradient(160deg,#8a939b,#d7dde3);clip-path:polygon(18% 0,82% 0,78% 100%,55% 100%,50% 38%,45% 100%,22% 100%);border-radius:12px}
     .fab{position:absolute;right:18px;bottom:95px;width:48px;height:48px;border-radius:50%;border:0;background:#111;color:#fff;font-size:28px;line-height:48px;box-shadow:0 12px 28px rgba(0,0,0,.22);cursor:pointer;z-index:9}.fab.hide{display:none}
-    .nav{position:absolute;left:0;right:0;bottom:0;height:75px;background:rgba(251,251,251,.94);border-top:1px solid #eee;display:grid;grid-template-columns:repeat(4,1fr);padding:7px 18px 12px;backdrop-filter:blur(16px);z-index:12}.nav button{border:0;background:transparent;color:#aaa;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}.nav svg{width:21px;height:21px;stroke:currentColor}.nav button.active{color:#111;font-weight:800}
-    .outfit-wrap{padding-top:8px;position:relative;min-height:520px}.canvas-card{height:min(680px,calc(100vh - 185px));min-height:460px;background:#fff;border-radius:30px;box-shadow:0 16px 45px rgba(0,0,0,.06);position:relative;overflow:hidden;border:1px solid #f1f1f1}.canvas-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#dedede;font-size:13px;text-align:center;line-height:1.7}.canvas-item{position:absolute;width:104px;height:118px;border-radius:18px;display:flex;align-items:center;justify-content:center;cursor:grab;background:transparent}.canvas-item.selected{outline:2px solid #b16a80;outline-offset:-8px}.canvas-item .remove{position:absolute;right:5px;top:5px;width:22px;height:22px;background:#111;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px}.canvas-item .cloth{transform:scale(1.05)}.save-outfit{position:absolute;right:10px;top:10px;border:0;background:#111;color:#fff;border-radius:17px;font-size:11px;font-weight:800;padding:9px 14px;z-index:3}.trash{position:absolute;right:73px;top:13px;border:0;background:#fff;color:#888;font-size:17px;z-index:3}.drawer-toggle{position:absolute;left:0;top:86px;width:46px;height:46px;border:0;border-radius:0 18px 18px 0;background:rgba(255,255,255,.96);color:#111;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 26px rgba(0,0,0,.16);z-index:6;cursor:pointer;border:1px solid rgba(238,238,238,.9);border-left:0;backdrop-filter:blur(12px);transition:.24s ease}.drawer-toggle.open{left:166px;border-radius:18px;background:rgba(255,255,255,.92)}.drawer-toggle svg{width:24px;height:24px;stroke:#111}.side-drawer{position:absolute;left:8px;top:52px;width:174px;max-height:calc(100% - 68px);background:rgba(255,255,255,.92);border:1px solid rgba(240,240,240,.95);border-radius:24px;padding:13px 12px 12px;box-shadow:0 18px 45px rgba(0,0,0,.14);backdrop-filter:blur(18px);transform:translateX(-205px);opacity:0;pointer-events:none;transition:.24s ease;z-index:7}.side-drawer.open{transform:translateX(0);opacity:1;pointer-events:auto}.drawer-title{font-size:12px;color:#999;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}.drawer-title strong{color:#111;font-size:13px}.drawer-close{border:0;background:#f2f2f2;color:#777;width:24px;height:24px;border-radius:50%;font-size:16px;line-height:24px}.drawer-row{margin-bottom:10px}.drawer-label{font-size:10px;color:#aaa;margin:0 0 6px 2px}.drawer-row .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:0;overflow:visible}.drawer-row .chip{width:100%;min-width:0;padding:7px 0;font-size:10.5px;text-align:center;white-space:nowrap}.drawer-summary{font-size:10px;color:#aaa;border-top:1px solid #f2f2f2;margin:7px 0 10px;padding-top:9px;display:flex;align-items:flex-start;justify-content:space-between;gap:6px}.drawer-summary b{color:#111}.drawer-reset{border:0;background:#f2f2f2;color:#555;border-radius:999px;padding:6px 8px;font-size:10px;font-weight:800;white-space:nowrap;flex-shrink:0}.mini-list{display:grid;grid-template-columns:1fr;gap:10px;max-height:270px;overflow-y:auto;padding-right:2px;scrollbar-width:none}.mini-list::-webkit-scrollbar{display:none}.mini{width:100%;height:106px;border-radius:18px;background:#f8f8f8;display:flex;align-items:center;justify-content:center;border:1px solid #f0f0f0;cursor:pointer}.mini .cloth{transform:scale(.82)}.mini-empty{grid-column:1/-1;color:#bbb;text-align:center;font-size:11px;line-height:1.6;padding:18px 2px}
-    .looks{display:grid;gap:18px;padding-top:13px}.look-card{background:#fff;border-radius:28px;box-shadow:0 16px 40px rgba(0,0,0,.07);padding:18px;border:1px solid #f1f1f1;position:relative}.look-preview{height:290px;border-radius:24px;background:linear-gradient(180deg,#fff,#fafafa);position:relative;overflow:hidden}.look-piece{position:absolute;width:74px;height:84px;border-radius:16px;display:flex;align-items:center;justify-content:center}.look-piece .cloth{position:relative;transform:scale(.68)}.look-name{font-size:19px;font-weight:850;margin-top:15px}.look-date{font-size:11px;color:#aaa;margin-top:4px}.look-meta{font-size:11px;color:#9f9f9f;margin-top:6px;line-height:1.5;padding-right:46px}.look-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px;padding-right:46px}.scene-badge{display:inline-flex;align-items:center;height:24px;border-radius:999px;background:#f3f3f3;color:#666;font-size:10px;font-weight:750;padding:0 9px}.scene-badge.dark{background:#111;color:#fff}.arrow{position:absolute;right:18px;bottom:18px;width:42px;height:42px;border:0;border-radius:50%;background:#111;color:#fff;font-size:20px;cursor:pointer}.search{width:100%;height:42px;border:0;background:#fff;border-radius:20px;padding:0 16px;font-size:13px;margin:4px 0 10px;box-shadow:0 8px 25px rgba(0,0,0,.04);outline:none}.look-filter-list{margin:0 0 12px}.look-filter-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;align-items:start}.look-filter-group{position:relative;min-width:0}.look-filter-title{width:100%;border:0;background:#f0f0f0;color:#555;border-radius:999px;height:36px;padding:0 8px;font-size:11px;font-weight:850}.look-filter-title.active,.look-filter-title:hover{background:#111;color:#fff}.look-filter-panel{height:96px;overflow-y:auto;overflow-x:hidden;margin-top:7px;background:#fff;border:1px solid #f1f1f1;border-radius:16px;padding:6px;scrollbar-width:none;box-shadow:0 10px 24px rgba(0,0,0,.05)}.look-filter-panel::-webkit-scrollbar{display:none}.look-filter-option{width:100%;height:30px;border:0;border-radius:11px;background:transparent;color:#777;font-size:11px;font-weight:750;text-align:center;padding:0 6px;margin-bottom:3px}.look-filter-option:last-child{margin-bottom:0}.look-filter-option.active,.look-filter-option:hover{background:#111;color:#fff}.look-empty{background:#fff;border-radius:24px;padding:46px 18px;color:#bdbdbd;text-align:center;font-size:13px;line-height:1.8;border:1px solid #f1f1f1}.save-desc{font-size:12px;color:#999;line-height:1.7;margin:2px 0 12px}.save-scene-row{margin-top:2px}.upload-area{background:#fafafa;border:1px dashed #e4e4e4;border-radius:18px;padding:12px;margin:6px 0 14px}.upload-methods{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}.upload-choice{height:70px;border:0;border-radius:17px;background:#fff;color:#111;font-weight:850;font-size:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;box-shadow:0 8px 22px rgba(0,0,0,.05);cursor:pointer}.upload-choice svg{width:24px;height:24px;stroke:#111}.upload-preview{height:150px;border-radius:18px;background:#fff;margin-top:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;border:1px solid #efefef;position:relative}.upload-preview img{width:100%;height:100%;object-fit:contain;display:block;padding:8px}.upload-empty{font-size:12px;color:#b9b9b9;text-align:center;line-height:1.7}.cutout-loading{display:flex;flex-direction:column;align-items:center;gap:11px;color:#888;font-size:12px;font-weight:750}.cutout-spinner{width:28px;height:28px;border-radius:50%;border:3px solid #ededed;border-top-color:#111;animation:cutoutSpin .8s linear infinite}@keyframes cutoutSpin{to{transform:rotate(360deg)}}.cutout-actions{display:flex;justify-content:center;margin-top:9px}.retry-cutout{border:0;background:#f0f0f0;color:#333;border-radius:999px;height:32px;padding:0 16px;font-size:11px;font-weight:800}.recognize-note{font-size:11px;color:#999;line-height:1.6;margin-top:8px;text-align:center}.photo-img{width:100%;height:100%;object-fit:contain;border-radius:inherit;display:block}.canvas-item .photo-img,.look-piece .photo-img{border-radius:16px;box-shadow:0 8px 18px rgba(0,0,0,.08);padding:3px}.black:disabled{opacity:.45;cursor:not-allowed}
-    .upload-strip{width:100%;height:100%;display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;padding:10px;scrollbar-width:none;-webkit-overflow-scrolling:touch;align-items:stretch}.upload-strip::-webkit-scrollbar{display:none}.upload-thumb{position:relative;flex:0 0 112px;height:128px;border:1px solid #efefef;background:#fff;border-radius:16px;overflow:hidden;padding:0;cursor:pointer}.upload-thumb.active{border-color:#111;box-shadow:0 0 0 2px rgba(17,17,17,.08)}.upload-thumb img{width:100%;height:100%;object-fit:contain;padding:6px}.upload-status{position:absolute;left:7px;right:7px;bottom:7px;height:22px;border-radius:999px;background:rgba(255,255,255,.9);color:#777;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center}.upload-status.done,.upload-status.added{background:#111;color:#fff}.upload-status.error{background:#ffecee;color:#e24555}.upload-status.processing{background:rgba(17,17,17,.82);color:#fff}.upload-badge{position:absolute;right:7px;top:7px;min-width:20px;height:20px;border-radius:999px;background:rgba(17,17,17,.82);color:#fff;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0 6px}.upload-remove{position:absolute;left:7px;top:7px;width:22px;height:22px;border:0;border-radius:50%;background:rgba(255,255,255,.92);color:#111;font-size:15px;font-weight:900;line-height:22px;box-shadow:0 4px 12px rgba(0,0,0,.08);z-index:2}
+    .nav{position:absolute;left:0;right:0;bottom:0;height:75px;background:rgba(251,251,251,.94);border-top:1px solid #eee;display:grid;grid-template-columns:repeat(4,1fr);padding:7px 18px 12px;backdrop-filter:blur(16px);z-index:12}.nav button{border:0;background:transparent;color:#aaa;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}.nav svg{width:21px;height:21px;stroke:currentColor}.nav button.active{color:#111;font-weight:800}.canvas-card{height:min(680px,calc(100vh - 185px));min-height:460px;background:#fff;border-radius:30px;box-shadow:0 16px 45px rgba(0,0,0,.06);position:relative;overflow:hidden;border:1px solid #f1f1f1}.canvas-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#dedede;font-size:13px;text-align:center;line-height:1.7}.canvas-item{position:absolute;width:104px;height:118px;border-radius:18px;display:flex;align-items:center;justify-content:center;cursor:grab;background:transparent}.canvas-item.selected{outline:2px solid #b16a80;outline-offset:-8px}.canvas-item .remove{position:absolute;right:5px;top:5px;width:22px;height:22px;background:#111;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px}.canvas-item .cloth{transform:scale(1.05)}.save-outfit{position:absolute;right:10px;top:10px;border:0;background:#111;color:#fff;border-radius:17px;font-size:11px;font-weight:800;padding:9px 14px;z-index:3}.trash{position:absolute;right:73px;top:13px;border:0;background:#fff;color:#888;font-size:17px;z-index:3}
+    .looks{display:grid;gap:18px;padding-top:13px}.look-card{background:#fff;border-radius:28px;box-shadow:0 16px 40px rgba(0,0,0,.07);padding:18px;border:1px solid #f1f1f1;position:relative}.look-preview{height:290px;border-radius:24px;background:linear-gradient(180deg,#fff,#fafafa);position:relative;overflow:hidden}.look-piece{position:absolute;width:74px;height:84px;border-radius:16px;display:flex;align-items:center;justify-content:center}.look-piece .cloth{position:relative;transform:scale(.68)}.look-name{font-size:19px;font-weight:850;margin-top:15px}.look-date{font-size:11px;color:#aaa;margin-top:4px}.look-meta{font-size:11px;color:#9f9f9f;margin-top:6px;line-height:1.5;padding-right:46px}.look-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px;padding-right:46px}.scene-badge{display:inline-flex;align-items:center;height:24px;border-radius:999px;background:#f3f3f3;color:#666;font-size:10px;font-weight:750;padding:0 9px}.scene-badge.dark{background:#111;color:#fff}.arrow{position:absolute;right:18px;bottom:18px;width:42px;height:42px;border:0;border-radius:50%;background:#111;color:#fff;font-size:20px;cursor:pointer}.search{width:100%;height:42px;border:0;background:#fff;border-radius:20px;padding:0 16px;font-size:13px;margin:4px 0 10px;box-shadow:0 8px 25px rgba(0,0,0,.04);outline:none}.look-filter-list{margin:0 0 12px}.look-filter-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;align-items:start}.look-filter-group{position:relative;min-width:0}.look-filter-title{width:100%;border:0;background:#f0f0f0;color:#555;border-radius:999px;height:36px;padding:0 8px;font-size:11px;font-weight:850}.look-filter-title.active,.look-filter-title:hover{background:#111;color:#fff}.look-filter-panel{height:96px;overflow-y:auto;overflow-x:hidden;margin-top:7px;background:#fff;border:1px solid #f1f1f1;border-radius:16px;padding:6px;scrollbar-width:none;box-shadow:0 10px 24px rgba(0,0,0,.05)}.look-filter-panel::-webkit-scrollbar{display:none}.look-filter-option{width:100%;height:30px;border:0;border-radius:11px;background:transparent;color:#777;font-size:11px;font-weight:750;text-align:center;padding:0 6px;margin-bottom:3px}.look-filter-option:last-child{margin-bottom:0}.look-filter-option.active,.look-filter-option:hover{background:#111;color:#fff}.look-empty{background:#fff;border-radius:24px;padding:46px 18px;color:#bdbdbd;text-align:center;font-size:13px;line-height:1.8;border:1px solid #f1f1f1}.save-desc{font-size:12px;color:#999;line-height:1.7;margin:2px 0 12px}.save-scene-row{margin-top:2px}.upload-methods{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}.upload-choice{height:70px;border:0;border-radius:17px;background:#fff;color:#111;font-weight:850;font-size:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;box-shadow:0 8px 22px rgba(0,0,0,.05);cursor:pointer}.upload-choice svg{width:24px;height:24px;stroke:#111}.cutout-spinner{width:28px;height:28px;border-radius:50%;border:3px solid #ededed;border-top-color:#111;animation:cutoutSpin .8s linear infinite}@keyframes cutoutSpin{to{transform:rotate(360deg)}}.photo-img{width:100%;height:100%;object-fit:contain;border-radius:inherit;display:block}.canvas-item .photo-img,.look-piece .photo-img{border-radius:16px;box-shadow:0 8px 18px rgba(0,0,0,.08);padding:3px}.black:disabled{opacity:.45;cursor:not-allowed}
     .discover-grid{column-count:2;column-gap:12px;padding-top:8px}.share-card{break-inside:avoid;background:#fff;border:1px solid #f1f1f1;border-radius:22px;padding:10px;margin:0 0 12px;box-shadow:0 12px 30px rgba(0,0,0,.05);cursor:pointer}.share-preview{height:172px;border-radius:18px;background:linear-gradient(180deg,#fff,#fafafa);position:relative;overflow:hidden}.share-preview .look-piece{width:58px;height:66px}.share-preview .look-piece .cloth{transform:scale(.5)}.share-preview .photo-img{padding:3px}.share-title{font-size:13px;font-weight:850;color:#333;margin-top:10px;line-height:1.35}.share-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}.share-tag{height:21px;border-radius:999px;background:#f3f3f3;color:#777;font-size:9px;font-weight:800;padding:0 7px;display:inline-flex;align-items:center}.share-user{display:flex;align-items:center;justify-content:space-between;margin-top:9px;color:#aaa;font-size:10px}.share-author{display:flex;align-items:center;gap:5px}.share-avatar{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#eee,#ccc);display:inline-flex;align-items:center;justify-content:center;color:#777;font-size:10px}.share-like{color:#777;font-weight:800}.discover-empty{background:#fff;border-radius:24px;padding:42px 18px;text-align:center;color:#bbb;font-size:13px;line-height:1.7;border:1px solid #f1f1f1}
-    .sheet-mask{position:absolute;inset:0;background:rgba(0,0,0,.42);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:.2s;z-index:30}.sheet-mask.show{opacity:1;pointer-events:auto}.bottom-sheet{position:absolute;left:13px;right:13px;bottom:10px;background:#fff;border-radius:24px 24px 18px 18px;padding:18px;box-shadow:var(--shadow);transform:translateY(112%);transition:.28s cubic-bezier(.2,.9,.2,1);z-index:31}.bottom-sheet.show{transform:translateY(0)}.sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}.sheet-title{font-weight:850;font-size:15px}.close{border:0;background:#f3f3f3;width:26px;height:26px;border-radius:50%;color:#999}.form-row{margin:12px 0}.form-label{font-size:11px;color:#999;margin-bottom:8px}.form-chips{display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}.form-chips::-webkit-scrollbar{display:none}.input-line{display:flex;gap:8px}.input-line input,.modal input{height:42px;border:1px solid #e6e6e6;border-radius:11px;padding:0 12px;outline:none;font-size:13px;flex:1;background:#fff}.tiny-btn{border:0;background:#111;color:#fff;border-radius:11px;padding:0 15px;font-size:12px;font-weight:800}.sheet-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.secondary{border:0;background:#f3f3f3;color:#333;border-radius:13px;height:48px;font-weight:800}.black{border:0;background:#111;color:#fff;border-radius:13px;height:48px;font-weight:800}
+    .sheet-mask{position:absolute;inset:0;background:rgba(0,0,0,.42);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:.2s;z-index:30}.sheet-mask.show{opacity:1;pointer-events:auto}.bottom-sheet{position:absolute;left:13px;right:13px;bottom:10px;background:#fff;border-radius:24px 24px 18px 18px;padding:18px;box-shadow:var(--shadow);transform:translateY(112%);transition:.28s cubic-bezier(.2,.9,.2,1);z-index:31}.bottom-sheet.show{transform:translateY(0)}.sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}.sheet-title{font-weight:850;font-size:15px}.close{border:0;background:#f3f3f3;width:26px;height:26px;border-radius:50%;color:#999}.form-row{margin:12px 0}.form-label{font-size:11px;color:#999;margin-bottom:8px}.form-chips{display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}.form-chips::-webkit-scrollbar{display:none}
+    .modal input{height:42px;border:1px solid #e6e6e6;border-radius:11px;padding:0 12px;outline:none;font-size:13px;flex:1;background:#fff}.secondary{border:0;background:#f3f3f3;color:#333;border-radius:13px;height:48px;font-weight:800}.black{border:0;background:#111;color:#fff;border-radius:13px;height:48px;font-weight:800}
     .modal{position:absolute;left:27px;right:27px;top:42%;transform:translateY(-50%) scale(.96);background:#fff;border-radius:21px;box-shadow:var(--shadow);padding:18px;z-index:41;opacity:0;pointer-events:none;transition:.2s}.modal.show{opacity:1;pointer-events:auto;transform:translateY(-50%) scale(1)}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.modal-title{font-weight:850}.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}.edit-item-modal{top:50%;max-height:82%;overflow-y:auto}.edit-item-summary{display:flex;align-items:center;gap:12px;background:#fafafa;border-radius:16px;padding:10px;margin-bottom:10px}.edit-item-preview{width:58px;height:58px;border-radius:13px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;flex:0 0 auto}.edit-item-preview .cloth{transform:scale(.58)}.edit-item-preview .photo-img{border-radius:13px}.edit-item-name-wrap{flex:1;min-width:0}.edit-item-name{font-size:13px;font-weight:800;color:#333;min-height:24px;line-height:24px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:text}.edit-item-name-input{width:100%;height:36px;border:1px solid #ddd;border-radius:10px;padding:0 10px;background:#fff;color:#222;font-size:13px;font-weight:800;outline:none}.edit-item-name-input:focus{border-color:#111;box-shadow:0 0 0 2px rgba(17,17,17,.06)}.edit-item-help{font-size:10px;color:#aaa;line-height:1.5;margin-top:3px}.toast{position:absolute;left:50%;bottom:92px;transform:translateX(-50%) translateY(18px);background:#111;color:#fff;border-radius:999px;padding:10px 15px;font-size:12px;opacity:0;pointer-events:none;z-index:100;transition:.25s;white-space:nowrap}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 .icon-btn svg{width:19px;height:19px;stroke:currentColor}.data-modal{top:50%;height:min(82%,620px);max-height:82%;overflow:hidden;padding:0;display:flex;flex-direction:column}.data-modal-head{flex:0 0 auto;background:#fff;border-radius:21px 21px 0 0;padding:18px 18px 14px;border-bottom:1px solid #f3f3f3;z-index:2}.data-modal-head .modal-head{margin-bottom:0}.data-modal-body{flex:1;overflow-y:auto;padding:0 18px 18px;scrollbar-width:none}.data-modal-body::-webkit-scrollbar{display:none}.data-subtitle{font-size:12px;color:#999;line-height:1.6;margin:8px 0 0}.data-head-note{margin-top:10px;background:#fafafa;border:1px solid #f0f0f0;border-radius:16px;padding:10px 12px;font-size:11px;color:#999;line-height:1.6}.data-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 14px}.data-stat{background:#fafafa;border:1px solid #f0f0f0;border-radius:16px;padding:12px 10px}.data-stat-num{font-size:18px;font-weight:900;color:#111;line-height:1.1}.data-stat-label{font-size:10px;color:#aaa;margin-top:5px;white-space:nowrap}.data-section{border-top:1px solid #f3f3f3;padding-top:13px;margin-top:13px}.data-section-title{font-size:12px;font-weight:900;color:#333;margin-bottom:10px}.data-row{display:grid;grid-template-columns:38px 1fr 24px;align-items:center;gap:8px;margin:9px 0}.data-row-label{font-size:11px;color:#555;font-weight:800}.data-track{height:7px;background:#f1f1f1;border-radius:999px;overflow:hidden}.data-bar{height:100%;background:#111;border-radius:999px}.data-count{font-size:11px;color:#777;text-align:right;font-weight:800}.season-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.season-pill{background:#fafafa;border:1px solid #f0f0f0;border-radius:15px;padding:9px 4px;text-align:center}.season-name{font-size:11px;color:#777;font-weight:850}.season-num{font-size:16px;color:#111;font-weight:900;margin-top:3px}.data-note{margin-top:14px;background:#fafafa;border:1px solid #f0f0f0;border-radius:16px;padding:11px 12px;font-size:11px;color:#999;line-height:1.6}
 .weather-modal{top:50%;padding:18px}.weather-main{background:#fafafa;border:1px solid #f0f0f0;border-radius:18px;padding:14px;margin:8px 0 12px;display:flex;align-items:center;gap:13px}.weather-icon-large{width:52px;height:52px;border-radius:17px;background:#fff;border:1px solid #f0f0f0;display:flex;align-items:center;justify-content:center;flex:0 0 auto;font-size:30px;opacity:.8}.weather-status{font-size:18px;font-weight:900;color:#111}.weather-temp{font-size:12px;color:#999;margin-top:4px}.weather-tomorrow{background:#fafafa;border:1px solid #f0f0f0;border-radius:16px;padding:12px 13px;margin-top:10px}.weather-tomorrow-title{font-size:11px;color:#999;font-weight:900;margin-bottom:8px}.weather-tomorrow-row{display:flex;align-items:center;gap:10px}.weather-tomorrow-emoji{font-size:23px;opacity:.78}.weather-tomorrow-status{font-size:14px;color:#333;font-weight:900}.weather-tomorrow-temp{font-size:12px;color:#999;margin-top:3px}.weather-meta{font-size:10px;color:#bbb;line-height:1.6;margin-top:9px}
 
-    /* V8：衣橱与搭配合并，右上角折叠搭配画布 */
+    /* 折叠搭配画布 */
     .wardrobe-canvas-shell{position:absolute;right:18px;top:74px;z-index:20;pointer-events:none}.wardrobe-canvas-toggle{position:absolute;right:0;top:0;width:46px;height:46px;border:0;border-radius:18px;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 30px rgba(0,0,0,.24);cursor:pointer;pointer-events:auto;transition:.24s ease}.wardrobe-canvas-toggle.hide{display:none}.wardrobe-canvas-toggle svg{width:25px;height:25px;stroke:#fff}.wardrobe-canvas-toggle .canvas-count{position:absolute;right:-5px;top:-6px;min-width:18px;height:18px;border-radius:999px;background:#ff4b7a;color:#fff;font-size:10px;font-weight:850;display:flex;align-items:center;justify-content:center;padding:0 5px;border:2px solid #fbfbfb}.wardrobe-canvas{position:absolute;right:0;top:0;width:248px;height:338px;min-height:0;background:rgba(255,255,255,.96);border-radius:28px;box-shadow:0 22px 58px rgba(0,0,0,.20);border:1px solid rgba(238,238,238,.95);backdrop-filter:blur(18px);transform:scale(.82) translate(18px,-18px);transform-origin:top right;opacity:0;pointer-events:none;transition:.24s ease;overflow:hidden}.wardrobe-canvas.open{transform:scale(1) translate(0,0);opacity:1;pointer-events:auto}.canvas-head{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 12px 0 16px;border-bottom:1px solid #f3f3f3}.canvas-head strong{font-size:13px}.canvas-head span{font-size:10px;color:#aaa;margin-left:5px}.canvas-fold{border:0;background:#f3f3f3;color:#777;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:800}.wardrobe-canvas .save-outfit{right:12px;top:58px;border-radius:14px;font-size:10px;padding:8px 11px}.wardrobe-canvas .trash{right:67px;top:60px;font-size:15px}.wardrobe-canvas .canvas-placeholder{top:48px;font-size:11px;color:#cfcfcf}.wardrobe-canvas .canvas-item{width:78px;height:90px;border-radius:16px}.wardrobe-canvas .canvas-item .cloth{transform:scale(.72)}.wardrobe-canvas .canvas-item .remove{right:2px;top:2px;width:20px;height:20px;font-size:12px}.wardrobe-canvas .canvas-item.selected{outline-offset:-6px}.view.active{position:relative}.filter-panel{padding-right:58px}.item-card.added{box-shadow:0 12px 30px rgba(0,0,0,.05),0 0 0 2px rgba(17,17,17,.08) inset}
 
-
-    /* V4：今日穿什么 AI 推荐页，延续原有黑白极简风格 */
-    .today-intro{background:#fff;border:1px solid #f1f1f1;border-radius:24px;padding:16px 15px;margin:4px 0 12px;box-shadow:0 12px 30px rgba(0,0,0,.04)}
-    .today-intro-title{font-size:17px;font-weight:900;color:#111;letter-spacing:.02em}.today-intro-desc{font-size:12px;color:#999;line-height:1.7;margin-top:6px}
-    .today-panel{background:#fff;border:1px solid #f1f1f1;border-radius:24px;padding:14px 13px 13px;margin-bottom:13px;box-shadow:0 12px 30px rgba(0,0,0,.04)}
+    /* 今日穿搭：复用衣橱图片展示推荐组合 */
+    .today-panel{position:relative;display:grid;grid-template-columns:minmax(0,1fr);gap:8px;background:#fff;border:1px solid #f1f1f1;border-radius:20px;padding:10px;margin-bottom:10px;box-shadow:0 12px 30px rgba(0,0,0,.04)}
     .today-filter-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-items:start}.today-filter-title{width:100%;border:0;background:#f0f0f0;color:#555;border-radius:18px;min-height:50px;padding:7px 8px;font-size:12px;font-weight:900;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;line-height:1.1}.today-filter-label{font-size:10px;color:#999;font-weight:850}.today-filter-value{font-size:13px;color:#222;font-weight:950;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.today-filter-title.active,.today-filter-title:hover{background:#111;color:#fff}.today-filter-title.active .today-filter-label,.today-filter-title:hover .today-filter-label{color:rgba(255,255,255,.62)}.today-filter-title.active .today-filter-value,.today-filter-title:hover .today-filter-value{color:#fff}.today-filter-panel{margin-top:10px;display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}.today-filter-panel::-webkit-scrollbar{display:none}.today-filter-panel.empty{display:none}.today-filter-option{border:0;background:#f0f0f0;color:#888;border-radius:999px;height:36px;padding:0 18px;font-size:12px;font-weight:850;white-space:nowrap;flex:0 0 auto}.today-filter-option.active,.today-filter-option:hover{background:#111;color:#fff}.today-generate{width:100%;height:44px;margin-top:12px;border-radius:14px}
-    .today-card{background:#fff;border:1px solid #f1f1f1;border-radius:28px;padding:17px;box-shadow:0 16px 40px rgba(0,0,0,.06);margin-bottom:16px}.today-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}.today-card-title{font-size:18px;font-weight:900;color:#111}.today-card-sub{font-size:11px;color:#aaa;margin-top:4px}.ai-badge{height:25px;min-width:36px;border-radius:999px;background:#111;color:#fff;font-size:10px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;padding:0 9px;letter-spacing:.04em}
-    .ai-look-preview{height:400px;border-radius:25px;background:linear-gradient(180deg,#fff,#fafafa);border:1px solid #f2f2f2;position:relative;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;margin:12px 0 13px}.ai-look-preview:before{content:"";position:absolute;inset:18px;border:1px dashed #ededed;border-radius:20px;pointer-events:none}.ai-look-preview.scanning:after{content:"";position:absolute;left:18px;right:18px;top:44px;height:2px;background:#111;opacity:.18;box-shadow:0 0 18px rgba(0,0,0,.18);animation:scanLine 1.35s ease-in-out infinite}@keyframes scanLine{0%{transform:translateY(0)}50%{transform:translateY(294px)}100%{transform:translateY(0)}}
-    .ai-fitting{position:relative;width:214px;height:340px;margin-top:48px}.ai-match{position:absolute;right:25px;bottom:24px;height:30px;border-radius:999px;background:#111;color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0 13px;z-index:12;white-space:nowrap}.ai-tags{position:absolute;left:14px;right:14px;top:14px;display:flex;gap:6px;flex-wrap:wrap;z-index:15}.ai-tag{height:22px;border-radius:999px;background:#f3f3f3;color:#666;font-size:10px;font-weight:850;display:inline-flex;align-items:center;padding:0 8px}
-    .fit-head{position:absolute;left:84px;top:0;width:46px;height:53px;border-radius:48% 48% 45% 45%;background:#f0d9ca;z-index:8;box-shadow:inset 0 -3px 0 rgba(164,111,86,.08)}.fit-hair{position:absolute;left:78px;top:-5px;width:58px;height:34px;border-radius:30px 30px 17px 20px;background:#332d2a;z-index:9}.fit-hair:after{content:"";position:absolute;right:1px;top:17px;width:16px;height:25px;border-radius:0 0 14px 14px;background:#332d2a}.fit-neck{position:absolute;left:97px;top:47px;width:20px;height:18px;border-radius:0 0 8px 8px;background:#f0d9ca;z-index:1}.fit-foot{position:absolute;top:250px;width:25px;height:12px;border-radius:9px 9px 12px 12px;background:#f0d9ca;z-index:2}.fit-foot.left{left:76px}.fit-foot.right{right:76px}
-    .fit-forearm{position:absolute;top:90px;width:17px;height:76px;border-radius:12px;background:#f0d9ca;z-index:7;box-shadow:inset 0 -4px 0 rgba(164,111,86,.08)}.fit-forearm.left{left:42px;transform:rotate(5deg)}.fit-forearm.right{right:42px;transform:rotate(-5deg)}.fit-forearm:after{content:"";position:absolute;left:1px;bottom:-6px;width:15px;height:19px;border-radius:9px 9px 11px 11px;background:#f0d9ca}
-    .fit-piece{position:absolute;display:flex;align-items:center;justify-content:center;z-index:4;pointer-events:none;filter:drop-shadow(0 8px 9px rgba(0,0,0,.09))}.fit-piece .cloth{position:relative;display:inline-flex;align-items:center;justify-content:center;transform-origin:center}.fit-piece img.photo-img{width:100%;height:100%;object-fit:contain;padding:0;box-shadow:none;border-radius:0;transform-origin:center}.fit-top{left:36px;top:49px;width:142px;height:121px;z-index:5}.fit-top .cloth,.fit-top img.photo-img{transform:scale(1.06)}.fit-bottom{left:53px;top:136px;width:108px;height:137px;z-index:4}.fit-bottom .cloth,.fit-bottom img.photo-img{transform:scale(1.42)}.fit-bottom.is-skirt{left:45px;top:126px;width:124px;height:145px}.fit-bottom.is-skirt .cloth,.fit-bottom.is-skirt img.photo-img{transform:scale(1.18)}.fit-shoes{left:55px;top:246px;width:104px;height:45px;z-index:8}.fit-shoes .cloth,.fit-shoes img.photo-img{transform:scale(.94)}.fit-bag{right:8px;top:112px;width:72px;height:88px;z-index:10}.fit-bag .cloth,.fit-bag img.photo-img{transform:scale(.78)}
-    @media (max-width:380px){.ai-match{right:22px;padding:0 9px;font-size:10px}}
-    .ai-piece-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}.ai-piece{height:25px;border-radius:999px;background:#f3f3f3;color:#666;font-size:10px;font-weight:850;display:inline-flex;align-items:center;padding:0 9px}.ai-reason{border-top:1px solid #f3f3f3;padding-top:12px;margin-top:12px}.ai-reason-title{font-size:12px;font-weight:900;color:#333;margin-bottom:7px}.ai-reason-text{font-size:12px;color:#999;line-height:1.7}.today-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}.today-empty{background:#fff;border:1px solid #f1f1f1;border-radius:24px;padding:44px 18px;color:#bdbdbd;text-align:center;font-size:13px;line-height:1.8}
+    .today-panel .today-filter-tabs{gap:6px}.today-panel .today-filter-title{min-height:42px;border-radius:13px;padding:6px 4px}.today-panel .today-filter-value{font-size:12px}.today-panel .today-filter-panel{grid-column:1/-1;grid-row:2;margin-top:0}.today-panel .today-generate{width:100%;height:44px;margin:0;padding:0 12px;font-size:13px;font-weight:800;border-radius:13px}
+    .today-card{background:#fff;border:1px solid #f1f1f1;border-radius:24px;padding:12px;box-shadow:0 16px 40px rgba(0,0,0,.06);margin-bottom:16px}.today-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}.today-card-title{font-size:16px;font-weight:900;color:#111}.today-card-sub{font-size:11px;color:#aaa;margin-top:4px}.ai-badge{height:25px;min-width:36px;border-radius:999px;background:#111;color:#fff;font-size:10px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;padding:0 9px;letter-spacing:.04em}
+    .screen:has(#view-today.active){display:flex;flex-direction:column}.screen:has(#view-today.active)>.topbar{flex-shrink:0}
+    #view-today{flex:1;min-height:0;height:auto;padding-bottom:18px;scroll-padding-bottom:18px}#view-today>.today-panel,#todayRecommendation{max-width:960px;margin-left:auto;margin-right:auto}
+    .outfit-board{background:#f4f3f0;border:1px solid #eeede9;border-radius:20px;padding:12px;margin:8px 0;overflow:hidden}
+    .outfit-board-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.outfit-board-title{font-size:13px;font-weight:850;color:#333}.outfit-board-count{font-size:10px;color:#777;white-space:nowrap}.outfit-tags{display:flex;gap:6px;flex-wrap:wrap}.outfit-tag{border-radius:999px;background:rgba(255,255,255,.8);color:#777;font-size:10px;line-height:1.5;font-weight:750;padding:5px 9px}
+    .outfit-stage{--stage-ratio:.83;position:relative;width:min(100%,var(--stage-fit-width,650px));max-width:650px;aspect-ratio:var(--stage-ratio);margin:8px auto 12px;isolation:isolate}.outfit-stage:before{content:"";position:absolute;inset:12% 3% 9% 2%;border-radius:50%;background:radial-gradient(ellipse,rgba(226,222,213,.45),transparent 68%);pointer-events:none}.outfit-stage:after{content:"DAILY LOOK";position:absolute;right:0;top:5%;writing-mode:vertical-rl;font-size:9px;letter-spacing:.25em;color:#b9b5ad;pointer-events:none}
+    .outfit-item{position:absolute;min-width:0;padding:0;border:0;background:transparent;cursor:pointer;color:#333;font:inherit;text-align:left;transform:rotate(var(--piece-angle,0deg));transition:transform .2s;isolation:isolate}.outfit-item:hover{transform:translateY(-4px) rotate(var(--piece-angle,0deg))}.outfit-item:focus-visible{outline:2px solid #777;outline-offset:5px;border-radius:18px;z-index:8}.outfit-item-media{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}.outfit-item-media .photo-img{width:100%;height:100%;object-fit:contain;border-radius:0;filter:drop-shadow(0 12px 9px rgba(65,53,37,.13))}.outfit-item-media .cloth{transform:scale(1.1);filter:drop-shadow(0 10px 8px rgba(65,53,37,.12))}.outfit-item-category{position:absolute;bottom:0;right:0;z-index:2;display:flex;align-items:center;gap:5px;border-radius:999px;padding:4px 8px;background:rgba(255,255,255,.88);color:#777;font-size:9px;line-height:1.4;white-space:nowrap;box-shadow:0 3px 12px rgba(0,0,0,.03)}.outfit-item-number{font-size:8px;color:#aaa;font-variant-numeric:tabular-nums}
+    .outfit-item.role-top{left:9%;top:0;width:55%;height:47%;--piece-angle:-5deg;z-index:3}.outfit-item.role-bottom{left:19%;top:43%;width:43%;height:54%;--piece-angle:3deg;z-index:2}.outfit-item.role-bag{left:65%;top:32%;width:31%;height:32%;--piece-angle:9deg;z-index:4}.outfit-item.role-shoes{left:62%;top:78%;width:35%;height:18%;--piece-angle:-9deg;z-index:5}
+    .outfit-stage:not(.has-bag):not(.has-shoes) .role-top{left:23%}.outfit-stage:not(.has-bag):not(.has-shoes) .role-bottom{left:29%}.outfit-stage:not(.has-bottom) .role-top{top:8%;height:67%}.outfit-stage:not(.has-top) .role-bottom{top:8%;height:74%;left:17%;width:47%}.outfit-stage:not(.has-top):not(.has-bottom){--stage-ratio:1.2}.outfit-stage:not(.has-top):not(.has-bottom) .role-bag{left:7%;top:8%;width:48%;height:69%}.outfit-stage:not(.has-top):not(.has-bottom) .role-shoes{left:52%;top:54%;width:44%;height:35%}.outfit-stage[data-count="1"]{--stage-ratio:1.05;max-width:450px}.outfit-stage[data-count="1"] .outfit-item{left:18%;top:3%;width:64%;height:91%;--piece-angle:-3deg}.outfit-stage[data-count="1"] .role-shoes{top:25%;height:54%}
+    .outfit-summary{display:flex;flex-wrap:wrap;gap:6px;padding-top:12px;border-top:1px solid rgba(0,0,0,.05)}.outfit-summary-item{display:inline-flex;align-items:baseline;gap:5px;max-width:100%;padding:4px 8px;background:rgba(255,255,255,.6);border-radius:8px;font-size:10px;line-height:1.5;color:#777;overflow-wrap:anywhere}.outfit-summary-item b{font-size:9px;color:#aaa;font-weight:500;font-variant-numeric:tabular-nums}.outfit-board-note{color:#aaa;font-size:10px;line-height:1.6;margin:10px 2px 0}
+    .outfit-item-media .photo-pending{opacity:0}.outfit-item-media:has(.photo-pending):before{content:"";position:absolute;inset:12%;background:#eae7e0;border-radius:18px}
+    .outfit-detail-modal{top:50%;max-width:540px;max-height:82%;overflow-y:auto;margin:0 auto}.outfit-detail-preview{height:min(42vh,340px);background:#f5f4f1;border-radius:17px;display:flex;align-items:center;justify-content:center;padding:18px;margin-bottom:14px}.outfit-detail-preview .cloth{transform:scale(1.8)}.outfit-detail-name{font-size:16px;font-weight:850;line-height:1.5;overflow-wrap:anywhere}.outfit-detail-meta{font-size:12px;color:#888;line-height:1.8;margin-top:7px}
+    @media (min-width:700px){.outfit-board{padding:14px 20px}.outfit-stage{--stage-ratio:1.1;max-width:680px}.outfit-item-category{font-size:11px;padding:5px 10px}.outfit-item-number{font-size:10px}.outfit-item-media .cloth{transform:scale(2)}.outfit-summary{gap:9px}.outfit-summary-item{font-size:11px}.outfit-stage:after{font-size:10px;right:-4%}}
+    .ai-reason{border-top:1px solid #f3f3f3;padding-top:12px;margin-top:12px}.ai-reason-title{font-size:12px;font-weight:900;color:#333;margin-bottom:7px}.ai-reason-text{font-size:12px;color:#999;line-height:1.7}.today-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}.today-empty{background:#fff;border:1px solid #f1f1f1;border-radius:24px;padding:44px 18px;color:#bdbdbd;text-align:center;font-size:13px;line-height:1.8}
+    .feedback-panel{display:none;margin-top:10px;padding:11px;border-radius:16px;background:#f7f7f7}.feedback-panel.show{display:block}.feedback-title{font-size:11px;font-weight:850;color:#777;margin-bottom:8px}.feedback-reasons{display:flex;flex-wrap:wrap;gap:7px}.feedback-reason{height:30px;border:0;border-radius:999px;background:#fff;color:#666;padding:0 11px;font-size:10px;font-weight:800}
 
     .canvas-item{transform-origin:center center;touch-action:none}
     .canvas-item .scale-handle{position:absolute;right:-7px;bottom:-7px;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #111;box-shadow:0 6px 16px rgba(0,0,0,.16);display:none;align-items:center;justify-content:center;z-index:5;cursor:nwse-resize;touch-action:none}
@@ -62,13 +69,17 @@
     .swipe-row{position:relative;min-width:0;overflow:hidden;border-radius:22px;touch-action:pan-y}.looks .swipe-row{border-radius:28px}.swipe-delete{position:absolute;top:0;right:0;bottom:0;width:76px;border:0;background:#e64b4b;color:#fff;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;z-index:1}.swipe-content{position:relative;z-index:2;width:100%;transition:transform .22s ease;will-change:transform}.swipe-row.dragging .swipe-content{transition:none}.swipe-row.open .swipe-content{transform:translateX(-76px)}.swipe-row .item-card,.swipe-row .look-card{width:100%}
     .item-img{width:100%;max-width:100%;min-width:0}
     .item-name{display:-webkit-box!important;min-width:0;min-height:34px;margin-top:1px;overflow:hidden;color:#444;font-size:12px;font-weight:800;line-height:17px;overflow-wrap:anywhere;-webkit-box-orient:vertical;-webkit-line-clamp:2}
-    .item-meta,.item-edit-tip{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .scene-badge,.share-tag,.ai-piece{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .item-name-line{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}.item-name-field{height:42px;min-width:0;border:1px solid #e6e6e6;border-radius:12px;padding:0 12px;outline:none;background:#fff;color:#222;font-size:13px;font-weight:750}.item-name-field:focus{border-color:#111;box-shadow:0 0 0 2px rgba(17,17,17,.06)}.ai-name-btn{height:42px;border:0;border-radius:12px;background:#111;color:#fff;padding:0 13px;font-size:11px;font-weight:850;white-space:nowrap}.item-name-note{margin-top:6px;color:#bbb;font-size:10px;line-height:1.5}
+    .item-meta{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .scene-badge,.share-tag{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .attribute-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.attribute-grid .form-row{min-width:0}.scale-chips{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}.scale-chip{height:34px;border:0;border-radius:11px;background:#f1f1f1;color:#888;font-size:11px;font-weight:850}.scale-chip.active{background:#111;color:#fff}@keyframes recognitionSlide{0%{transform:translateX(-120%)}100%{transform:translateX(250%)}}
+    .edit-secondary-attributes[hidden]{display:none!important}
+
+    #editItemColor{flex-wrap:wrap;overflow:visible}.edit-color-label{display:flex;align-items:center;justify-content:space-between;gap:8px}.edit-color-recheck{border:0;border-radius:999px;background:#f1f1f1;color:#555;font-size:10px;padding:5px 9px;cursor:pointer}.edit-color-recheck:disabled{opacity:.5;cursor:wait}
+    .edit-color-option:focus-visible{outline:2px solid #111;outline-offset:2px}
+    .edit-color-swatch{display:block;flex:0 0 12px;width:12px;height:12px;border-radius:50%;background:var(--swatch);box-shadow:inset 0 0 0 1px rgba(0,0,0,.14)}
     #addSheet{max-height:calc(100% - 20px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;padding-top:0;padding-bottom:0}
     #addSheet::-webkit-scrollbar{display:none}
     #addSheet .sheet-head{position:sticky;top:0;z-index:5;background:#fff;margin:0 -18px 13px;padding:18px 18px 10px;border-radius:24px 24px 0 0}
-    #addSheet .sheet-actions{position:sticky;bottom:0;z-index:5;background:#fff;margin:14px -18px 0;padding:12px 18px 18px;box-shadow:0 -10px 24px rgba(255,255,255,.96)}
     #view-wardrobe,#view-fav{padding-bottom:132px;scroll-padding-bottom:132px}
 html,body{width:100%;height:100%;min-height:100%;background:#fbfbfb;overflow:hidden}
 body{display:block}
@@ -106,15 +117,20 @@ body{display:block}
   <main class="phone" id="app">
     <section class="screen">
       <div class="topbar">
-        <div><div class="title" id="pageTitle">我的衣橱</div><div class="subtitle" id="pageSub">记录衣服，快速搭配</div></div>
-        <button class="icon-btn ghost-btn" id="searchBtn" title="衣橱数据" aria-label="衣橱数据">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="5" y="4" width="14" height="16" rx="2"></rect>
-            <path d="M12 4v16"></path>
-            <path d="M9 12h.01"></path>
-            <path d="M15 12h.01"></path>
-          </svg>
-        </button>
+        <div class="topbar-heading"><div class="title" id="pageTitle">我的衣橱</div><div class="subtitle" id="pageSub">记录衣服，快速搭配</div></div>
+        <div class="topbar-actions">
+          <button class="icon-btn ghost-btn" id="searchBtn" type="button" title="衣橱数据" aria-label="衣橱数据">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="5" y="4" width="14" height="16" rx="2"></rect>
+              <path d="M12 4v16"></path>
+              <path d="M9 12h.01"></path>
+              <path d="M15 12h.01"></path>
+            </svg>
+          </button>
+          <button class="icon-btn ghost-btn weather-pill" id="weatherBtn" type="button" title="今日天气" aria-label="今日天气">
+            <span class="weather-pill-emoji" aria-hidden="true">🌤️</span><span class="weather-pill-temp">--°</span>
+          </button>
+        </div>
       </div>
 
       <div class="view active" id="view-wardrobe">
@@ -134,19 +150,15 @@ body{display:block}
           <div class="filter-summary"><span id="filterSummary">当前：全部单品</span><div class="filter-summary-actions"><button class="wardrobe-search-toggle" id="wardrobeSearchToggle" type="button" title="搜索衣服" aria-label="搜索衣服"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg></button><button class="reset-filter" id="resetFilter">重置筛选</button></div></div>
           <div class="wardrobe-search-row" id="wardrobeSearchRow"><div class="wardrobe-search-box"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><input class="wardrobe-search-input" id="wardrobeSearchInput" type="search" placeholder="搜索名称、品类、季节或场景" autocomplete="off" /><button class="wardrobe-search-clear" id="wardrobeSearchClear" type="button" aria-label="清除搜索">×</button></div></div>
         </div>
+        <div class="import-summary" id="importSummary" role="status" hidden></div>
         <div id="wardrobeContent"></div>
       </div>
 
-
       <div class="view" id="view-today">
-        <div class="today-intro">
-          <div class="today-intro-title">AI 今日穿搭</div>
-          <div class="today-intro-desc">选择今天的场景、天气和感觉，AI 会从你的衣橱里直接推荐一套完整 Look。</div>
-        </div>
         <div class="today-panel" id="todayFilterCard">
           <div class="today-filter-tabs" id="todayFilterTabs"></div>
           <div class="today-filter-panel" id="todayFilterPanel"></div>
-          <button class="black today-generate" id="todayGenerate">AI 生成搭配</button>
+          <button class="black today-generate" id="todayGenerate">推荐一套</button>
         </div>
         <div id="todayRecommendation"></div>
       </div>
@@ -160,7 +172,6 @@ body{display:block}
       <div class="view" id="view-discover">
         <div class="discover-grid" id="discoverList"></div>
       </div>
-
 
       <div class="wardrobe-canvas-shell" id="canvasShell">
         <button class="wardrobe-canvas-toggle" id="canvasToggle" aria-label="打开搭配画布" title="打开搭配画布">
@@ -186,31 +197,23 @@ body{display:block}
     </nav>
 
     <div class="sheet-mask" id="mask"></div>
-    <section class="bottom-sheet" id="addSheet">
-      <div class="sheet-head"><div class="sheet-title">上传衣服</div><button class="close" data-close="sheet">×</button></div>
-      <div class="upload-area">
-        <div class="form-label">添加方式</div>
-        <div class="upload-methods">
-          <button class="upload-choice" id="cameraBtn" type="button">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.4-2h7.2L17 8h3v11H4z"/><circle cx="12" cy="13.5" r="3.5"/></svg>
-            拍照识别
-          </button>
-          <button class="upload-choice" id="albumBtn" type="button">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 15l3-3 2 2 2.5-3 3.5 4"/><circle cx="8" cy="9" r="1"/></svg>
-            相册
-          </button>
-        </div>
-        <input id="cameraInput" type="file" accept="image/*" capture="environment" hidden />
-        <input id="albumInput" type="file" accept="image/*" multiple hidden />
-        <div class="upload-preview" id="uploadPreview"><div class="upload-empty">上传或拍照后显示照片</div></div>
-        <div class="recognize-note" id="recognizeNote"></div>
-        <div class="cutout-actions" id="cutoutActions"></div>
+    <section class="bottom-sheet import-picker" id="addSheet">
+      <div class="sheet-head"><div class="sheet-title">添加衣物</div><button class="close" data-close="sheet" type="button" aria-label="关闭添加衣物">×</button></div>
+      <p class="import-picker-note">选完照片即可继续使用，衣物会自动处理并保存。</p>
+      <div class="upload-methods">
+        <button class="upload-choice" id="cameraBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.4-2h7.2L17 8h3v11H4z"/><circle cx="12" cy="13.5" r="3.5"/></svg>拍照</button>
+        <button class="upload-choice" id="albumBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 15l3-3 2 2 2.5-3 3.5 4"/><circle cx="8" cy="9" r="1"/></svg>相册</button>
       </div>
-      <div class="form-row"><div class="form-label">单品名称</div><div class="item-name-line"><input class="item-name-field" id="uploadItemName" maxlength="24" placeholder="识别完成后自动生成名称" /><button class="ai-name-btn" id="generateItemName" type="button">AI 命名</button></div><div class="item-name-note">可直接修改；批量上传时每张照片会单独保存名称</div></div>
-      <div class="form-row"><div class="form-label">识别品类</div><div class="form-chips scroll-x" id="formCategory"></div></div>
-      <div class="form-row"><div class="form-label">识别季节</div><div class="form-chips" id="formSeason"></div></div>
-      <div class="form-row"><div class="form-label">适合场景</div><div class="form-chips" id="formOccasion"></div></div>
-      <div class="sheet-actions"><button class="secondary" data-close="sheet">取消</button><button class="black" id="addItem">放入衣橱</button></div>
+      <div class="import-picker-hint">一次最多选择 12 张，每张照片作为一件衣物导入。</div>
+      <input id="cameraInput" type="file" accept="image/*" capture="environment" hidden />
+      <input id="albumInput" type="file" accept="image/*" multiple hidden />
+    </section>
+
+    <section class="modal outfit-detail-modal" id="todayItemModal" role="dialog" aria-modal="true" aria-labelledby="todayItemTitle" aria-hidden="true" inert>
+      <div class="modal-head"><div class="modal-title" id="todayItemTitle">推荐单品</div><button class="close" id="todayItemClose" data-close="modal" type="button" aria-label="关闭单品详情">×</button></div>
+      <div class="outfit-detail-preview" id="todayItemPreview"></div>
+      <div class="outfit-detail-name" id="todayItemName"></div>
+      <div class="outfit-detail-meta" id="todayItemMeta"></div>
     </section>
 
     <section class="modal" id="saveModal">
@@ -221,12 +224,6 @@ body{display:block}
       <div class="modal-actions"><button class="secondary" data-close="modal">取消</button><button class="black" id="confirmSave">确认保存</button></div>
     </section>
 
-    <section class="modal" id="loginModal">
-      <div class="modal-head"><div class="modal-title">我的</div><button class="close" data-close="modal">×</button></div>
-      <div style="text-align:center;color:#aaa;font-size:13px;line-height:1.8;padding:10px 0 18px">登录后可以保存你的衣橱与穿搭偏好</div>
-      <button class="black" style="width:100%" data-close="modal">登录 / 注册</button>
-    </section>
-
     <section class="modal edit-item-modal" id="editItemModal">
       <div class="modal-head"><div class="modal-title">修改衣服标签</div><button class="close" data-close="modal">×</button></div>
       <div class="edit-item-summary">
@@ -234,8 +231,16 @@ body{display:block}
         <div class="edit-item-name-wrap"><div class="edit-item-name" id="editItemName" title="双击修改衣服名称"></div><div class="edit-item-help">双击名称修改 · 下方可调整标签</div></div>
       </div>
       <div class="form-row"><div class="form-label">品类</div><div class="form-chips" id="editItemCategory"></div></div>
+      <div class="form-row"><div class="form-label edit-color-label"><span>颜色</span><button class="edit-color-recheck" id="editColorRecheck" type="button">重新取色</button></div><div class="form-chips" id="editItemColor"></div></div>
       <div class="form-row"><div class="form-label">季节</div><div class="form-chips" id="editItemSeason"></div></div>
       <div class="form-row"><div class="form-label">适合场景</div><div class="form-chips" id="editItemOccasion"></div></div>
+      <div class="edit-secondary-attributes" hidden aria-hidden="true">
+        <div class="form-row"><div class="form-label">风格</div><div class="form-chips" id="editItemStyle"></div></div>
+        <div class="attribute-grid">
+          <div class="form-row"><div class="form-label">厚度</div><div class="scale-chips" id="editItemWarmth"></div></div>
+          <div class="form-row"><div class="form-label">正式度</div><div class="scale-chips" id="editItemFormality"></div></div>
+        </div>
+      </div>
       <div class="modal-actions"><button class="secondary" data-close="modal">取消</button><button class="black" id="confirmItemEdit">保存修改</button></div>
     </section>
 
@@ -294,58 +299,78 @@ body{display:block}
     <div class="toast" id="toast">已保存</div>
   </main>
 
+  <script src="default-wardrobe-data.js"></script>
+  <script src="garment-taxonomy.js"></script>
+  <script src="api-client.js"></script>
+  <script src="clip-vision-worker.js"></script>
+  <script src="clip-vision-client.js"></script>
+  <script src="clothing-attributes.js"></script>
+  <script src="wardrobe-import.js"></script>
+  <script src="wardrobe-import-ui.js"></script>
   <script>
-    document.write('<script src="default-wardrobe-data.js?v=' + Date.now() + '"><\/script>');
-  </script>
-  <script>
-    const defaultCategories = ['上装','下装','裙子','鞋帽','包包'];
-    const defaultOccasions = ['日常','旅行','职场','约会'];
-    const seasons = ['全部','春','夏','秋','冬'];
-    const visualMap = {上装:'top-cloth',下装:'pants',裙子:'skirt',鞋帽:'shoe',包包:'bag'};
+    const defaultCategories = GarmentTaxonomy.values('category');
+    const defaultOccasions = GarmentTaxonomy.values('occasions');
+    const confirmationSeasons = GarmentTaxonomy.values('seasons');
+    const seasons = ['全部',...confirmationSeasons.filter(value=>value!=='四季')];
+    const clothingColors = GarmentTaxonomy.values('colors');
+    const clothingColorSwatches = GarmentTaxonomy.fields.colors.swatches;
+    const clothingStyles = GarmentTaxonomy.values('styles');
+    const defaultSubcategory = Object.fromEntries(Object.entries(GarmentTaxonomy.fields.subcategory.by_category).map(([category,values])=>[category,values.at(-1)]));
+    const visualMap = {上装:'top-cloth',下装:'pants',裙子:'skirt',外套:'top-cloth',连体装:'skirt',鞋帽:'shoe',包包:'bag',配饰:'bag'};
     const defaultWardrobeItems=Array.isArray(window.DEFAULT_WARDROBE_ITEMS)?window.DEFAULT_WARDROBE_ITEMS.map(item=>({...item})):[];
-    function wardrobeDataSignature(items){
-      const text=JSON.stringify(items||[]);
-      let hash=2166136261;
-      for(let i=0;i<text.length;i++){
-        hash^=text.charCodeAt(i);
-        hash=Math.imul(hash,16777619);
-      }
-      return (hash>>>0).toString(36);
+    // Retire only this extra seed item; keep all clothes imported by users.
+    const retiredDefaultWardrobeIds=new Set(['1780984272751.3892']);
+    function isRetainedWardrobeItem(item){
+      return !retiredDefaultWardrobeIds.has(String(item.id));
     }
-    const defaultWardrobeSignature=wardrobeDataSignature(defaultWardrobeItems);
     let state = {
       page:'wardrobe', filter:'全部', season:'全部', occasionFilter:'全部', wardrobeSearch:'', wardrobeSearchOpen:false, canvasOpen:false,
       categoryLabels:[...defaultCategories], occasionLabels:[...defaultOccasions],
       customLabelType:'category', customLabelTarget:'category-filter',
       editingItemId:null, editDraft:null,
-      uploadQueue:[], uploadIndex:0, uploadProcessing:false,
-      form:{category:'下装',season:'春',occasion:'日常',itemName:'',nameManual:false,photoUrl:'',originalPhotoUrl:'',cutoutUrl:'',cutoutStatus:'idle',cutoutError:'',photoName:'',source:'',recognizeStatus:'idle',recognizeSource:'',recognizeScore:0},
       items:defaultWardrobeItems,
       canvas:[], lookCategory:'全部', lookSeason:'全部', lookScene:'全部', lookPanels:{category:false,season:false,scene:false}, lookDiscoverOnly:false, saveScene:'',
       discoverSeed:0,lastDiscoverTap:0,
-      today:{scene:'日常',weather:'炎热',temp:'--',mood:'舒适',panel:'scene',index:0,current:null},
+      today:{scene:'日常',weather:'炎热',temp:'--',mood:'舒适',panel:null,index:0,current:null,apiRecommendation:null,loading:false,recommendationRevision:0,recommendationRequestSeq:0},
       weather:{status:'多云',temp:'--',location:'当地',tip:'今日天气',icon:'cloudSun',loading:true,source:'默认天气',tomorrow:{status:'暂无明日预报',icon:'cloud',tempMin:'--',tempMax:'--'}},
       looks:[]
     };
     const wardrobePhotoStorageKey='wardrobe-photo-items-v12';
+    const wardrobeApiMigrationKey='wardrobe-api-migrated-v1';
+    const analyticsSessionId=`session_${Date.now()}_${Math.random().toString(36).slice(2,9)}`;
     function photoItemSnapshot(item){
+      const recognition=item.recognitionContract||item.recognition||{};
       return {
         id:item.id,
         name:item.name,
         category:item.category,
+        subcategory:item.subcategory||item.attributes&&item.attributes.subcategory||'',
+        pattern:item.pattern||item.attributes&&item.attributes.pattern||'未知',
+        materials:Array.isArray(item.materials)?item.materials:(item.attributes&&item.attributes.materials||['未知']),
+        fit:item.fit||item.attributes&&item.attributes.fit||'未知',
+        length:item.length||item.attributes&&item.attributes.length||'未知',
+        attributes:item.attributes||recognition.attributes||{},
         season:item.season,
         occasion:item.occasion,
+        colors:Array.isArray(item.colors)?item.colors:[],
+        styles:Array.isArray(item.styles)?item.styles:[],
+        warmth:Number(item.warmth)||3,
+        formality:Number(item.formality)||3,
         visual:item.visual,
         photoUrl:item.photoUrl,
-        source:item.source||'本地衣橱'
+        originalPhotoUrl:item.originalPhotoUrl||'',
+        source:item.source||'本地衣橱',
+        recognition,
+        recognitionContract:recognition&&recognition.contract_version==='1.0'?recognition:null,
+        recognitionRunId:item.recognitionRunId||'',
+        manualFields:Array.isArray(item.manualFields)?item.manualFields:[]
       };
     }
     function savePhotoWardrobe(){
-      const photoItems=state.items.filter(item=>item.photoUrl).map(photoItemSnapshot);
+      const photoItems=state.items.filter(item=>item.photoUrl&&!item.importId).map(photoItemSnapshot);
       try{
         localStorage.setItem(wardrobePhotoStorageKey,JSON.stringify({
           formatVersion:1,
-          defaultSignature:defaultWardrobeSignature,
           items:photoItems
         }));
       }catch(err){
@@ -357,14 +382,11 @@ body{display:block}
         const raw=localStorage.getItem(wardrobePhotoStorageKey);
         if(raw===null) return;
         const saved=JSON.parse(raw);
-        const matchesCurrentDefault=saved
+        const isSavedWardrobe=saved
           &&saved.formatVersion===1
-          &&saved.defaultSignature===defaultWardrobeSignature
           &&Array.isArray(saved.items);
-        if(matchesCurrentDefault){
-          state.items=saved.items;
-        }else{
-          localStorage.removeItem(wardrobePhotoStorageKey);
+        if(isSavedWardrobe){
+          state.items=saved.items.filter(isRetainedWardrobeItem);
         }
       }catch(err){
         console.warn('Failed to restore photo wardrobe.',err);
@@ -372,6 +394,154 @@ body{display:block}
       }
     }
     restorePhotoWardrobe();
+
+    function localItemFromApi(item){
+      const season=Array.isArray(item.seasons)&&item.seasons[0]||'';
+      const occasion=Array.isArray(item.occasions)&&item.occasions[0]||'';
+      return {
+        id:item.id,
+        name:item.name,
+        category:item.category,
+        subcategory:item.subcategory||item.attributes&&item.attributes.subcategory||'',
+        pattern:item.pattern||item.attributes&&item.attributes.pattern||'未知',
+        materials:Array.isArray(item.materials)?item.materials:(item.attributes&&item.attributes.materials||[]),
+        fit:item.fit||item.attributes&&item.attributes.fit||'未知',
+        length:item.length||item.attributes&&item.attributes.length||'未知',
+        attributes:item.attributes||{},
+        season,
+        occasion,
+        colors:Array.isArray(item.colors)?item.colors:[],
+        styles:Array.isArray(item.styles)?item.styles:[],
+        warmth:Number(item.warmth)||3,
+        formality:Number(item.formality)||3,
+        visual:visualMap[item.category]||'top-cloth',
+        photoUrl:item.cutout_url||item.image_url||'',
+        originalPhotoUrl:item.image_url||'',
+        keptOriginal:!item.cutout_url&&!!item.image_url,
+        source:item.recognition&&item.recognition.source||'云端衣橱',
+        status:item.status||'available',
+        recognition:item.recognition||{},
+        recognitionContract:item.recognition&&item.recognition.contract_version==='1.0'?item.recognition:null,
+        recognitionRunId:'',
+        manualFields:item.recognition&&Array.isArray(item.recognition.manualFields)?item.recognition.manualFields:[]
+      };
+    }
+    function apiItemFromLocal(item){
+      const recognition=item.recognitionContract||(item.recognition&&item.recognition.contract_version==='1.0'?item.recognition:null);
+      if(recognition&&recognition.attributes&&defaultCategories.includes(item.category||recognition.attributes.category)){
+        const predicted=recognition.attributes;
+        const category=item.category||predicted.category||'上装';
+        const attributes={
+          ...predicted,
+          category,
+          subcategory:validEditSubcategory(category,item.subcategory)?item.subcategory
+            :category===predicted.category?predicted.subcategory:(defaultSubcategory[category]||'其他上装'),
+          colors:Array.isArray(item.colors)&&item.colors.length?item.colors:[item.color||((predicted.colors||[])[0]||'灰色')],
+          pattern:item.pattern||predicted.pattern||'未知',
+          materials:Array.isArray(item.materials)&&item.materials.length?item.materials:(predicted.materials||['未知']),
+          fit:item.fit||predicted.fit||'未知',
+          length:item.length||predicted.length||'未知',
+          styles:Array.isArray(item.styles)&&item.styles.length?item.styles:[item.style||((predicted.styles||[])[0]||'简约')],
+          seasons:[item.season||((predicted.seasons||[])[0]||'春')],
+          occasions:[item.occasion||((predicted.occasions||[])[0]||'日常')],
+          warmth:Number(item.warmth)||Number(predicted.warmth)||3,
+          formality:Number(item.formality)||Number(predicted.formality)||2
+        };
+        return {
+          contract_version:'1.0',
+          id:String(item.id),
+          name:item.name||item.itemName||((item.season||'')+(item.category||'衣物')),
+          attributes,
+          images:{original_url:item.originalPhotoUrl||item.photoUrl||null,cutout_url:item.keptOriginal?null:(item.photoUrl||null)},
+          recognition
+        };
+      }
+      return {
+        id:String(item.id),
+        name:item.name||`${item.season||''}${item.category||'衣物'}`,
+        category:item.category||'上装',
+        subcategory:item.subcategory||null,
+        colors:Array.isArray(item.colors)?item.colors:[],
+        seasons:item.season?[item.season]:[],
+        styles:Array.isArray(item.styles)?item.styles:[],
+        occasions:item.occasion?[item.occasion]:[],
+        warmth:Number(item.warmth)||3,
+        formality:Number(item.formality)||3,
+        image_url:item.originalPhotoUrl||item.photoUrl||null,
+        cutout_url:item.keptOriginal?null:(item.photoUrl||null),
+        recognition:item.recognition||{source:item.source||'本地迁移'}
+      };
+    }
+    function trackEvent(eventName,metadata={}){
+      if(!window.WardrobeAPI) return Promise.resolve();
+      return WardrobeAPI.track(eventName,metadata,analyticsSessionId).catch(err=>console.warn('Analytics event failed.',err));
+    }
+    async function persistItemUpdate(item){
+      if(!window.WardrobeAPI) return;
+      try{
+        const payload=apiItemFromLocal(item);
+        const result=await WardrobeAPI.updateItem(item.id,payload);
+        const recognition=payload.contract_version==='1.0'?payload.recognition:null;
+        if(recognition&&recognition.attributes&&WardrobeAPI.recordCorrection){
+          const fields=['category','subcategory','colors','pattern','materials','fit','length','styles','seasons','occasions','warmth','formality'];
+          const changedFields=fields.filter(field=>JSON.stringify(recognition.attributes[field])!==JSON.stringify(payload.attributes[field]));
+          if(changedFields.length){
+            await WardrobeAPI.recordCorrection({
+              item_id:String(item.id),
+              request_id:recognition.request_id,
+              predicted:recognition.attributes,
+              corrected:payload.attributes,
+              changed_fields:changedFields
+            });
+          }
+        }
+        return result;
+      }catch(err){
+        console.warn('Item API update failed; kept local update.',err);
+      }
+    }
+    function persistItemDelete(id){
+      if(!window.WardrobeAPI) return Promise.resolve();
+      return WardrobeAPI.deleteItem(id)
+        .catch(err=>console.warn('Item API delete failed; kept local deletion.',err));
+    }
+    async function syncWardrobeWithApi(){
+      if(!window.WardrobeAPI) return;
+      try{
+        const result=await WardrobeAPI.listItems();
+        const allRemoteItems=Array.isArray(result.items)?result.items:[];
+        for(const item of allRemoteItems.filter(item=>!isRetainedWardrobeItem(item))){
+          await WardrobeAPI.deleteItem(item.id);
+        }
+        let remoteItems=allRemoteItems.filter(isRetainedWardrobeItem);
+        if(!localStorage.getItem(wardrobeApiMigrationKey)){
+          const remoteIds=new Set(remoteItems.map(item=>String(item.id)));
+          for(const localItem of state.items){
+            if(localItem.importId) continue;
+            if(remoteIds.has(String(localItem.id))) continue;
+            try{
+              const saved=await WardrobeAPI.createItem(apiItemFromLocal(localItem));
+              remoteItems.push(saved.item);
+              remoteIds.add(String(saved.item.id));
+            }catch(err){
+              if(err.status!==409) throw err;
+            }
+          }
+          localStorage.setItem(wardrobeApiMigrationKey,'1');
+          trackEvent('wardrobe_migrated',{item_count:remoteItems.length});
+        }
+        const imported=state.items.filter(item=>importQueue?.get(item.id)&&!importQueue.get(item.id).deleted);
+        const importedIds=new Set(imported.map(item=>String(item.id)));
+        const remote=remoteItems.filter(item=>!importedIds.has(String(item.id))&&!importQueue?.get(item.id)?.deleted).map(localItemFromApi);
+        if(remoteItems.length||imported.length) state.items=[...imported,...remote];
+        savePhotoWardrobe();
+        renderAllLabelSurfaces();
+        renderCanvas();
+        renderToday();
+      }catch(err){
+        console.warn('Wardrobe API unavailable; using local data.',err);
+      }
+    }
 
     const $ = s => document.querySelector(s);
     const $$ = s => Array.from(document.querySelectorAll(s));
@@ -423,13 +593,12 @@ body{display:block}
       const existed=labels.includes(label);
       if(!existed) labels.push(label);
       if(state.customLabelTarget==='category-filter') state.filter=label;
-      if(state.customLabelTarget==='category-form') state.form.category=label;
-      if(state.customLabelTarget==='occasion-form') state.form.occasion=label;
       if(state.customLabelTarget==='occasion-save') state.saveScene=label;
       if(state.customLabelTarget==='occasion-wardrobe') state.occasionFilter=label;
-      if(state.customLabelTarget==='category-edit'&&state.editDraft) state.editDraft.category=label;
+      if(state.customLabelTarget==='category-edit'&&state.editDraft){
+        Object.assign(state.editDraft,{category:label,subcategory:'',editorGroup:label});
+      }
       if(state.customLabelTarget==='occasion-edit'&&state.editDraft) state.editDraft.occasion=label;
-      syncCurrentUploadItemFromForm();
       hideLabelModal(); renderAllLabelSurfaces();
       toast(existed?'已切换到该标签':'已添加自定义标签');
     }
@@ -438,17 +607,16 @@ body{display:block}
       if(type==='category'){
         state.categoryLabels=state.categoryLabels.filter(x=>x!==label);
         if(state.filter===label) state.filter='全部';
-        if(state.form.category===label) state.form.category=defaultCategories[0];
-        if(state.editDraft&&state.editDraft.category===label) state.editDraft.category=defaultCategories[0];
+        if(state.editDraft&&state.editDraft.category===label){
+          Object.assign(state.editDraft,{category:defaultCategories[0],subcategory:'',editorGroup:defaultCategories[0]});
+        }
       }else{
         state.occasionLabels=state.occasionLabels.filter(x=>x!==label);
-        if(state.form.occasion===label) state.form.occasion=defaultOccasions[0];
         if(state.saveScene===label) state.saveScene='';
         if(state.lookScene===label) state.lookScene='全部';
         if(state.occasionFilter===label) state.occasionFilter='全部';
         if(state.editDraft&&state.editDraft.occasion===label) state.editDraft.occasion=defaultOccasions[0];
       }
-      syncCurrentUploadItemFromForm();
       renderAllLabelSurfaces();
       toast(`已删除“${label}”标签`);
     }
@@ -486,7 +654,6 @@ body{display:block}
     function renderAllLabelSurfaces(){
       renderTabs();
       renderWardrobe();
-      renderFormChips();
       renderSaveSceneChips();
       renderLookFilters();
       renderEditItemChips();
@@ -532,7 +699,7 @@ body{display:block}
           (state.season==='全部'||it.season===state.season)&&
           (state.occasionFilter==='全部'||it.occasion===state.occasionFilter);
         if(!matchesFilters) return false;
-        const searchable=[it.name,it.category,it.season,it.occasion].filter(Boolean).join(' ').toLowerCase();
+        const searchable=[it.name,it.category,it.season,it.occasion,...(it.colors||[]),...(it.styles||[])].filter(Boolean).join(' ').toLowerCase();
         return tokens.every(token=>searchable.includes(token));
       });
     }
@@ -572,10 +739,33 @@ body{display:block}
       renderWardrobe();
       $('#wardrobeSearchInput').focus();
     };
+    // The editor exposes primary categories; detailed recognition stays in the record.
+    const editCategoryGroups = GarmentTaxonomy.editorGroups();
+    function validEditSubcategory(category,subcategory){
+      return !!subcategory&&!!GarmentTaxonomy.fields.subcategory.by_category[category]?.includes(subcategory);
+    }
+    function editCategoryFor(item){
+      const subcategory=item.subcategory||item.attributes?.subcategory||'';
+      const match=Object.entries(editCategoryGroups).find(([,group])=>group.options.some(option=>option.category===item.category&&option.subcategory===subcategory));
+      return match?.[0]||item.category||'';
+    }
     function openItemEditor(id){
-      const item=state.items.find(x=>x.id===id); if(!item) return;
+      const item=state.items.find(x=>String(x.id)===String(id)); if(!item) return;
+      const job=importQueue?.get(id);
+      if(job&&!job.result&&(!job.originalPhotoUrl||job.phase!=='error')){toast('照片尚未处理完成，可先编辑其他衣物');return}
       state.editingItemId=id;
-      state.editDraft={name:item.name||`${item.season}${item.category}单品`,category:item.category,season:item.season,occasion:item.occasion};
+      state.editDraft={
+        name:item.name||`${item.season}${item.category}单品`,
+        category:item.category,
+        subcategory:item.subcategory||item.attributes?.subcategory||'',
+        editorGroup:editCategoryFor(item),
+        season:item.season,
+        occasion:item.occasion,
+        color:Array.isArray(item.colors)&&item.colors[0]||'灰色',
+        style:Array.isArray(item.styles)&&item.styles[0]||'简约',
+        warmth:Number(item.warmth)||3,
+        formality:Number(item.formality)||2
+      };
       $('#editItemName').textContent=state.editDraft.name;
       $('#editItemPreview').innerHTML=itemMediaHtml(item);
       renderEditItemChips();
@@ -592,6 +782,26 @@ body{display:block}
         if(value) state.editDraft.name=value;
       }
       host.textContent=state.editDraft.name||'未命名单品';
+    }
+    async function recheckEditingItemColor(){
+      const draft=state.editDraft;
+      const item=state.items.find(entry=>String(entry.id)===String(state.editingItemId));
+      const image=item&&(item.photoUrl||item.originalPhotoUrl);
+      if(!draft||!image){toast('这件衣物没有可取色的图片');return}
+      const button=$('#editColorRecheck');
+      button.disabled=true;button.textContent='正在取色…';
+      try{
+        const color=await analyzeDominantColor(image);
+        if(state.editDraft!==draft) return;
+        if(!color.total){toast('未能读到衣物颜色，请直接选择色标');return}
+        draft.color=color.value;
+        renderEditItemChips();
+        toast('已重新取色，确认后点击保存修改');
+      }catch(error){
+        if(state.editDraft===draft) toast('暂时无法读取图片，请直接选择色标');
+      }finally{
+        button.disabled=false;button.textContent='重新取色';
+      }
     }
     function startEditItemName(){
       const host=$('#editItemName');
@@ -619,14 +829,33 @@ body{display:block}
       const categoryBox=$('#editItemCategory');
       const seasonBox=$('#editItemSeason');
       const occasionBox=$('#editItemOccasion');
-      categoryBox.innerHTML=categoryList(false).map(x=>managedChip(x,'category',draft.category,{small:true})).join('')+addChip('category',true);
-      seasonBox.innerHTML=seasons.slice(1).map(x=>`<button class="chip small ${draft.season===x?'active':''}" data-value="${x}">${x}</button>`).join('');
+      const colorBox=$('#editItemColor');
+      const styleBox=$('#editItemStyle');
+      const warmthBox=$('#editItemWarmth');
+      const formalityBox=$('#editItemFormality');
+      const customCategories=categoryList(false).filter(x=>!defaultCategories.includes(x)&&!Object.hasOwn(editCategoryGroups,x));
+      categoryBox.innerHTML=Object.keys(editCategoryGroups).map(group=>`<button class="chip small ${draft.editorGroup===group?'active':''}" data-editor-group="${escapeHtml(group)}" aria-pressed="${draft.editorGroup===group}">${escapeHtml(group)}</button>`).join('')
+        +customCategories.map(x=>managedChip(x,'category',draft.editorGroup,{small:true})).join('')+addChip('category',true);
+      seasonBox.innerHTML=confirmationSeasons.map(x=>`<button class="chip small ${draft.season===x?'active':''}" data-value="${x}">${x}</button>`).join('');
       occasionBox.innerHTML=occasionList().map(x=>managedChip(x,'occasion',draft.occasion,{small:true})).join('')+addChip('occasion',true);
+      colorBox.innerHTML=clothingColors.map(x=>`<button type="button" class="chip small edit-color-option ${draft.color===x?'active':''}" data-value="${x}" aria-label="${x}" aria-pressed="${draft.color===x}"><span class="edit-color-swatch" style="--swatch:${clothingColorSwatches[x]}" aria-hidden="true"></span><span>${x}</span></button>`).join('');
+      styleBox.innerHTML=clothingStyles.map(x=>`<button class="chip small ${draft.style===x?'active':''}" data-value="${x}">${x}</button>`).join('');
+      warmthBox.innerHTML=GarmentTaxonomy.values('warmth').map(x=>`<button class="scale-chip ${draft.warmth===x?'active':''}" data-value="${x}">${x}</button>`).join('');
+      formalityBox.innerHTML=GarmentTaxonomy.values('formality').map(x=>`<button class="scale-chip ${draft.formality===x?'active':''}" data-value="${x}">${x}</button>`).join('');
       categoryBox.onclick=e=>{
         const managed=handleManagedChipClick(e); if(managed.handled) return;
         const btn=managed.btn; if(!btn) return;
         if(btn.dataset.action==='add-label'){openLabelModal('category','category-edit');return}
-        if(btn.dataset.labelType==='category'){draft.category=btn.dataset.value;renderEditItemChips();}
+        const groupName=btn.dataset.editorGroup||btn.dataset.value;
+        if(groupName&&draft.editorGroup!==groupName){
+          const category=editCategoryGroups[groupName]?.category||groupName;
+          const original=state.items.find(item=>String(item.id)===String(state.editingItemId));
+          const previous=original&&(original.subcategory||original.attributes?.subcategory||'');
+          const subcategory=original?.category===category&&validEditSubcategory(category,previous)
+            ? previous : defaultSubcategory[category]||'';
+          Object.assign(draft,{editorGroup:groupName,category,subcategory});
+          renderEditItemChips();
+        }
       };
       seasonBox.onclick=e=>{
         const btn=e.target.closest('button'); if(!btn) return;
@@ -638,11 +867,21 @@ body{display:block}
         if(btn.dataset.action==='add-label'){openLabelModal('occasion','occasion-edit');return}
         if(btn.dataset.labelType==='occasion'){draft.occasion=btn.dataset.value;renderEditItemChips();}
       };
+      colorBox.onclick=e=>{const btn=e.target.closest('button');if(btn){draft.color=btn.dataset.value;renderEditItemChips()}};
+      styleBox.onclick=e=>{const btn=e.target.closest('button');if(btn){draft.style=btn.dataset.value;renderEditItemChips()}};
+      warmthBox.onclick=e=>{const btn=e.target.closest('button');if(btn){draft.warmth=Number(btn.dataset.value);renderEditItemChips()}};
+      formalityBox.onclick=e=>{const btn=e.target.closest('button');if(btn){draft.formality=Number(btn.dataset.value);renderEditItemChips()}};
       bindLongPress(categoryBox);
       bindLongPress(occasionBox);
     }
     function addItemCardToCanvas(card){
-      addToCanvas(+card.dataset.id);
+      const item=state.items.find(item=>String(item.id)===card.dataset.id);
+      if(!item||!isWardrobeItemReady(item)){
+        if(importQueue?.get(card.dataset.id)?.phase==='error') openItemEditor(card.dataset.id);
+        else toast('衣物还在处理中，可先使用其他衣物');
+        return;
+      }
+      addToCanvas(card.dataset.id);
       card.classList.add('added');
       setTimeout(()=>card.classList.remove('added'),420);
       setCanvasOpen(true);
@@ -653,13 +892,14 @@ body{display:block}
       const clear=()=>{if(timer) clearTimeout(timer);timer=null;card.classList.remove('pressing')};
       card.oncontextmenu=e=>e.preventDefault();
       card.onpointerdown=e=>{
+        if(e.target.closest('button')) return;
         if(e.button!==undefined&&e.button!==0) return;
         startX=e.clientX; startY=e.clientY; moved=false; longPressed=false;
         card.classList.add('pressing');
         timer=setTimeout(()=>{
           longPressed=true;
           clear();
-          openItemEditor(+card.dataset.id);
+          openItemEditor(card.dataset.id);
           if(navigator.vibrate) navigator.vibrate(25);
         },600);
       };
@@ -734,12 +974,16 @@ body{display:block}
     function deleteWardrobeItem(id){
       const item=state.items.find(x=>String(x.id)===String(id));
       if(!item) return;
+      if(item.importId) importQueue?.remove(id);
       state.items=state.items.filter(x=>String(x.id)!==String(id));
       state.canvas=state.canvas.filter(x=>String(x.id)!==String(id));
       state.looks=state.looks
         .map(look=>({...look,items:(look.items||[]).filter(x=>String(x.id)!==String(id))}))
         .filter(look=>(look.items||[]).length);
       savePhotoWardrobe();
+      if(!item.importId) persistItemDelete(id);
+      renderImportSummary();
+      trackEvent('wardrobe_item_deleted',{item_id:String(id),category:item.category||''});
       renderTabs();renderWardrobe();renderCanvas();renderLookFilters();renderLooks();renderDiscover();renderToday();
       toast(`已删除${item.name?`“${item.name}”`:''}`);
     }
@@ -755,24 +999,14 @@ body{display:block}
     });
     function renderWardrobe(){
       const box=$('#wardrobeContent'); const arr=filteredItems();
-      const summary=$('#filterSummary');
-      if(summary){
-        const typeText = state.filter==='全部' ? '全部品类' : state.filter;
-        const seasonText = state.season==='全部' ? '全部季节' : state.season;
-        const occasionText = state.occasionFilter==='全部' ? '全部场景' : state.occasionFilter;
-        const searchText=state.wardrobeSearch.trim();
-        summary.innerHTML = searchText
-          ? `搜索“<b>${escapeHtml(searchText)}</b>”，共 ${arr.length} 件`
-          : `当前：<b>${typeText}</b> / <b>${seasonText}</b> / <b>${occasionText}</b>，共 ${arr.length} 件`;
-      }
+      updateWardrobeSummary();
       if(!arr.length){box.innerHTML=`<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 6l4-3 4 3 3 2-2 4-2-1v8H9v-8l-2 1-2-4 3-2z"/></svg><p>${state.wardrobeSearch?'没有找到相关衣服':'没有找到符合当前筛选的衣服'}</p><div class="hint">${state.wardrobeSearch?'试试更短的名称，或搜索品类、季节、场景':'品类、季节和场景可以组合筛选<br>例如：夏 + 上装 + 日常'}</div></div>`;return;}
-      box.innerHTML=`<div class="grid">${arr.map(it=>`<div class="swipe-row" data-item-id="${escapeHtml(String(it.id))}"><button class="swipe-delete" type="button">删除</button><div class="swipe-content"><article class="item-card" data-id="${it.id}"><span class="tag-dot"></span><div class="item-img">${itemMediaHtml(it)}</div><div class="item-name">${escapeHtml(it.name||`${it.season}${it.category}单品`)}</div><div class="item-meta">${it.category} · ${it.season} · ${it.occasion}</div></article></div></div>`).join('')}</div>`;
-      $$('.item-card').forEach(bindItemCardInteraction);
-      box.querySelectorAll('.swipe-row').forEach(row=>bindSwipeRow(row,()=>deleteWardrobeItem(row.dataset.itemId)));
+      box.innerHTML=`<div class="grid">${arr.map(wardrobeItemRowHtml).join('')}</div>`;
+      bindWardrobeRows(box);
     }
 
     function addToCanvas(id){
-      const it=state.items.find(x=>x.id===id); if(!it)return;
+      const it=state.items.find(x=>String(x.id)===String(id)); if(!it||!isWardrobeItemReady(it))return;
       const positions=[[84,98],[70,172],[134,168],[54,240],[150,240],[148,98],[42,116]];
       const p=positions[state.canvas.length%positions.length];
       state.canvas.push({...it,cid:Date.now()+Math.random(),x:p[0],y:p[1],scale:1});
@@ -1099,190 +1333,8 @@ body{display:block}
       toast('发现已刷新');
     }
 
-    function resetUploadForm(){
-      state.uploadQueue=[]; state.uploadIndex=0; state.uploadProcessing=false;
-      state.form.itemName=''; state.form.nameManual=false; state.form.photoUrl=''; state.form.originalPhotoUrl=''; state.form.cutoutUrl=''; state.form.cutoutStatus='idle'; state.form.cutoutError=''; state.form.photoName=''; state.form.source=''; state.form.recognizeStatus='idle'; state.form.recognizeSource=''; state.form.recognizeScore=0;
-      const addBtn=$('#addItem'); if(addBtn) addBtn.disabled=false;
-      renderUploadItemName();
-      renderUploadPreview();
-    }
-    function generateItemName(category=state.form.category,season=state.form.season){
-      const categoryNames={上装:'上装',下装:'下装',裙子:'裙装',鞋帽:'鞋帽',包包:'包包'};
-      return `${season||''}季${categoryNames[category]||category||'单品'}`;
-    }
-    function renderUploadItemName(){
-      const input=$('#uploadItemName');
-      if(!input) return;
-      if(input.value!==state.form.itemName) input.value=state.form.itemName||'';
-      input.placeholder=state.form.recognizeStatus==='processing'?'识别完成后自动生成名称':'输入单品名称';
-    }
-    function currentUploadItem(){
-      return state.uploadQueue[state.uploadIndex]||null;
-    }
-    function currentUploadScroll(){
-      const strip=$('#uploadPreview .upload-strip');
-      return strip?strip.scrollLeft:0;
-    }
-    function removeUploadItem(index){
-      if(index<0||index>=state.uploadQueue.length) return;
-      state.uploadQueue.splice(index,1);
-      if(state.uploadIndex>=state.uploadQueue.length) state.uploadIndex=Math.max(0,state.uploadQueue.length-1);
-      syncFormFromUploadItem();
-      renderFormChips();
-      renderUploadPreview();
-    }
-    function syncFormFromUploadItem(item=currentUploadItem()){
-      if(!item) return;
-      Object.assign(state.form,{
-        category:item.category,
-        season:item.season,
-        occasion:item.occasion,
-        photoUrl:item.photoUrl,
-        originalPhotoUrl:item.originalPhotoUrl,
-        cutoutUrl:item.cutoutUrl,
-        cutoutStatus:item.status==='processing'?'processing':(item.status==='error'?'error':(item.photoUrl?'done':'idle')),
-        cutoutError:item.error||'',
-        itemName:item.itemName||generateItemName(item.category,item.season),
-        nameManual:!!item.nameManual,
-        photoName:item.photoName,
-        source:item.source,
-        recognizeStatus:item.recognizeStatus||'idle',
-        recognizeSource:item.recognizeSource||'',
-        recognizeScore:item.recognizeScore||0
-      });
-      renderUploadItemName();
-    }
-    function syncCurrentUploadItemFromForm(){
-      const item=currentUploadItem(); if(!item) return;
-      Object.assign(item,{
-        category:state.form.category,
-        season:state.form.season,
-        occasion:state.form.occasion,
-        photoUrl:state.form.photoUrl,
-        cutoutUrl:state.form.cutoutUrl,
-        itemName:state.form.itemName,
-        nameManual:state.form.nameManual,
-        error:state.form.cutoutError,
-        recognizeStatus:state.form.recognizeStatus,
-        recognizeSource:state.form.recognizeSource,
-        recognizeScore:state.form.recognizeScore
-      });
-    }
-    function setCurrentUploadField(key,value){
-      state.form[key]=value;
-      const item=currentUploadItem();
-      if(item) item[key]=value;
-      if((key==='category'||key==='season')&&!state.form.nameManual){
-        state.form.itemName=generateItemName(state.form.category,state.form.season);
-        if(item) item.itemName=state.form.itemName;
-        renderUploadItemName();
-      }
-      renderFormChips();
-      renderUploadPreview();
-    }
-    $('#uploadItemName').oninput=e=>{
-      state.form.itemName=e.target.value;
-      state.form.nameManual=true;
-      const item=currentUploadItem();
-      if(item){item.itemName=state.form.itemName;item.nameManual=true}
-    };
-    $('#generateItemName').onclick=()=>{
-      state.form.itemName=generateItemName();
-      state.form.nameManual=false;
-      const item=currentUploadItem();
-      if(item){item.itemName=state.form.itemName;item.nameManual=false}
-      renderUploadItemName();
-      toast('已重新生成单品名称');
-    };
-    function uploadStatusText(item){
-      if(!item) return '';
-      if(item.status==='added') return '已加入';
-      if(item.status==='done') return '已完成';
-      if(item.status==='error') return '失败';
-      if(item.status==='processing') return '抠图中';
-      return '排队中';
-    }
-    function renderUploadPreview(){
-      const box=$('#uploadPreview'); const note=$('#recognizeNote'); const actions=$('#cutoutActions'); const addBtn=$('#addItem');
-      if(!box||!note||!actions) return;
-      actions.innerHTML='';
-      const queue=state.uploadQueue||[];
-      if(queue.length){
-        const scrollLeft=currentUploadScroll();
-        syncFormFromUploadItem();
-        box.innerHTML=`<div class="upload-strip">${queue.map((item,i)=>{
-          const src=item.photoUrl||item.originalPhotoUrl||'';
-          return `<button class="upload-thumb ${i===state.uploadIndex?'active':''}" type="button" data-upload-index="${i}" title="${escapeHtml(item.photoName||'衣服照片')}">
-            <span class="upload-remove" data-remove-upload="${i}" aria-label="删除这张照片">×</span>
-            ${src?`<img src="${src}" alt="${escapeHtml(item.photoName||'衣服照片')}" />`:'<div class="upload-empty">等待图片</div>'}
-            <span class="upload-badge">${i+1}</span><span class="upload-status ${item.status}">${uploadStatusText(item)}</span>
-          </button>`;
-        }).join('')}</div>`;
-        const strip=$('#uploadPreview .upload-strip'); if(strip) strip.scrollLeft=scrollLeft;
-        $$('[data-remove-upload]').forEach(btn=>btn.onclick=e=>{
-          e.stopPropagation();
-          removeUploadItem(Number(btn.dataset.removeUpload));
-        });
-        $$('.upload-thumb').forEach(btn=>btn.onclick=()=>{
-          state.uploadIndex=Number(btn.dataset.uploadIndex)||0;
-          syncFormFromUploadItem();
-          renderFormChips();
-          setTimeout(()=>document.querySelector(`.upload-thumb[data-upload-index="${state.uploadIndex}"]`)?.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}),0);
-        });
-        const item=currentUploadItem();
-        if(addBtn) addBtn.disabled=!queue.some(x=>x.status==='done'&&x.photoUrl);
-        if(item){
-          if(item.status==='processing') note.textContent=`正在处理第 ${state.uploadIndex+1} / ${queue.length} 张，完成后可检查标签。`;
-          else if(item.status==='error') note.textContent=item.error||'这张抠图失败，可以重新抠图。';
-          else if(item.photoUrl){
-            const from=item.recognizeSource||'本地 AI';
-            const score=item.recognizeScore?`，置信度 ${Math.round(item.recognizeScore*100)}%`:'';
-            note.textContent=`第 ${state.uploadIndex+1} / ${queue.length} 张，已通过${from}识别为「${item.season} / ${item.category}」${score}。`;
-          }else note.textContent=`第 ${state.uploadIndex+1} / ${queue.length} 张等待处理。`;
-          if(item.status==='error'||item.status==='done') actions.innerHTML='<button class="retry-cutout" id="retryCutout" type="button">重新抠图</button>';
-          const retry=$('#retryCutout'); if(retry) retry.onclick=retryCutout;
-        }
-        return;
-      }
-      if(addBtn) addBtn.disabled=state.form.cutoutStatus==='processing';
-      if(state.form.cutoutStatus==='processing'){
-        box.innerHTML='<div class="cutout-loading"><span class="cutout-spinner"></span><span>AI 正在识别并抠图...</span></div>';
-        note.textContent='首次使用会下载本地 AI 模型，稍等片刻后会自动显示结果';
-        return;
-      }
-      if(state.form.cutoutStatus==='error'){
-        box.innerHTML='<div class="upload-empty">抠图失败<br>请重新抠图或换一张照片</div>';
-        note.textContent=state.form.cutoutError||'本地 AI 抠图失败';
-        actions.innerHTML='<button class="retry-cutout" id="retryCutout" type="button">重新抠图</button>';
-        $('#retryCutout').onclick=retryCutout;
-        return;
-      }
-      if(state.form.photoUrl){
-        box.innerHTML=`<img src="${state.form.photoUrl}" alt="抠图后的衣服照片" />`;
-        const from=state.form.recognizeSource||'本地 AI';
-        const score=state.form.recognizeScore?`，置信度 ${Math.round(state.form.recognizeScore*100)}%`:'';
-        note.textContent=`已通过${from}识别为「${state.form.season} / ${state.form.category}」${score}，可手动修改下方标签。`;
-        actions.innerHTML='<button class="retry-cutout" id="retryCutout" type="button">重新抠图</button>';
-        $('#retryCutout').onclick=retryCutout;
-      }else{
-        box.innerHTML='<div class="upload-empty">上传或拍照后显示照片</div>';
-        note.textContent='';
-      }
-    }
-    function inferFromFileName(name){
-      const n=String(name||'').toLowerCase();
-      let category=state.form.category, season=state.form.season;
-      let categoryMatched=false, seasonMatched=false;
-      if(/裙|dress|skirt/.test(n)){category='裙子';categoryMatched=true}
-      else if(/鞋|帽|shoe|boot|hat|cap/.test(n)){category='鞋帽';categoryMatched=true}
-      else if(/包|bag/.test(n)){category='包包';categoryMatched=true}
-      else if(/裤|pants|jeans|trouser/.test(n)){category='下装';categoryMatched=true}
-      else if(/衣|上装|shirt|top|tee|coat|jacket|sweater|hoodie|blouse/.test(n)){category='上装';categoryMatched=true}
-      if(/春|spring/.test(n)){season='春';seasonMatched=true}
-      else if(/夏|summer|盛夏/.test(n)){season='夏';seasonMatched=true}
-      else if(/秋|autumn|fall/.test(n)){season='秋';seasonMatched=true}
-      else if(/冬|winter/.test(n)){season='冬';seasonMatched=true}
-      return {category,season,categoryMatched,seasonMatched};
+    function generateItemName(recognition={}){
+      return ClothingAttributes.generateItemName(recognition);
     }
     function fileToDataUrl(file){
       return new Promise((resolve,reject)=>{
@@ -1359,6 +1411,50 @@ body{display:block}
         if(objectUrl) URL.revokeObjectURL(objectUrl);
       }
     }
+    function backgroundRemovalWorkerMain(){
+      let removePromise=null;
+      self.onmessage=async event=>{
+        const {image,config}=event.data;
+        try{
+          if(!removePromise){
+            removePromise=import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm')
+              .then(mod=>mod.default||mod.removeBackground)
+              .catch(error=>{removePromise=null;throw error});
+          }
+          const remove=await removePromise;
+          const blob=await remove(image,{
+            ...config,device:'cpu',proxyToWorker:false,
+            progress:(key,current,total)=>self.postMessage({type:'progress',key,current,total})
+          });
+          self.postMessage({type:'result',blob});
+        }catch(error){self.postMessage({type:'error',message:error.message||String(error)})}
+      };
+    }
+    let bgRemoverPromise=null;
+    async function getBackgroundRemover(){
+      if(!bgRemoverPromise){
+        const sourceUrl=URL.createObjectURL(new Blob([`(${backgroundRemovalWorkerMain.toString()})();`],{type:'text/javascript'}));
+        let worker;
+        try{worker=new Worker(sourceUrl)}
+        finally{URL.revokeObjectURL(sourceUrl)}
+        bgRemoverPromise=Promise.resolve((image,config={},onProgress)=>new Promise((resolve,reject)=>{
+          const fail=message=>{clearTimeout(timer);worker.terminate();bgRemoverPromise=null;reject(new Error(message))};
+          const timer=setTimeout(()=>fail('抠图超时，请检查网络后重试'),6*60*1000);
+          worker.onmessage=event=>{
+            const message=event.data;
+            if(message.type==='progress'){onProgress?.(message);return}
+            clearTimeout(timer);
+            if(message.type==='result') resolve(message.blob);
+            else fail('抠图未完成：'+message.message);
+          };
+          worker.onerror=()=>fail('抠图程序加载失败，请检查网络后重试');
+          worker.onmessageerror=()=>fail('无法读取抠图结果，请重试');
+          worker.postMessage({image,config});
+        }));
+      }
+      try{return await bgRemoverPromise}
+      catch(err){bgRemoverPromise=null;throw err}
+    }
     async function standardizeCutoutImage(dataUrl,{size=384,paddingRatio=.1,alphaThreshold=8}={}){
       const img=await loadImage(dataUrl);
       const sourceCanvas=document.createElement('canvas');
@@ -1381,7 +1477,7 @@ body{display:block}
           }
         }
       }
-      if(maxX<0||maxY<0) return dataUrl;
+      if(maxX<0||maxY<0) throw new Error('未找到可用的衣物主体，请重试或保留原图。');
       const cropW=maxX-minX+1;
       const cropH=maxY-minY+1;
       const targetCanvas=document.createElement('canvas');
@@ -1400,281 +1496,248 @@ body{display:block}
       targetCtx.drawImage(sourceCanvas,minX,minY,cropW,cropH,dx,dy,drawW,drawH);
       return targetCanvas.toDataURL('image/png');
     }
-    const clothingCategoryPrompts=[
-      {label:'a photo of a shirt, blouse, sweater, jacket, or coat',category:'上装'},
-      {label:'a photo of pants, jeans, shorts, or trousers',category:'下装'},
-      {label:'a photo of a skirt or dress',category:'裙子'},
-      {label:'a photo of shoes, boots, sneakers, or a hat',category:'鞋帽'},
-      {label:'a photo of a handbag, backpack, purse, or tote bag',category:'包包'}
-    ];
-    const clothingSeasonPrompts=[
-      {label:'light spring clothing',season:'春'},
-      {label:'thin summer clothing',season:'夏'},
-      {label:'autumn clothing for cool weather',season:'秋'},
-      {label:'thick winter clothing for cold weather',season:'冬'}
-    ];
-    let bgRemoverPromise=null;
-    let clothingClassifierPromise=null;
-    async function getBackgroundRemover(){
-      if(!bgRemoverPromise){
-        bgRemoverPromise=import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm').then(mod=>mod.default||mod.removeBackground);
-      }
-      try{return await bgRemoverPromise}
-      catch(err){bgRemoverPromise=null;throw err}
+    async function analyzeDominantColor(dataUrl){
+      if(!dataUrl) return {value:'灰色',score:.2,total:0};
+      const img=await loadImage(dataUrl);
+      const canvas=document.createElement('canvas');canvas.width=128;canvas.height=128;
+      const ctx=canvas.getContext('2d',{willReadFrequently:true});
+      ctx.drawImage(img,0,0,128,128);
+      return ClothingAttributes.analyzeColor(ctx.getImageData(0,0,128,128).data,{width:128,height:128});
     }
-    async function getClothingClassifier(){
-      if(!clothingClassifierPromise){
-        clothingClassifierPromise=import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1/+esm')
-          .then(({pipeline})=>pipeline('zero-shot-image-classification','Xenova/clip-vit-base-patch32',{dtype:'q8'}));
-      }
-      try{return await clothingClassifierPromise}
-      catch(err){clothingClassifierPromise=null;throw err}
+    async function imageForRecognition(dataUrl){
+      const img=await loadImage(dataUrl);
+      const canvas=document.createElement('canvas');
+      canvas.width=img.naturalWidth||img.width;canvas.height=img.naturalHeight||img.height;
+      const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.drawImage(img,0,0);
+      return canvas.toDataURL('image/jpeg',.94);
     }
-    function pickTopPrediction(predictions, prompts, key){
-      const list=Array.isArray(predictions)?predictions:[];
-      const top=list[0];
-      if(!top) return null;
-      const matched=prompts.find(x=>x.label===top.label);
-      if(!matched) return null;
-      return {value:matched[key],score:Number(top.score)||0,label:top.label};
+    function pickTopPrediction(predictions,prompts,key){
+      return ClothingAttributes.rankPredictions(predictions,prompts,key);
     }
-    async function recognizeClothing(file,originalPhotoUrl='',photoName='',fallback={}){
-      const byName=inferFromFileName((file&&file.name)||photoName||state.form.photoName);
-      const result={
-        category:byName.categoryMatched?byName.category:(fallback.category||byName.category),
-        season:byName.seasonMatched?byName.season:(fallback.season||byName.season),
-        source:byName.categoryMatched||byName.seasonMatched?'文件名':(isMobilePerformanceMode?'快速标签':'本地 AI'),
-        score:byName.categoryMatched ? 0.72 : 0
+    const clothingCategoryPromptsV1 = GarmentTaxonomy.prompts('category','category');
+    const clothingSubcategoryPrompts = Object.fromEntries(defaultCategories.map(category=>[category,GarmentTaxonomy.prompts('subcategory','subcategory',category)]));
+    const clothingPatternPrompts = GarmentTaxonomy.prompts('pattern','pattern');
+    const clothingMaterialPrompts = GarmentTaxonomy.prompts('materials','material');
+    const clothingFitPrompts = GarmentTaxonomy.prompts('fit','fit');
+    const clothingLengthPrompts = GarmentTaxonomy.prompts('length','length');
+    const clothingSeasonPrompts = GarmentTaxonomy.prompts('seasons','season');
+    const clothingWarmthPrompts = GarmentTaxonomy.prompts('warmth','warmth');
+    const clothingStylePrompts = GarmentTaxonomy.prompts('styles','style');
+    const clothingFormalityPrompts = GarmentTaxonomy.prompts('formality','formality');
+    const clothingOccasionPrompts = GarmentTaxonomy.prompts('occasions','occasion');
+    const clothingColorPrompts = GarmentTaxonomy.prompts('colors','color');
+    const footwearOccasionPrompts = GarmentTaxonomy.prompts('occasions','occasion',null,'footwear');
+    const footwearSeasonPrompts = GarmentTaxonomy.prompts('seasons','season',null,'footwear');
+    const footwearColorPrompts = GarmentTaxonomy.prompts('colors','color',null,'footwear');
+    function allClothingPromptLabels(){
+      const subcategories=Object.values(clothingSubcategoryPrompts).flat();
+      return uniq([
+        ...clothingCategoryPromptsV1,...subcategories,...clothingPatternPrompts,
+        ...clothingMaterialPrompts,...clothingFitPrompts,...clothingLengthPrompts,
+        ...clothingSeasonPrompts,...clothingWarmthPrompts,...clothingStylePrompts,...clothingFormalityPrompts,
+        ...clothingOccasionPrompts,...footwearOccasionPrompts,...footwearSeasonPrompts,
+        ...clothingColorPrompts,...footwearColorPrompts
+      ].map(item=>item.label));
+    }
+    function recognitionProgressDetails(source,message={}){
+      const stage=message.stage||(message.type==='ready'?'load':'preparing');
+      const rawPercent=Math.max(0,Math.min(100,Number(message.percent)||0));
+      const previous=Math.max(0,Number(source&&source.recognizeProgress)||0);
+      let modelProgress=Math.max(0,Number(source&&source.recognizeModelProgress)||0);
+      let mapped=previous;
+      if(stage==='preparing') mapped=Math.max(previous,2);
+      else if(stage==='boot') mapped=Math.max(previous,5);
+      else if(stage==='download'){
+        modelProgress=Math.max(modelProgress,rawPercent);
+        mapped=Math.max(previous,8+modelProgress*.65);
+      }else if(stage==='load') mapped=Math.max(previous,76);
+      else if(stage==='retrying') mapped=Math.max(previous,10);
+      else if(stage==='inference') mapped=Math.max(previous,82+rawPercent*.12);
+      else if(stage==='validating') mapped=Math.max(previous,96);
+      const messages={
+        preparing:'正在准备衣物图片',
+        boot:'正在启动手机端 AI',
+        load:'正在从浏览器缓存加载模型',
+        retrying:'首次识别失败，正在自动重试',
+        inference:'正在识别衣物信息',
+        validating:'正在校验结构化识别结果'
       };
-      if(isMobilePerformanceMode) return result;
-      try{
-        const classifier=await getClothingClassifier();
-        const image=originalPhotoUrl||state.form.originalPhotoUrl||await fileToDataUrl(file);
-        const categoryPredictions=await classifier(image, clothingCategoryPrompts.map(x=>x.label));
-        const categoryTop=pickTopPrediction(categoryPredictions,clothingCategoryPrompts,'category');
-        if(categoryTop&&categoryTop.score>.22){
-          result.category=categoryTop.value;
-          result.score=categoryTop.score;
-          result.source='本地 AI';
+      return {
+        stage,
+        progress:Math.min(99,Math.round(mapped)),
+        modelProgress:Math.round(modelProgress),
+        message:stage==='download'?`首次使用：正在下载本地 AI 模型 ${Math.round(modelProgress)}%`:(messages[stage]||'手机端 AI 正在处理')
+      };
+    }
+    function recognitionFailureMessage(error){
+      const code=String(error&&error.code||'');
+      if(code==='worker_not_supported') return '当前手机浏览器不支持本地 AI Worker，请改用手动填写。';
+      if(code==='clip_worker_timeout') return '本地 AI 识别超时，请重试；仍失败可手动填写。';
+      if(code==='clip_worker_cancelled') return '本次识别已取消。';
+      return '手机端 AI 识别失败，请检查网络和设备空间后重试，或改为手动填写。';
+    }
+    async function classifyAllPromptsWithRetry(image,requestId,onProgress){
+      if(!window.ClipVision) throw new Error('当前浏览器无法启动本地 AI');
+      let lastError=null;
+      for(let attempt=0;attempt<2;attempt++){
+        try{
+          if(attempt&&onProgress) onProgress({stage:'retrying',percent:0,request_id:requestId});
+          return await ClipVision.recognize({
+            image,
+            labels:allClothingPromptLabels(),
+            requestId,
+            onProgress
+          });
+        }catch(err){
+          lastError=err;
+          if(err.code==='clip_worker_cancelled') throw err;
+          if(attempt===0) ClipVision.reset('本地 AI 首次识别失败，正在重试');
         }
-        const seasonPredictions=await classifier(image, clothingSeasonPrompts.map(x=>x.label));
-        const seasonTop=pickTopPrediction(seasonPredictions,clothingSeasonPrompts,'season');
-        if(seasonTop&&seasonTop.score>.25){
-          result.season=seasonTop.value;
-          if(!result.score) result.score=seasonTop.score;
-          result.source='本地 AI';
-        }
-      }catch(err){
-        console.warn('AI clothing recognition failed, using filename/manual fallback.',err);
-        if(result.source==='本地 AI') result.source='默认标签';
       }
+      throw lastError||new Error('本地 AI 识别失败');
+    }
+    async function recognizeClothingV1(file,originalPhotoUrl='',photoName='',fallback={},onProgress=null){
+      const requestId='recognition_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);
+      const report=payload=>{if(onProgress)onProgress({request_id:requestId,...payload})};
+      report({stage:'preparing',percent:0});
+      const image=originalPhotoUrl||(file?await fileToDataUrl(file):'');
+      if(!image) throw new Error('没有可识别的衣物图片');
+      const inferenceImage=await imageForRecognition(image);
+      const workerResult=await classifyAllPromptsWithRetry(inferenceImage,requestId,message=>report(message));
+      const predictions=workerResult.predictions||[];
+      const categoryTop=pickTopPrediction(predictions,clothingCategoryPromptsV1,'category');
+      if(!categoryTop||!defaultCategories.includes(categoryTop.value)) throw new Error('未能确定衣物品类');
+      const category=categoryTop.value;
+      const subcategoryTop=pickTopPrediction(predictions,clothingSubcategoryPrompts[category]||clothingSubcategoryPrompts.上装,'subcategory');
+      const patternTop=pickTopPrediction(predictions,clothingPatternPrompts,'pattern');
+      const materialTop=pickTopPrediction(predictions,clothingMaterialPrompts,'material');
+      const fitTop=pickTopPrediction(predictions,clothingFitPrompts,'fit');
+      const lengthTop=pickTopPrediction(predictions,clothingLengthPrompts,'length');
+      const subcategory=subcategoryTop&&subcategoryTop.value||defaultSubcategory[category]||'其他上装';
+      const footwear=category==='鞋帽'&&subcategory!=='帽子';
+      const seasonTop=pickTopPrediction(predictions,footwear?footwearSeasonPrompts:clothingSeasonPrompts,'season');
+      const warmthTop=pickTopPrediction(predictions,clothingWarmthPrompts,'warmth');
+      const styleTop=pickTopPrediction(predictions,clothingStylePrompts,'style');
+      const formalityTop=pickTopPrediction(predictions,clothingFormalityPrompts,'formality');
+      const occasionTop=pickTopPrediction(predictions,footwear?footwearOccasionPrompts:clothingOccasionPrompts,'occasion');
+      const context=ClothingAttributes.resolveContext({category,subcategory,seasonTop,occasionTop});
+      const colorEvidence=await analyzeDominantColor(image);
+      const colorTop=ClothingAttributes.rankColor(predictions,footwear?footwearColorPrompts:clothingColorPrompts,colorEvidence);
+      const color=ClothingAttributes.resolveColor(colorEvidence,colorTop);
+      const season=context.season;
+      const result={
+        requestId,
+        category,
+        subcategory,
+        color:color.value,
+        pattern:patternTop&&patternTop.value||'未知',
+        materials:[materialTop&&materialTop.value||'未知'],
+        fit:fitTop&&fitTop.value||'未知',
+        length:lengthTop&&lengthTop.value||'未知',
+        season,
+        style:styleTop&&styleTop.value||fallback.style||'简约',
+        occasion:context.occasion,
+        warmth:Number(warmthTop&&warmthTop.value)||Number(fallback.warmth)||({夏:1,春:2,秋:3,冬:5}[season]||3),
+        formality:Number(formalityTop&&formalityTop.value)||Number(fallback.formality)||2,
+        source:'Marqo-FashionCLIP',
+        model:workerResult.model||{provider:'transformers.js',registry:'huggingface',name:'Marqo/marqo-fashionCLIP',version:'3.8.1-marqo-q8-worker-v1',execution:'mobile-worker'},
+        fieldScores:{
+          category:categoryTop&&categoryTop.score||.05,
+          color:color.score,
+          subcategory:subcategoryTop&&subcategoryTop.score||.05,
+          pattern:patternTop&&patternTop.score||.05,
+          material:materialTop&&materialTop.score||.05,
+          fit:fitTop&&fitTop.score||.05,
+          length:lengthTop&&lengthTop.score||.05,
+          season:context.seasonScore,
+          style:styleTop&&styleTop.score||.05,
+          occasion:context.occasionScore,
+          warmth:warmthTop&&warmthTop.score||.05,
+          formality:formalityTop&&formalityTop.score||.05
+        }
+      };
+      const scores=Object.values(result.fieldScores).filter(Number);
+      result.score=scores.length?scores.reduce((sum,value)=>sum+value,0)/scores.length:0;
+      report({stage:'validating',percent:100});
       return result;
     }
-    function applyRecognition(recognition){
-      if(!recognition) return;
-      state.form.category=recognition.category||state.form.category;
-      state.form.season=recognition.season||state.form.season;
-      if(!state.form.nameManual) state.form.itemName=generateItemName(state.form.category,state.form.season);
-      state.form.recognizeStatus='done';
-      state.form.recognizeSource=recognition.source||'本地 AI';
-      state.form.recognizeScore=recognition.score||0;
-      renderUploadItemName();
-      renderFormChips();
+    function visionCandidateFromRecognition(recognition,colorResult){
+      const fieldScores=recognition.fieldScores||{};
+      const confidence={
+        category:Number(fieldScores.category)||.2,
+        subcategory:Number(fieldScores.subcategory)||.2,
+        colors:Number(fieldScores.color)||Number(colorResult&&colorResult.score)||.2,
+        pattern:Number(fieldScores.pattern)||.2,
+        materials:Number(fieldScores.material)||.2,
+        fit:Number(fieldScores.fit)||.2,
+        length:Number(fieldScores.length)||.2,
+        styles:Number(fieldScores.style)||.2,
+        seasons:Number(fieldScores.season)||.2,
+        occasions:Number(fieldScores.occasion)||.2,
+        warmth:Number(fieldScores.warmth)||.2,
+        formality:Number(fieldScores.formality)||.2
+      };
+      const reviewFields=Object.entries(confidence).filter(([,score])=>score<.65).map(([field])=>field);
+      return {
+        contract_version:'1.0',request_id:recognition.requestId||`recognition_${Date.now()}`,taxonomy_version:GarmentTaxonomy.version,status:reviewFields.length?'needs_review':'succeeded',
+        model:{provider:recognition.model&&recognition.model.provider||'transformers.js',name:recognition.model&&recognition.model.name||'Marqo/marqo-fashionCLIP',version:recognition.model&&recognition.model.version||'3.8.1-marqo-q8-worker-v1'},
+        attributes:{
+          category:recognition.category,subcategory:recognition.subcategory,
+          colors:[recognition.color||colorResult&&colorResult.value||'灰色'],pattern:recognition.pattern,
+          materials:Array.isArray(recognition.materials)?recognition.materials:['未知'],fit:recognition.fit,length:recognition.length,
+          styles:[recognition.style||'简约'],seasons:[recognition.season||'春'],
+          occasions:[recognition.occasion||'日常'],warmth:Number(recognition.warmth)||3,
+          formality:Number(recognition.formality)||2
+        },
+        field_confidence:confidence,
+        overall_confidence:Object.values(confidence).reduce((sum,x)=>sum+x,0)/Object.keys(confidence).length,
+        review:{required:!!reviewFields.length,fields:reviewFields,actions:Object.fromEntries(reviewFields.map(field=>[field,confidence[field]<.35?'manual_required':'confirm']))},warnings:[]
+      };
     }
-    async function removeBackground(file,originalPhotoUrl=''){
-      const imageSource=file||originalPhotoUrl||state.form.originalPhotoUrl;
+    function recognitionFromContract(contract,run={}){
+      const attributes=contract.attributes||{};
+      const confidence=contract.field_confidence||{};
+      return {
+        requestId:contract.request_id||'',model:contract.model||{},
+        category:attributes.category,subcategory:attributes.subcategory,
+        color:(attributes.colors||[])[0]||'灰色',pattern:attributes.pattern,
+        materials:attributes.materials||['未知'],fit:attributes.fit,length:attributes.length,
+        style:(attributes.styles||[])[0]||'简约',season:(attributes.seasons||[])[0]||'春',
+        occasion:(attributes.occasions||[])[0]||'日常',warmth:attributes.warmth,formality:attributes.formality,
+        source:run.degraded?'Marqo-FashionCLIP（本地校验）':'Marqo-FashionCLIP',score:Number(contract.overall_confidence)||0,
+        fieldScores:{category:confidence.category,subcategory:confidence.subcategory,color:confidence.colors,pattern:confidence.pattern,material:confidence.materials,fit:confidence.fit,length:confidence.length,style:confidence.styles,season:confidence.seasons,occasion:confidence.occasions,warmth:confidence.warmth,formality:confidence.formality},
+        contract,runId:run.run_id||'',degraded:!!run.degraded
+      };
+    }
+    async function finalizeVisionRecognition(recognition,colorResult,imageDataUrl=''){
+      const candidate=visionCandidateFromRecognition(recognition,colorResult);
+      const dataUrl=String(imageDataUrl||'');
+      const mimeMatch=dataUrl.match(/^data:(image\/(?:jpeg|png|webp));base64,/);
+      const dataBase64=mimeMatch?dataUrl.slice(dataUrl.indexOf(',')+1):'';
+      if(!window.WardrobeAPI||!WardrobeAPI.runVision||!dataBase64) return recognitionFromContract(candidate,{degraded:true});
+      try{
+        const run=await WardrobeAPI.runVision({
+          request:{contract_version:'1.0',request_id:candidate.request_id,image:{data_base64:dataBase64,mime_type:mimeMatch[1]},hints:{category:recognition.category,seasons:[recognition.season]}},
+          candidate
+        });
+        return recognitionFromContract(run.recognition,run);
+      }catch(err){
+        console.warn('Vision contract pipeline unavailable; using local model output.',err);
+        return recognitionFromContract(candidate,{degraded:true});
+      }
+    }
+    async function removeBackground(file,originalPhotoUrl='',onProgress){
+      const imageSource=file||originalPhotoUrl;
       if(!imageSource) throw new Error('missing image');
       const imglyRemoveBackground=await getBackgroundRemover();
       const blob=await imglyRemoveBackground(imageSource,{
         model:'isnet_quint8',
         output:{format:'image/png',type:'foreground'}
-      });
+      },onProgress);
       const rawDataUrl=await blobToDataUrl(blob);
       return standardizeCutoutImage(rawDataUrl,{size:384,paddingRatio:.1});
     }
-    async function runCutout(file){
-      if(!file&&!state.form.originalPhotoUrl) return;
-      const queueItem=currentUploadItem();
-      if(queueItem){
-        const targetId=queueItem.id;
-        queueItem.status='processing'; queueItem.error='';
-        renderUploadPreview();
-        try{
-          const [recognitionResult,cutoutResult]=await Promise.allSettled([
-            recognizeClothing(file,queueItem.originalPhotoUrl,queueItem.photoName,{category:queueItem.category,season:queueItem.season}),
-            removeBackground(file,queueItem.originalPhotoUrl)
-          ]);
-          const target=state.uploadQueue.find(x=>x.id===targetId);
-          if(!target) return;
-          if(recognitionResult.status==='fulfilled'){
-            const recognition=recognitionResult.value;
-            target.category=recognition.category||target.category;
-            target.season=recognition.season||target.season;
-            if(!target.nameManual) target.itemName=generateItemName(target.category,target.season);
-            target.recognizeStatus='done';
-            target.recognizeSource=recognition.source||'本地 AI';
-            target.recognizeScore=recognition.score||0;
-          }
-          if(cutoutResult.status!=='fulfilled') throw cutoutResult.reason;
-          target.cutoutUrl=cutoutResult.value;
-          target.photoUrl=target.cutoutUrl;
-          target.status='done';
-          syncFormFromUploadItem(target);
-          renderFormChips();
-          renderUploadPreview();
-          toast('识别和抠图完成');
-        }catch(err){
-          const target=state.uploadQueue.find(x=>x.id===targetId);
-          if(!target) return;
-          target.status='error';
-          target.error='本地 AI 抠图失败，请检查网络后重试';
-          syncFormFromUploadItem(target);
-          renderUploadPreview();
-        }
-        return;
-      }
-      state.form.cutoutStatus='processing'; state.form.cutoutError=''; state.form.photoUrl=''; state.form.recognizeStatus='processing'; state.form.recognizeSource=''; state.form.recognizeScore=0;
-      renderUploadPreview();
-      try{
-        const [recognitionResult,cutoutResult]=await Promise.allSettled([
-          recognizeClothing(file),
-          removeBackground(file)
-        ]);
-        if(recognitionResult.status==='fulfilled') applyRecognition(recognitionResult.value);
-        else{
-          console.warn('AI clothing recognition failed.',recognitionResult.reason);
-          state.form.recognizeStatus='error';
-          state.form.recognizeSource='默认标签';
-        }
-        if(cutoutResult.status!=='fulfilled') throw cutoutResult.reason;
-        state.form.cutoutUrl=cutoutResult.value;
-        state.form.photoUrl=state.form.cutoutUrl;
-        state.form.cutoutStatus='done';
-        renderUploadPreview();
-        toast('识别和抠图完成');
-      }catch(err){
-        state.form.cutoutStatus='error';
-        state.form.cutoutError='本地 AI 抠图失败，请检查网络后重试';
-        renderUploadPreview();
-      }
-    }
-    function retryCutout(){
-      const item=currentUploadItem();
-      if(item){runCutout(item.file||null);return}
-      if(!state.form.originalPhotoUrl){toast('请先选择照片');return}
-      runCutout(null);
-    }
-    async function handlePhotoFiles(files,source){
-      const list=Array.from(files||[]).filter(file=>file&&file.type.startsWith('image/'));
-      if(!list.length) return;
-      const items=[];
-      for(const file of list){
-        const guess=inferFromFileName(file.name);
-        let prepared;
-        try{
-          prepared=await prepareImageForAI(file);
-        }catch(err){
-          console.warn('Image optimization failed, using original image.',err);
-          prepared={file,dataUrl:await fileToDataUrl(file)};
-        }
-        items.push({
-          id:Date.now()+Math.random(),
-          file:prepared.file,
-          photoName:file.name||'衣服照片',
-          itemName:generateItemName(guess.category,guess.season),
-          nameManual:false,
-          originalPhotoUrl:prepared.dataUrl,
-          cutoutUrl:'',
-          photoUrl:'',
-          category:guess.category,
-          season:guess.season,
-          occasion:state.form.occasion,
-          source,
-          status:'pending',
-          error:'',
-          recognizeStatus:'idle',
-          recognizeSource:guess.categoryMatched||guess.seasonMatched?'文件名':'',
-          recognizeScore:guess.categoryMatched?0.72:0
-        });
-      }
-      state.uploadQueue.push(...items);
-      if(state.uploadQueue.length===items.length) state.uploadIndex=0;
-      syncFormFromUploadItem();
-      renderFormChips();
-      processUploadQueue();
-    }
-    async function processUploadQueue(){
-      if(state.uploadProcessing) return;
-      state.uploadProcessing=true;
-      for(const item of state.uploadQueue){
-        if(item.status!=='pending') continue;
-        const targetId=item.id;
-        item.status='processing'; item.error='';
-        renderUploadPreview();
-        try{
-          const [recognitionResult,cutoutResult]=await Promise.allSettled([
-            recognizeClothing(item.file,item.originalPhotoUrl,item.photoName,{category:item.category,season:item.season}),
-            removeBackground(item.file,item.originalPhotoUrl)
-          ]);
-          const target=state.uploadQueue.find(x=>x.id===targetId);
-          if(!target) continue;
-          if(recognitionResult.status==='fulfilled'){
-            const recognition=recognitionResult.value;
-            target.category=recognition.category||target.category;
-            target.season=recognition.season||target.season;
-            if(!target.nameManual) target.itemName=generateItemName(target.category,target.season);
-            target.recognizeStatus='done';
-            target.recognizeSource=recognition.source||'本地 AI';
-            target.recognizeScore=recognition.score||0;
-          }else{
-            target.recognizeStatus='error';
-            target.recognizeSource=target.recognizeSource||'默认标签';
-          }
-          if(cutoutResult.status!=='fulfilled') throw cutoutResult.reason;
-          target.cutoutUrl=cutoutResult.value;
-          target.photoUrl=target.cutoutUrl;
-          target.status='done';
-        }catch(err){
-          const target=state.uploadQueue.find(x=>x.id===targetId);
-          if(!target) continue;
-          target.status='error';
-          target.error='本地 AI 抠图失败，请检查网络后重试';
-        }
-        const current=currentUploadItem();
-        if(current&&current.id===targetId){
-          syncFormFromUploadItem(current);
-          renderFormChips();
-        }else renderUploadPreview();
-      }
-      state.uploadProcessing=false;
-      renderUploadPreview();
-    }
-
-    function renderFormChips(){
-      $('#formCategory').innerHTML = categoryList(false).map(x=>managedChip(x,'category',state.form.category,{small:true})).join('') + addChip('category',true);
-      $('#formSeason').innerHTML = ['春','夏','秋','冬'].map(x=>`<button class="chip small ${state.form.season===x?'active':''}" data-k="season" data-v="${x}">${x}</button>`).join('');
-      $('#formOccasion').innerHTML = occasionList().map(x=>managedChip(x,'occasion',state.form.occasion,{small:true})).join('') + addChip('occasion',true);
-      $('#formCategory').onclick=e=>{
-        const managed=handleManagedChipClick(e); if(managed.handled) return;
-        const btn=managed.btn; if(!btn) return;
-        if(btn.dataset.action==='add-label'){openLabelModal('category','category-form');return}
-        if(btn.dataset.labelType==='category') setCurrentUploadField('category',btn.dataset.value);
-      };
-      $('#formSeason').onclick=e=>{
-        const btn=e.target.closest('button'); if(!btn) return;
-        setCurrentUploadField('season',btn.dataset.v);
-      };
-      $('#formOccasion').onclick=e=>{
-        const managed=handleManagedChipClick(e); if(managed.handled) return;
-        const btn=managed.btn; if(!btn) return;
-        if(btn.dataset.action==='add-label'){openLabelModal('occasion','occasion-form');return}
-        if(btn.dataset.labelType==='occasion') setCurrentUploadField('occasion',btn.dataset.value);
-      };
-      bindLongPress($('#formCategory'));
-      bindLongPress($('#formOccasion'));
-      renderUploadPreview();
-    }
-
     function renderSaveSceneChips(){
       const box=$('#saveSceneChips'); if(!box) return;
       box.innerHTML=`<button class="chip small ${!state.saveScene?'active':''}" data-value="">不填</button>` +
@@ -1691,22 +1754,6 @@ body{display:block}
       bindLongPress(box);
     }
 
-
-
-
-
-    function wardrobeIconSvg(){
-      return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="2"></rect><path d="M12 4v16"></path><path d="M9 12h.01"></path><path d="M15 12h.01"></path></svg>`;
-    }
-    function weatherIconSvg(icon){
-      const common='viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
-      if(icon==='sun') return `<svg ${common}><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M4.93 19.07l1.41-1.41"></path><path d="M17.66 6.34l1.41-1.41"></path></svg>`;
-      if(icon==='cloud') return `<svg ${common}><path d="M17.5 19H8a5 5 0 1 1 1.6-9.74A6.2 6.2 0 0 1 21 12.4 3.7 3.7 0 0 1 17.5 19z"></path></svg>`;
-      if(icon==='rain') return `<svg ${common}><path d="M17.5 17H8a5 5 0 1 1 1.6-9.74A6.2 6.2 0 0 1 21 10.4 3.7 3.7 0 0 1 17.5 17z"></path><path d="M8 20v1"></path><path d="M12 20v1"></path><path d="M16 20v1"></path></svg>`;
-      if(icon==='wind') return `<svg ${common}><path d="M4 8h10a3 3 0 1 0-3-3"></path><path d="M4 12h15"></path><path d="M4 16h11a3 3 0 1 1-3 3"></path></svg>`;
-      if(icon==='hot') return `<svg ${common}><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4 12h2"></path><path d="M18 12h2"></path><path d="M17 5l1.4-1.4"></path><path d="M5.6 18.4L7 17"></path><path d="M5 5l1.4 1.4"></path><path d="M17 17l1.4 1.4"></path><path d="M7 22c1-1 2-1 3 0s2 1 3 0 2-1 4 0"></path></svg>`;
-      return `<svg ${common}><path d="M12 4a5 5 0 0 0-4.7 3.3"></path><path d="M17.5 19H8a5 5 0 1 1 1.6-9.74A6.2 6.2 0 0 1 21 12.4 3.7 3.7 0 0 1 17.5 19z"></path></svg>`;
-    }
     function weatherEmoji(icon,status=''){
       if(icon==='sun'||status==='晴天') return '☀️';
       if(icon==='rain'||status==='下雨') return '🌧️';
@@ -1818,25 +1865,23 @@ body{display:block}
       }
     }
     function renderTopAction(){
-      const btn=$('#searchBtn'); if(!btn) return;
-      if(state.page==='wardrobe'){
-        btn.classList.remove('weather-pill');
-        btn.title='衣橱数据'; btn.setAttribute('aria-label','衣橱数据'); btn.innerHTML=wardrobeIconSvg();
-      }else{
-        btn.classList.add('weather-pill');
-        const emoji=weatherEmoji(state.weather.icon,state.weather.status);
-        const temp=state.weather.temp==='--'?'--°':`${state.weather.temp}°`;
-        btn.title=`今日天气：${state.weather.status} ${weatherTempText(state.weather.temp)}`;
-        btn.setAttribute('aria-label',btn.title);
-        btn.innerHTML=`<span class="weather-pill-emoji" aria-hidden="true">${emoji}</span><span class="weather-pill-temp">${temp}</span>`;
-      }
+      const dataBtn=$('#searchBtn'); if(dataBtn) dataBtn.hidden=state.page!=='wardrobe';
+      const btn=$('#weatherBtn'); if(!btn) return;
+      const emoji=weatherEmoji(state.weather.icon,state.weather.status);
+      const temp=state.weather.temp==='--'?'--°':`${state.weather.temp}°`;
+      btn.title=`今日天气：${state.weather.status} ${weatherTempText(state.weather.temp)}`;
+      btn.setAttribute('aria-label',btn.title);
+      btn.innerHTML=`<span class="weather-pill-emoji" aria-hidden="true">${emoji}</span><span class="weather-pill-temp">${temp}</span>`;
     }
     function syncWeatherToToday(){
       const w=normalizeWeatherForToday(state.weather.status,state.weather.temp);
       if(todayWeathers.includes(w)){
+        const changed=state.today.weather!==w||String(state.today.temp)!==String(state.weather.temp);
+        if(changed) beginTodayRecommendationChange('weather_changed');
         state.today.weather=w;
         state.today.temp=state.weather.temp;
         state.today.index=0;
+        state.today.apiRecommendation=null;
       }
     }
     function renderWeatherModal(){
@@ -1899,6 +1944,20 @@ body{display:block}
       weather:{title:'天气',items:todayWeathers,stateKey:'weather'},
       mood:{title:'感觉',items:todayMoods,stateKey:'mood'}
     };
+    let todayOutfitFitFrame=0;
+    function scheduleTodayOutfitFit(){
+      cancelAnimationFrame(todayOutfitFitFrame);
+      todayOutfitFitFrame=requestAnimationFrame(()=>{
+        const view=$('#view-today'),stage=view.querySelector('.outfit-stage');
+        if(!view.classList.contains('active')||!stage) return;
+        // Use the space above the navigation at scroll position zero, including after a resize.
+        const bottom=Math.min(view.getBoundingClientRect().bottom,$('.nav').getBoundingClientRect().top);
+        const top=stage.getBoundingClientRect().top+view.scrollTop;
+        const ratio=Number(getComputedStyle(stage).getPropertyValue('--stage-ratio'));
+        const width=Math.floor(Math.max(0,bottom-top-16)*ratio);
+        stage.style.setProperty('--stage-fit-width',`${width}px`);
+      });
+    }
     function renderTodayChips(){
       const tabs=$('#todayFilterTabs'), panel=$('#todayFilterPanel');
       if(!tabs||!panel) return;
@@ -1928,10 +1987,14 @@ body{display:block}
         e.stopPropagation();
         const btn=e.target.closest('[data-filter-option]'); if(!btn) return;
         const cfg=todayFilterMap[btn.dataset.filterOption]; if(!cfg) return;
+        if(state.today[cfg.stateKey]===btn.dataset.value) return;
+        beginTodayRecommendationChange('context_changed');
         state.today[cfg.stateKey]=btn.dataset.value;
         state.today.index=0;
+        state.today.apiRecommendation=null;
         renderToday();
       };
+      scheduleTodayOutfitFit();
     }
     function weatherSeasonPriority(weather){
       const climate=climateForToday();
@@ -1978,9 +2041,6 @@ body{display:block}
       }
       return score;
     }
-    function itemScoreForToday(it){
-      return todayItemSeasonScore(it)+todayItemSceneScore(it)+todayItemMoodScore(it);
-    }
     function inferItemTone(it){
       const text=`${it.name||''}${it.visual||''}`.toLowerCase();
       if(/黑|black|shoe/.test(text)) return 'black';
@@ -2010,10 +2070,24 @@ body{display:block}
       if(top&&bottom&&shoes) score+=7;
       return score;
     }
+    let todayCandidateCache=null;
+    const todayNameCollator=new Intl.Collator('zh-CN');
     function buildTodayCandidates(){
       const climate=climateForToday();
-      const byCat=cats=>state.items.filter(it=>cats.includes(it.category))
-        .sort((a,b)=>itemScoreForToday(b)-itemScoreForToday(a)||String(a.name).localeCompare(String(b.name),'zh-CN'))
+      const readyItems=state.items.filter(isWardrobeItemReady);
+      // Photos stay on the item objects; only inputs that affect ranking belong in the key.
+      const key=JSON.stringify([state.today.scene,state.today.weather,state.today.mood,climate.temp,climate.dateSeason,
+        readyItems.map(it=>[it.id,it.category,it.season,it.occasion,it.name,it.visual])]);
+      if(todayCandidateCache?.key===key&&todayCandidateCache.items.every((item,i)=>item===readyItems[i])){
+        return todayCandidateCache.candidates;
+      }
+      const seasonPriority=weatherSeasonPriority(state.today.weather);
+      const scores=new Map(readyItems.map(item=>[item,{
+        weather:todayItemSeasonScore(item,seasonPriority),scene:todayItemSceneScore(item),mood:todayItemMoodScore(item)
+      }]));
+      const itemScore=item=>{const score=scores.get(item);return score.weather+score.scene+score.mood};
+      const byCat=cats=>readyItems.filter(it=>cats.includes(it.category))
+        .sort((a,b)=>itemScore(b)-itemScore(a)||todayNameCollator.compare(String(a.name),String(b.name)))
         .slice(0,8);
       const tops=byCat(['上装']);
       const bottoms=byCat(['裙子','下装']);
@@ -2028,10 +2102,9 @@ body{display:block}
         const items=[top,bottom,shoes,bag].filter(Boolean);
         const ids=items.map(it=>it.id);
         if(!items.length||ids.length!==new Set(ids).size) return;
-        const seasonPriority=weatherSeasonPriority(state.today.weather);
-        const weatherScore=items.reduce((sum,it)=>sum+todayItemSeasonScore(it,seasonPriority),0);
-        const sceneScore=items.reduce((sum,it)=>sum+todayItemSceneScore(it),0);
-        const moodScore=items.reduce((sum,it)=>sum+todayItemMoodScore(it),0);
+        const weatherScore=items.reduce((sum,it)=>sum+scores.get(it).weather,0);
+        const sceneScore=items.reduce((sum,it)=>sum+scores.get(it).scene,0);
+        const moodScore=items.reduce((sum,it)=>sum+scores.get(it).mood,0);
         const completeScore=outfitCompletenessScore({top,bottom,shoes,bag});
         const color=outfitColorScore(items);
         let raw=completeScore+weatherScore+sceneScore+Math.min(18,moodScore)+color.score;
@@ -2045,7 +2118,9 @@ body{display:block}
           raw
         });
       }))));
-      return candidates.sort((a,b)=>b.raw-a.raw||b.items.length-a.items.length||String(a.items.map(it=>it.id).join('-')).localeCompare(String(b.items.map(it=>it.id).join('-'))));
+      candidates.sort((a,b)=>b.raw-a.raw||b.items.length-a.items.length||String(a.items.map(it=>it.id).join('-')).localeCompare(String(b.items.map(it=>it.id).join('-'))));
+      todayCandidateCache={key,items:readyItems,candidates};
+      return candidates;
     }
     function buildTodayReason(rec){
       const b=rec.breakdown||{};
@@ -2080,50 +2155,326 @@ body{display:block}
       const reason=buildTodayReason(rec);
       return {top,bottom,shoes,bag,items,score,tags:tags.slice(0,3),reason,breakdown:rec.breakdown,candidateCount:candidates.length};
     }
-    function renderFittingPiece(item, slotClass){
-      if(!item) return '';
-      const name=item.name||`${item.season||''}${item.category||''}单品`||'推荐单品';
-      const typeClass=slotClass==='fit-bottom'&&(item.category==='裙子'||item.visual==='skirt')?' is-skirt':'';
-      return `<div class="fit-piece ${slotClass}${typeClass}" title="${escapeHtml(name)}">${itemMediaHtml(item)}</div>`;
+    function todayOutfitItems(rec){
+      const seen=new Set();
+      return (rec.items||[]).filter(item=>{
+        if(!item) return false;
+        if(item.id===undefined||item.id===null) return true;
+        const key=String(item.id);
+        if(seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
     }
-    function renderTodayAvatar(rec){
-      return `<div class="ai-look-preview">
-        <div class="ai-tags">${rec.tags.map(t=>`<span class="ai-tag">${escapeHtml(t)}</span>`).join('')}</div>
-        <div class="ai-fitting">
-          <div class="fit-hair"></div>
-          <div class="fit-head"></div>
-          <div class="fit-neck"></div>
-          <div class="fit-foot left"></div>
-          <div class="fit-foot right"></div>
-          ${renderFittingPiece(rec.top,'fit-top')}
-          ${renderFittingPiece(rec.bottom,'fit-bottom')}
-          ${renderFittingPiece(rec.shoes,'fit-shoes')}
-          <div class="fit-forearm left"></div>
-          <div class="fit-forearm right"></div>
-          ${renderFittingPiece(rec.bag,'fit-bag')}
-        </div>
-        <div class="ai-match">AI 匹配度 ${rec.score}</div>
-      </div>`;
+    function beginTodayRecommendationChange(){
+      state.today.recommendationRevision++;
+      state.today.recommendationRequestSeq++;
+      state.today.loading=false;
+    }
+    function refreshTodayRecommendation({recordFeedback=false}={}){
+      if(state.today.loading) return;
+      if(!window.WardrobeAPI||WardrobeAPI.localOnly){
+        const candidates=buildTodayCandidates();
+        const itemKey=rec=>JSON.stringify(todayOutfitItems(rec).map(item=>String(item.id)).sort());
+        if(candidates.length===1&&state.today.current&&itemKey(candidates[0])===itemKey(state.today.current)){
+          toast('目前只有这一套搭配，添加更多单品后可推荐新组合');
+          return;
+        }
+      }
+      if(recordFeedback) submitTodayFeedback('refresh');
+      beginTodayRecommendationChange('recommendation_refreshed');
+      state.today.index++;
+      state.today.apiRecommendation=null;
+      state.today.panel=null;
+      return requestTodayRecommendation({message:'已换一套'});
+    }
+    function todayItemName(item){
+      return item.name||`${item.season||''}${item.subcategory||item.category||'衣物'}`;
+    }
+    function todayItemMeta(item){
+      const season=item.season?(item.season.endsWith('季')?item.season:`${item.season}季`):'';
+      return uniq([...(item.colors||[]),season,item.occasion].filter(Boolean)).join(' · ');
+    }
+    function todayOutfitRole(item,rec,index){
+      for(const role of ['top','bottom','shoes','bag']){
+        const selected=rec[role];
+        if(selected&&(selected===item||(selected.id!=null&&String(selected.id)===String(item.id)))) return role;
+      }
+      return {上装:'top',下装:'bottom',裙子:'bottom',鞋帽:'shoes',包包:'bag'}[item.category]||['top','bottom','shoes','bag'][index%4];
+    }
+    const todayPhotoCache=new Map();
+    function trimTodayPhotoCache(){
+      const active=new Set(todayOutfitItems(state.today.current||{}).map(item=>item.photoUrl));
+      for(const [source,entry] of todayPhotoCache){
+        if(todayPhotoCache.size<=48) break;
+        if(!entry.url||active.has(source)) continue;
+        if(entry.ownsUrl) URL.revokeObjectURL(entry.url);
+        todayPhotoCache.delete(source);
+      }
+    }
+    function prepareTodayPhoto(source){
+      let entry=todayPhotoCache.get(source);
+      if(entry){
+        todayPhotoCache.delete(source);
+        todayPhotoCache.set(source,entry);
+        return entry;
+      }
+      entry={url:'',ownsUrl:false,promise:null};
+      todayPhotoCache.set(source,entry);
+      let objectUrl='';
+      entry.promise=(async()=>{
+        const image=new Image();
+        image.src=source;
+        await image.decode();
+        // Trim transparent margins for the large outfit preview; keep wardrobe photos intact.
+        await new Promise(resolve=>setTimeout(resolve,0));
+        const canvas=document.createElement('canvas');
+        const scale=Math.min(1,768/Math.max(image.naturalWidth,image.naturalHeight));
+        const width=canvas.width=Math.max(1,Math.round(image.naturalWidth*scale));
+        const height=canvas.height=Math.max(1,Math.round(image.naturalHeight*scale));
+        const ctx=canvas.getContext('2d',{willReadFrequently:true});
+        ctx.drawImage(image,0,0,width,height);
+        const {data}=ctx.getImageData(0,0,width,height);
+        let left=width,top=height,right=-1,bottom=-1;
+        for(let y=0;y<height;y++) for(let x=0;x<width;x++){
+          if(data[(y*width+x)*4+3]>20){left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y)}
+        }
+        let preview=canvas;
+        if(right>=left&&bottom>=top){
+          const margin=Math.ceil(Math.max(right-left,bottom-top)*.035);
+          left=Math.max(0,left-margin);top=Math.max(0,top-margin);
+          right=Math.min(width-1,right+margin);bottom=Math.min(height-1,bottom+margin);
+          if(left||top||right<width-1||bottom<height-1){
+            preview=document.createElement('canvas');
+            preview.width=right-left+1;preview.height=bottom-top+1;
+            preview.getContext('2d').drawImage(canvas,left,top,preview.width,preview.height,0,0,preview.width,preview.height);
+          }
+        }
+        const blob=await new Promise(resolve=>preview.toBlob(resolve,'image/png'));
+        if(!blob) throw new Error('Preview encoding failed');
+        const url=objectUrl=URL.createObjectURL(blob);
+        const decoded=new Image();
+        decoded.src=url;
+        await decoded.decode();
+        entry.url=url;
+        entry.ownsUrl=!!objectUrl;
+        trimTodayPhotoCache();
+        return url;
+      })().catch(()=>{
+        if(objectUrl) URL.revokeObjectURL(objectUrl);
+        entry.url=source;
+        trimTodayPhotoCache();
+        return source;
+      });
+      return entry;
+    }
+    function todayItemMediaHtml(item){
+      if(!item.photoUrl) return itemMediaHtml(item);
+      const url=todayPhotoCache.get(item.photoUrl)?.url;
+      // Keep large data URLs out of innerHTML, including when a photo needs the fallback.
+      const ready=url&&!url.startsWith('data:');
+      return `<img class="photo-img${ready?'':' photo-pending'}"${ready?` src="${escapeHtml(url)}"`:''} alt="${escapeHtml(todayItemName(item))}" />`;
+    }
+    let todayPhotoPreloadRevision=0;
+    function preloadNextTodayPhotos(){
+      const revision=++todayPhotoPreloadRevision;
+      const preload=()=>{
+        if(revision!==todayPhotoPreloadRevision||state.page!=='today'||(window.WardrobeAPI&&!WardrobeAPI.localOnly)) return;
+        const candidates=buildTodayCandidates();
+        for(let offset=1;offset<=Math.min(2,candidates.length-1);offset++){
+          const next=candidates[(state.today.index+offset)%candidates.length];
+          todayOutfitItems(next).forEach(item=>{if(item.photoUrl) prepareTodayPhoto(item.photoUrl)});
+        }
+      };
+      if(window.requestIdleCallback) requestIdleCallback(preload,{timeout:1000});
+      else setTimeout(preload,120);
+    }
+    async function loadTodayOutfitPhotos(root){
+      const items=todayOutfitItems(state.today.current||{});
+      await Promise.all(Array.from(root.querySelectorAll('.outfit-item img')).map(async image=>{
+        const item=items[Number(image.closest('[data-outfit-index]').dataset.outfitIndex)];
+        if(!item?.photoUrl) return;
+        const source=await prepareTodayPhoto(item.photoUrl).promise;
+        if(!image.isConnected) return;
+        if(image.getAttribute('src')!==source) image.src=source;
+        await image.decode().catch(()=>{});
+        if(image.isConnected) image.classList.remove('photo-pending');
+      }));
+      if(root.isConnected) preloadNextTodayPhotos();
+    }
+    function renderTodayOutfit(rec){
+      const items=todayOutfitItems(rec);
+      const roles=items.map((item,index)=>todayOutfitRole(item,rec,index));
+      const roleNames={top:'上装',bottom:'下装',shoes:'鞋',bag:'包'};
+      const pieces=items.map((item,index)=>`<button class="outfit-item role-${roles[index]}" type="button" data-outfit-index="${index}" aria-haspopup="dialog" aria-label="查看${escapeHtml(todayItemName(item))}">
+        <span class="outfit-item-media">${todayItemMediaHtml(item)}</span>
+        <span class="outfit-item-category"><span class="outfit-item-number">${String(index+1).padStart(2,'0')}</span>${roleNames[roles[index]]}</span>
+      </button>`).join('');
+      return `<section class="outfit-board" aria-label="今日推荐衣物">
+        <div class="outfit-board-head"><span class="outfit-board-title">你的衣橱，新的一套</span><span class="outfit-board-count">${items.length} 件单品</span></div>
+        <div class="outfit-stage ${roles.map(role=>`has-${role}`).join(' ')}" data-count="${items.length}">${pieces}</div>
+        <div class="outfit-tags">${(rec.tags||[]).map(tag=>`<span class="outfit-tag">${escapeHtml(tag)}</span>`).join('')}</div>
+        <div class="outfit-summary">${items.map((item,index)=>`<span class="outfit-summary-item"><b>${String(index+1).padStart(2,'0')}</b>${escapeHtml(todayItemName(item))}</span>`).join('')}</div>
+        <p class="outfit-board-note">点按衣物查看大图与标签</p>
+      </section>`;
+    }
+    let todayItemTrigger=null;
+    function openTodayItemDetail(item,trigger){
+      if(!item) return;
+      todayItemTrigger=trigger;
+      $('#todayItemPreview').innerHTML=itemMediaHtml(item);
+      $('#todayItemName').textContent=todayItemName(item);
+      $('#todayItemMeta').textContent=[item.category,item.subcategory,todayItemMeta(item)].filter(Boolean).join(' · ');
+      const modal=$('#todayItemModal');
+      modal.inert=false;
+      modal.setAttribute('aria-hidden','false');
+      $('#mask').classList.add('show');
+      modal.classList.add('show');
+      $('#todayItemClose').focus();
+    }
+    function recommendationFromApi(payload){
+      const items=(payload.items||[]).map(localItemFromApi);
+      const top=items.find(item=>item.category==='上装')||null;
+      const bottom=items.find(item=>item.category==='下装'||item.category==='裙子')||null;
+      const shoes=items.find(item=>item.category==='鞋帽')||null;
+      const bag=items.find(item=>item.category==='包包')||null;
+      return {
+        top,bottom,shoes,bag,items,
+        score:Number(payload.score)||80,
+        tags:Array.isArray(payload.tags)?payload.tags:[],
+        reason:payload.reason||'已结合天气、场景和个人衣橱生成推荐。',
+        candidateCount:Number(payload.candidate_count)||1,
+        outfitId:payload.outfit_id||'',
+        recommendationSource:payload.source||'rules'
+      };
+    }
+    function renderTodayLoading(){
+      const loading=state.today.loading;
+      const generate=$('#todayGenerate'),refresh=$('#todayRefresh');
+      generate.disabled=loading;
+      generate.textContent=loading?'正在推荐…':'推荐一套';
+      if(refresh){refresh.disabled=loading;refresh.textContent=loading?'正在换一套…':'换一套'}
+      $('#todayRecommendation').setAttribute('aria-busy',String(loading));
+    }
+    async function requestTodayRecommendation({message=''}={}){
+      if(!window.WardrobeAPI||WardrobeAPI.localOnly){
+        state.today.apiRecommendation=null;
+        state.today.loading=false;
+        renderToday();
+        if(message&&state.today.current) toast(message);
+        return;
+      }
+      const requestSeq=++state.today.recommendationRequestSeq;
+      state.today.loading=true;
+      const box=$('#todayRecommendation');
+      if(box&&!box.querySelector('.today-card')) box.innerHTML='<div class="today-empty">正在挑选适合今天的衣物...</div>';
+      renderTodayLoading();
+      try{
+        const payload=await WardrobeAPI.recommend({
+          scene:state.today.scene,
+          mood:state.today.mood,
+          temperature:state.today.temp,
+          weather:{
+            status:state.weather.status,
+            temperature:state.weather.temp,
+            location:state.weather.location
+          }
+        },state.today.index);
+        if(requestSeq!==state.today.recommendationRequestSeq) return;
+        state.today.apiRecommendation=recommendationFromApi(payload);
+        trackEvent('recommendation_generated',{
+          outfit_id:payload.outfit_id,
+          source:payload.source,
+          scene:state.today.scene,
+          candidate_count:payload.candidate_count
+        });
+      }catch(err){
+        if(requestSeq!==state.today.recommendationRequestSeq) return;
+        console.warn('Recommendation API failed; using local rules.',err);
+        state.today.apiRecommendation=null;
+        trackEvent('recommendation_fallback',{reason:err.message||'api_error'});
+      }finally{
+        if(requestSeq===state.today.recommendationRequestSeq){
+          state.today.loading=false;
+          renderToday();
+          if(message&&state.today.current) toast(message);
+        }
+      }
     }
     function renderToday(){
       renderTodayChips();
       const box=$('#todayRecommendation'); if(!box) return;
-      const rec=buildTodayRecommendation();
+      const rec=state.today.apiRecommendation||buildTodayRecommendation();
       state.today.current=rec;
       if(!rec){
-        box.innerHTML=`<div class="today-empty">衣橱里的衣服还不够<br>先添加几件常穿单品后，AI 会帮你生成今日穿搭</div>`;
+        box.innerHTML=`<div class="today-empty">衣橱里还没有可推荐的衣物<br>先添加几件常穿单品，就能看到今日搭配</div>`;
+        renderTodayLoading();
         return;
       }
-      const pieces=rec.items.map(it=>`<span class="ai-piece">${escapeHtml(it.name||`${it.season}${it.category}单品`)}</span>`).join('');
       box.innerHTML=`<article class="today-card">
-        <div class="today-card-head"><div><div class="today-card-title">今日推荐</div><div class="today-card-sub">适合：${escapeHtml(state.today.scene)} · ${escapeHtml(state.today.weather)} · ${escapeHtml(state.today.mood)}</div></div><span class="ai-badge">AI</span></div>
-        ${renderTodayAvatar(rec)}
-        <div class="ai-piece-list">${pieces}</div>
-        <div class="ai-reason"><div class="ai-reason-title">AI 推荐理由</div><div class="ai-reason-text">${escapeHtml(rec.reason)}</div></div>
-        <div class="today-actions"><button class="secondary" id="todayRefresh">换一套</button><button class="black" id="todaySave">保存到收藏</button></div>
+        <div class="today-card-head"><div><div class="today-card-title">今日推荐</div><div class="today-card-sub">适合：${escapeHtml(state.today.scene)} · ${escapeHtml(state.today.weather)} · ${escapeHtml(state.today.mood)}</div></div><span class="ai-badge">为你搭配</span></div>
+        ${renderTodayOutfit(rec)}
+        <div class="ai-reason"><div class="ai-reason-title">为什么这样搭</div><div class="ai-reason-text">${escapeHtml(rec.reason)}</div></div>
+        <div class="today-actions">
+          <button class="secondary" id="todayRefresh">换一套</button>
+          <button class="black" id="todayWorn">今天穿了</button>
+          <button class="secondary" id="todayDislike">不喜欢</button>
+          <button class="secondary" id="todaySave">保存到收藏</button>
+        </div>
+        <div class="feedback-panel" id="todayFeedbackPanel">
+          <div class="feedback-title">哪里不合适？选择后会优化下次推荐</div>
+          <div class="feedback-reasons">
+            <button class="feedback-reason" data-reason="too_hot">太热</button>
+            <button class="feedback-reason" data-reason="too_cold">太冷</button>
+            <button class="feedback-reason" data-reason="too_formal">太正式</button>
+            <button class="feedback-reason" data-reason="too_casual">太随意</button>
+            <button class="feedback-reason" data-reason="not_my_style">不是我的风格</button>
+            <button class="feedback-reason" data-reason="dislike_items">不喜欢这些单品</button>
+          </div>
+        </div>
       </article>`;
-      $('#todayRefresh').onclick=()=>{state.today.index++; renderToday(); toast('已换一套推荐')};
+      const outfitItems=todayOutfitItems(rec);
+      $$('#todayRecommendation [data-outfit-index]').forEach(btn=>btn.onclick=()=>openTodayItemDetail(outfitItems[Number(btn.dataset.outfitIndex)],btn));
+      loadTodayOutfitPhotos(box);
+      $('#todayRefresh').onclick=()=>refreshTodayRecommendation({recordFeedback:true});
+      $('#todayWorn').onclick=()=>submitTodayFeedback('worn');
+      $('#todayDislike').onclick=()=>$('#todayFeedbackPanel').classList.toggle('show');
+      $$('.feedback-reason').forEach(btn=>btn.onclick=()=>submitTodayFeedback('dislike',btn.dataset.reason));
       $('#todaySave').onclick=saveTodayRecommendation;
+      renderTodayLoading();
+    }
+
+    async function submitTodayFeedback(action,reason='',extraMetadata={}){
+      const rec=state.today.current;
+      if(!rec||!rec.items.length) return;
+      const payload={
+        outfit_id:rec.outfitId||null,
+        action,
+        reason:reason||null,
+        metadata:{
+          item_ids:rec.items.map(item=>String(item.id)),
+          scene:state.today.scene,
+          weather:state.today.weather,
+          mood:state.today.mood,
+          recommendation_source:rec.recommendationSource||'local_rules',
+          ...extraMetadata
+        }
+      };
+      try{
+        if(window.WardrobeAPI) await WardrobeAPI.feedback(payload);
+        trackEvent('recommendation_feedback',{action,reason,outfit_id:rec.outfitId||'',item_count:rec.items.length});
+        if(action==='worn') toast('已记录今天穿了，偏好已更新');
+        if(action==='dislike'){
+          toast('反馈已记录，正在重新推荐');
+          beginTodayRecommendationChange('dislike_refresh');
+          state.today.index++;
+          state.today.apiRecommendation=null;
+          requestTodayRecommendation();
+        }
+      }catch(err){
+        console.warn('Feedback API failed.',err);
+        toast('反馈暂未同步，请稍后重试');
+      }
     }
     function saveTodayRecommendation(){
       const rec=state.today.current||buildTodayRecommendation();
@@ -2131,8 +2482,9 @@ body{display:block}
       const positions=[[82,58],[94,145],[112,230],[160,130]];
       const items=rec.items.map((it,i)=>({id:it.id,name:it.name,category:it.category,season:it.season,occasion:it.occasion,visual:it.visual,photoUrl:it.photoUrl,originalPhotoUrl:it.originalPhotoUrl,source:it.source,x:positions[i][0],y:positions[i][1]}));
       const scene=state.today.scene;
-      state.looks.unshift({id:Date.now(),name:`${scene}AI推荐`,scene,date:new Date().toLocaleDateString('en-GB'),items,source:'AI 今日推荐'});
-      renderLookFilters();renderLooks();renderDiscover();toast('AI 推荐已保存到收藏');
+      state.looks.unshift({id:Date.now(),name:`${scene}今日推荐`,scene,date:new Date().toLocaleDateString('en-GB'),items,source:'今日推荐'});
+      submitTodayFeedback('saved');
+      renderLookFilters();renderLooks();renderDiscover();toast('推荐搭配已保存到收藏');
     }
 
     function go(page){
@@ -2148,7 +2500,11 @@ body{display:block}
       const shell=$('#canvasShell');
       if(shell){shell.style.display=page==='wardrobe'?'block':'none'}
       if(page!=='wardrobe') setCanvasOpen(false);
-      if(page==='today') renderToday();
+      if(page==='today'){
+        state.today.panel=null;
+        $('#view-today').scrollTop=0;
+        renderToday();
+      }
       if(page==='fav'){renderLookFilters();renderLooks()}
       if(page==='discover') renderDiscover();
     }
@@ -2186,56 +2542,56 @@ body{display:block}
     });
 
     function openSheet(){
-      resetUploadForm();
-      renderFormChips();
       $('#mask').classList.add('show');
       $('#addSheet').classList.add('show');
-      getBackgroundRemover().catch(err=>console.warn('Background remover preload failed.',err));
     }
-    function closeAll(){$('#mask').classList.remove('show');$('#addSheet').classList.remove('show');$$('.modal').forEach(m=>m.classList.remove('show'));}
+    function closeAll(){
+      const detail=$('#todayItemModal');
+      if(detail.classList.contains('show')){
+        todayItemTrigger?.focus();
+        todayItemTrigger=null;
+        detail.inert=true;
+        detail.setAttribute('aria-hidden','true');
+      }
+      $('#mask').classList.remove('show');
+      $('#addSheet').classList.remove('show');
+      $$('.modal').forEach(modal=>modal.classList.remove('show'));
+    }
+    $('#todayItemModal').addEventListener('keydown',e=>{
+      if(e.key==='Escape'){e.preventDefault();closeAll()}
+      if(e.key==='Tab'){e.preventDefault();$('#todayItemClose').focus()}
+    });
     $('#fab').onclick=openSheet; $('#mask').onclick=closeAll; $$('[data-close]').forEach(x=>x.onclick=closeAll);
     $$('#labelModal [data-close]').forEach(x=>x.onclick=hideLabelModal);
     $('#cameraBtn').onclick=()=>$('#cameraInput').click();
     $('#albumBtn').onclick=()=>$('#albumInput').click();
     $('#cameraInput').onchange=e=>{handlePhotoFiles(e.target.files,'拍照识别');e.target.value=''};
     $('#albumInput').onchange=e=>{handlePhotoFiles(e.target.files,'相册');e.target.value=''};
-    $('#addItem').onclick=()=>{
-      const item=currentUploadItem();
-      if(item){
-        const doneItems=state.uploadQueue.filter(x=>x.status==='done'&&x.photoUrl);
-        if(!doneItems.length){toast('暂无已完成的照片可放入衣橱');return}
-        doneItems.forEach((it,idx)=>{
-          const cat=it.category;
-          const name=String(it.itemName||'').trim()||generateItemName(cat,it.season);
-          state.items.push({id:Date.now()+idx+Math.random(),name,category:cat,season:it.season,occasion:it.occasion,visual:visualMap[cat]||'top-cloth',photoUrl:it.photoUrl,originalPhotoUrl:it.originalPhotoUrl,source:it.source});
-        });
-        savePhotoWardrobe();
-        const doneIds=new Set(doneItems.map(x=>x.id));
-        state.uploadQueue=state.uploadQueue.filter(x=>!doneIds.has(x.id));
-        state.uploadIndex=Math.min(state.uploadIndex,Math.max(0,state.uploadQueue.length-1));
-        if(state.uploadQueue.length) syncFormFromUploadItem();
-        renderTabs(); renderWardrobe(); renderDiscover(); renderToday(); renderFormChips();
-        if(!state.uploadQueue.length){closeAll(); toast(`已放入 ${doneItems.length} 张照片`)}
-        else{renderUploadPreview(); toast(`已放入 ${doneItems.length} 张，剩余 ${state.uploadQueue.length} 张待处理`)}
-        return;
-      }
-      if(state.form.cutoutStatus==='processing'){toast('AI 正在抠图，请稍等');return}
-      if(!state.form.photoUrl){toast('请先拍照或从相册选择照片');return}
-      const cat=state.form.category;
-      const name=String(state.form.itemName||'').trim()||generateItemName(cat,state.form.season);
-      state.items.push({id:Date.now(),name,category:cat,season:state.form.season,occasion:state.form.occasion,visual:visualMap[cat]||'top-cloth',photoUrl:state.form.photoUrl,originalPhotoUrl:state.form.originalPhotoUrl,source:state.form.source});
-      savePhotoWardrobe();
-      closeAll(); renderTabs(); renderWardrobe(); renderDiscover(); renderToday(); toast('照片已放入衣橱');
-    };
     $('#confirmItemEdit').onclick=()=>{
-      const item=state.items.find(x=>x.id===state.editingItemId);
+      const item=state.items.find(x=>String(x.id)===String(state.editingItemId));
       if(!item||!state.editDraft){toast('未找到这件衣服');return}
       commitEditItemName();
-      const changed={...state.editDraft};
+      const {color,style,editorGroup,...draftFields}=state.editDraft;
+      if(!draftFields.category){toast('请选择衣物品类');return}
+      if(!validEditSubcategory(draftFields.category,draftFields.subcategory)) draftFields.subcategory=defaultSubcategory[draftFields.category]||'';
+      const manualFields=uniq([...(item.manualFields||[]),...(item.recognition?.manualFields||[]),'name','category','color','season','occasion',...(draftFields.category!==item.category?['subcategory']:[])]);
+      const recognition={...(item.recognitionContract||item.recognition||{}),manualFields};
+      const changed={
+        ...draftFields,
+        attributes:{...(item.attributes||{}),category:draftFields.category,subcategory:draftFields.subcategory},
+        status:'available',
+        colors:color===(item.colors?.[0]||'灰色')?[...(item.colors||[])]:[color||'灰色'],
+        styles:style===(item.styles?.[0]||'简约')?[...(item.styles||[])]:[style||'简约'],
+        manualFields,recognition,
+        recognitionContract:recognition.contract_version==='1.0'?recognition:null
+      };
       Object.assign(item,changed);
-      state.canvas.forEach(x=>{if(x.id===item.id) Object.assign(x,changed)});
-      state.looks.forEach(look=>(look.items||[]).forEach(x=>{if(x.id===item.id) Object.assign(x,changed)}));
+      state.canvas.forEach(x=>{if(String(x.id)===String(item.id)) Object.assign(x,changed)});
+      state.looks.forEach(look=>(look.items||[]).forEach(x=>{if(String(x.id)===String(item.id)) Object.assign(x,changed)}));
       savePhotoWardrobe();
+      if(item.importId) importQueue.remember(item.id,item,{manual:true});
+      else persistItemUpdate(item);
+      trackEvent('item_tags_corrected',{item_id:String(item.id),category:item.category,season:item.season,occasion:item.occasion});
       state.editingItemId=null;
       state.editDraft=null;
       closeAll();
@@ -2244,6 +2600,7 @@ body{display:block}
       renderToday();
       toast('衣服标签已更新');
     };
+    $('#editColorRecheck').onclick=recheckEditingItemColor;
     $('#saveBtn').onclick=()=>{
       if(!state.canvas.length){toast('先添加单品再保存');return}
       state.saveScene=''; $('#lookSceneCustom').value=''; renderSaveSceneChips();
@@ -2261,14 +2618,17 @@ body{display:block}
       $('#lookSceneCustom').value=''; state.saveScene=''; closeAll(); renderLookFilters(); renderLooks(); go('fav'); toast('搭配已保存到收藏');
     };
     $('#clearCanvas').onclick=()=>{state.canvas=[];renderCanvas();toast('画布已清空')};
-    const loginBtn=$('#loginBtn'); if(loginBtn) loginBtn.onclick=()=>{$('#mask').classList.add('show');$('#loginModal').classList.add('show')};
     $('#confirmLabel').onclick=()=>addCustomLabel($('#customLabelInput').value);
     $('#customLabelInput').addEventListener('keydown',e=>{if(e.key==='Enter') addCustomLabel(e.target.value)});
     $('#lookSearch').oninput=renderLooks;
-    $('#searchBtn').onclick=()=>{state.page==='wardrobe'?openWardrobeData():openWeatherModal()};
-    const todayGenerateBtn=$('#todayGenerate'); if(todayGenerateBtn) todayGenerateBtn.onclick=()=>{state.today.index=0; renderToday(); toast('AI 已生成今日搭配')};
+    $('#searchBtn').onclick=openWardrobeData;
+    $('#weatherBtn').onclick=openWeatherModal;
+    const todayGenerateBtn=$('#todayGenerate'); if(todayGenerateBtn) todayGenerateBtn.onclick=()=>refreshTodayRecommendation();
     const todayFilterCard=$('#todayFilterCard');
     if(todayFilterCard) todayFilterCard.addEventListener('click',e=>e.stopPropagation());
+    const todayLayoutObserver=new ResizeObserver(scheduleTodayOutfitFit);
+    todayLayoutObserver.observe($('#view-today'));
+    todayLayoutObserver.observe(todayFilterCard);
     document.addEventListener('click',e=>{
       if(state.page!=='today'||!state.today.panel) return;
       const card=$('#todayFilterCard');
@@ -2278,7 +2638,10 @@ body{display:block}
       }
     });
 
-    renderTabs(); renderWardrobeSearch(); renderWardrobe(); renderCanvas(); renderLookFilters(); renderLooks(); renderDiscover(); renderToday(); setCanvasOpen(false); renderTopAction(); initLocalWeather();
+    renderTabs(); renderWardrobeSearch(); renderWardrobe(); renderCanvas(); renderLookFilters(); renderLooks(); renderDiscover(); renderToday(); setCanvasOpen(false); renderTopAction(); initLocalWeather(); initWardrobeImports();
+    const queryParams=new URLSearchParams(location.search);
+    const requestedPage=queryParams.get('page');
+    if(['wardrobe','today','fav','discover'].includes(requestedPage)) go(requestedPage);
   </script>
 </body>
 </html>
