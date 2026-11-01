@@ -66,7 +66,7 @@
     .canvas-item.resizing{outline:2px solid #111;outline-offset:-6px}
     .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
     .item-card{min-width:0;overflow:hidden}
-    .swipe-row{position:relative;min-width:0;overflow:hidden;border-radius:22px;touch-action:pan-y}.looks .swipe-row{border-radius:28px}.swipe-delete{position:absolute;top:0;right:0;bottom:0;width:76px;border:0;background:#e64b4b;color:#fff;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;z-index:1}.swipe-content{position:relative;z-index:2;width:100%;transition:transform .22s ease;will-change:transform}.swipe-row.dragging .swipe-content{transition:none}.swipe-row.open .swipe-content{transform:translateX(-76px)}.swipe-row .item-card,.swipe-row .look-card{width:100%}
+    .swipe-row{position:relative;min-width:0;overflow:hidden;border-radius:22px;touch-action:pan-y}.looks .swipe-row{border-radius:28px}.swipe-delete{position:absolute;top:0;right:0;bottom:0;width:76px;border:0;background:#e64b4b;color:#fff;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;z-index:1;visibility:hidden;pointer-events:none}.swipe-content{position:relative;z-index:2;width:100%;height:100%;transition:transform .22s ease;will-change:transform}.swipe-row.dragging .swipe-content{transition:none}.swipe-row.open .swipe-content{transform:translateX(-76px)}.swipe-row.open>.swipe-delete,.swipe-row.dragging>.swipe-delete{visibility:visible;pointer-events:auto}.swipe-row .item-card,.swipe-row .look-card{width:100%;height:100%}
     .item-img{width:100%;max-width:100%;min-width:0}
     .item-name{display:-webkit-box!important;min-width:0;min-height:34px;margin-top:1px;overflow:hidden;color:#444;font-size:12px;font-weight:800;line-height:17px;overflow-wrap:anywhere;-webkit-box-orient:vertical;-webkit-line-clamp:2}
     .item-meta{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -302,11 +302,11 @@ body{display:block}
   <script src="default-wardrobe-data.js"></script>
   <script src="garment-taxonomy.js"></script>
   <script src="api-client.js"></script>
-  <script src="clip-vision-worker.js"></script>
-  <script src="clip-vision-client.js"></script>
+  <script src="clip-vision-worker.js?v=clip-preload-q8-20261102"></script>
+  <script src="clip-vision-client.js?v=clip-preload-q8-20261102"></script>
   <script src="clothing-attributes.js"></script>
-  <script src="wardrobe-import.js"></script>
-  <script src="wardrobe-import-ui.js"></script>
+  <script src="wardrobe-import.js?v=import-recovery-20261102"></script>
+  <script src="wardrobe-import-ui.js?v=import-recovery-20261102"></script>
   <script>
     const defaultCategories = GarmentTaxonomy.values('category');
     const defaultOccasions = GarmentTaxonomy.values('occasions');
@@ -923,10 +923,13 @@ body{display:block}
       if(openedSwipeRow===row) openedSwipeRow=null;
     }
     function bindSwipeRow(row,onDelete){
+      if(row.dataset.swipeBound) return;
+      row.dataset.swipeBound='true';
       const content=row.querySelector('.swipe-content');
       const deleteBtn=row.querySelector('.swipe-delete');
       let startX=0,startY=0,startOffset=0,dragging=false,horizontal=false,suppressClick=false;
       content.addEventListener('pointerdown',e=>{
+        if(e.target.closest('button')) return;
         if(e.button!==undefined&&e.button!==0) return;
         if(openedSwipeRow&&openedSwipeRow!==row) closeSwipeRow();
         startX=e.clientX;startY=e.clientY;
@@ -1375,11 +1378,14 @@ body{display:block}
           try{
             image=await createImageBitmap(file,{imageOrientation:'from-image'});
           }catch(err){
-            image=await createImageBitmap(file);
+            try{image=await createImageBitmap(file)}catch(fallbackError){}
           }
-        }else{
+        }
+        // A browser may display a photo even when its bitmap decoder rejects it.
+        if(!image){
           objectUrl=URL.createObjectURL(file);
-          image=await loadImage(objectUrl);
+          try{image=await loadImage(objectUrl)}
+          catch(err){image=await loadImage(await fileToDataUrl(file))}
         }
         const sourceWidth=image.width||image.naturalWidth;
         const sourceHeight=image.height||image.naturalHeight;
@@ -1544,12 +1550,18 @@ body{display:block}
       const stage=message.stage||(message.type==='ready'?'load':'preparing');
       const rawPercent=Math.max(0,Math.min(100,Number(message.percent)||0));
       const previous=Math.max(0,Number(source&&source.recognizeProgress)||0);
-      let modelProgress=Math.max(0,Number(source&&source.recognizeModelProgress)||0);
+      const changedSource=!!message.source&&message.source!==source?.recognizeSource;
+      let modelProgress=changedSource?0:Math.max(0,Number(source?.recognizeModelProgress)||0);
+      const loaded=Math.max(changedSource?0:Number(source?.recognizeDownloadedBytes)||0,Number(message.loaded)||0);
+      const total=message.total==null
+        ?(changedSource?0:Number(source?.recognizeDownloadTotal)||0)
+        :Math.max(0,Number(message.total)||0);
       let mapped=previous;
       if(stage==='preparing') mapped=Math.max(previous,2);
       else if(stage==='boot') mapped=Math.max(previous,5);
+      else if(stage==='connecting') mapped=Math.max(previous,8);
       else if(stage==='download'){
-        modelProgress=Math.max(modelProgress,rawPercent);
+        modelProgress=rawPercent;
         mapped=Math.max(previous,8+modelProgress*.65);
       }else if(stage==='load') mapped=Math.max(previous,76);
       else if(stage==='retrying') mapped=Math.max(previous,10);
@@ -1557,23 +1569,41 @@ body{display:block}
       else if(stage==='validating') mapped=Math.max(previous,96);
       const messages={
         preparing:'正在准备衣物图片',
-        boot:'正在启动手机端 AI',
-        load:'正在从浏览器缓存加载模型',
+        boot:'正在启动衣物识别',
+        connecting:'正在连接 AI 模型下载源',
+        load:'正在加载衣物识别模型',
         retrying:'首次识别失败，正在自动重试',
         inference:'正在识别衣物信息',
         validating:'正在校验结构化识别结果'
       };
+      const downloaded=loaded>0?`${(loaded/1024/1024).toFixed(1)} MB`:'';
+      const downloadMessage=loaded>0
+        ?`正在下载 AI 模型${total>0?` ${Math.round(modelProgress)}%`:''}（已下载 ${downloaded}）`
+        :'正在等待模型文件，首次使用需要下载';
       return {
         stage,
         progress:Math.min(99,Math.round(mapped)),
         modelProgress:Math.round(modelProgress),
-        message:stage==='download'?`首次使用：正在下载本地 AI 模型 ${Math.round(modelProgress)}%`:(messages[stage]||'手机端 AI 正在处理')
+        recognizeSource:message.source||source?.recognizeSource||'',
+        recognizeDownloadedBytes:loaded,recognizeDownloadTotal:total,
+        message:stage==='download'?downloadMessage:(messages[stage]||'衣物识别正在处理')
       };
+    }
+    function scheduleModelPreload(){
+      const schedule=()=>{
+        const preload=()=>Promise.resolve().then(()=>window.ClipVision?.preload()).catch(()=>{});
+        if(typeof window.requestIdleCallback==='function') window.requestIdleCallback(preload,{timeout:1000});
+        else window.setTimeout(preload,120);
+      };
+      if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',schedule,{once:true});
+      else schedule();
     }
     function recognitionFailureMessage(error){
       const code=String(error&&error.code||'');
       if(code==='worker_not_supported') return '当前手机浏览器不支持本地 AI Worker，请改用手动填写。';
       if(code==='clip_worker_timeout') return '本地 AI 识别超时，请重试；仍失败可手动填写。';
+      if(code==='clip_worker_stalled') return '模型加载长时间没有进展，已停止等待。请切换网络重试，或补充衣物信息。';
+      if(code==='clip_model_load_failed') return '模型下载或加载失败，请检查网络后重试，或补充衣物信息。';
       if(code==='clip_worker_cancelled') return '本次识别已取消。';
       return '手机端 AI 识别失败，请检查网络和设备空间后重试，或改为手动填写。';
     }
@@ -1591,7 +1621,7 @@ body{display:block}
           });
         }catch(err){
           lastError=err;
-          if(err.code==='clip_worker_cancelled') throw err;
+          if(err.autoRetry===false||['clip_worker_cancelled','clip_worker_timeout','clip_worker_stalled','clip_model_load_failed'].includes(err.code)) throw err;
           if(attempt===0) ClipVision.reset('本地 AI 首次识别失败，正在重试');
         }
       }
@@ -1640,8 +1670,8 @@ body{display:block}
         occasion:context.occasion,
         warmth:Number(warmthTop&&warmthTop.value)||Number(fallback.warmth)||({夏:1,春:2,秋:3,冬:5}[season]||3),
         formality:Number(formalityTop&&formalityTop.value)||Number(fallback.formality)||2,
-        source:'Marqo-FashionCLIP',
-        model:workerResult.model||{provider:'transformers.js',registry:'huggingface',name:'Marqo/marqo-fashionCLIP',version:'3.8.1-marqo-q8-worker-v1',execution:'mobile-worker'},
+        source:'CLIP',
+        model:workerResult.model||{provider:'transformers.js',registry:'huggingface',name:'Xenova/clip-vit-base-patch32',version:'3.8.1-q8-worker',execution:'mobile-worker'},
         fieldScores:{
           category:categoryTop&&categoryTop.score||.05,
           color:color.score,
@@ -1681,7 +1711,7 @@ body{display:block}
       const reviewFields=Object.entries(confidence).filter(([,score])=>score<.65).map(([field])=>field);
       return {
         contract_version:'1.0',request_id:recognition.requestId||`recognition_${Date.now()}`,taxonomy_version:GarmentTaxonomy.version,status:reviewFields.length?'needs_review':'succeeded',
-        model:{provider:recognition.model&&recognition.model.provider||'transformers.js',name:recognition.model&&recognition.model.name||'Marqo/marqo-fashionCLIP',version:recognition.model&&recognition.model.version||'3.8.1-marqo-q8-worker-v1'},
+        model:{provider:recognition.model&&recognition.model.provider||'transformers.js',name:recognition.model&&recognition.model.name||'Xenova/clip-vit-base-patch32',version:recognition.model&&recognition.model.version||'3.8.1-q8-worker'},
         attributes:{
           category:recognition.category,subcategory:recognition.subcategory,
           colors:[recognition.color||colorResult&&colorResult.value||'灰色'],pattern:recognition.pattern,
@@ -1705,7 +1735,7 @@ body{display:block}
         materials:attributes.materials||['未知'],fit:attributes.fit,length:attributes.length,
         style:(attributes.styles||[])[0]||'简约',season:(attributes.seasons||[])[0]||'春',
         occasion:(attributes.occasions||[])[0]||'日常',warmth:attributes.warmth,formality:attributes.formality,
-        source:run.degraded?'Marqo-FashionCLIP（本地校验）':'Marqo-FashionCLIP',score:Number(contract.overall_confidence)||0,
+        source:run.degraded?'CLIP（本地校验）':'CLIP',score:Number(contract.overall_confidence)||0,
         fieldScores:{category:confidence.category,subcategory:confidence.subcategory,color:confidence.colors,pattern:confidence.pattern,material:confidence.materials,fit:confidence.fit,length:confidence.length,style:confidence.styles,season:confidence.seasons,occasion:confidence.occasions,warmth:confidence.warmth,formality:confidence.formality},
         contract,runId:run.run_id||'',degraded:!!run.degraded
       };
@@ -2642,6 +2672,7 @@ body{display:block}
     const queryParams=new URLSearchParams(location.search);
     const requestedPage=queryParams.get('page');
     if(['wardrobe','today','fav','discover'].includes(requestedPage)) go(requestedPage);
+    scheduleModelPreload();
   </script>
 </body>
 </html>

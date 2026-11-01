@@ -186,6 +186,7 @@
   }
 
   function generateItemName(item = {}) {
+    const MAX_NAME_LENGTH = 12;
     const contract = item.contract || item.recognitionContract || item.recognition || {};
     const attributes = item.attributes || contract.attributes || item;
     const scores = contract.field_confidence || item.fieldScores || {};
@@ -200,28 +201,43 @@
     const categoryNames = { 上装: '上衣', 下装: '裤装', 裙子: '裙装', 外套: '外套', 连体装: '连体装', 鞋帽: '鞋帽', 包包: '包包', 配饰: '配饰' };
     const subcategory = String(attributes.subcategory || '').trim();
     const specific = subcategory && !/^(其他|未知|不适用)/.test(subcategory)
-      && !Object.hasOwn(categoryNames, subcategory) && usable('subcategory', .65);
+      && !Object.hasOwn(categoryNames, subcategory) && subcategory.length <= MAX_NAME_LENGTH
+      && usable('subcategory', .65);
     const base = specific ? subcategory : categoryNames[category] || '衣物';
     const color = (attributes.colors || [attributes.color || item.color || ''])[0];
     const colorText = usable('colors') && Object.hasOwn(swatches, color) && color !== '多色' ? color : '';
-    let detail = '';
+    const details = [];
+    const addDetail = (value, field, threshold) => {
+      if (!value || !usable(field, threshold)) return;
+      if (base.includes(value) || details.includes(value)) return;
+      details.push(value);
+    };
     if (specific) {
       const pattern = attributes.pattern;
-      if (usable('pattern') && ['条纹', '格纹', '波点', '印花', '字母', '动物纹', '拼色', '渐变'].includes(pattern)) detail = pattern;
+      if (['条纹', '格纹', '波点', '印花', '字母', '动物纹', '拼色', '渐变'].includes(pattern)) {
+        addDetail(pattern, 'pattern', .7);
+      }
       // Use visible knit texture, rather than claiming fiber composition from a photo.
-      if (!detail && usable('materials', .75) && (attributes.materials || []).includes('针织')
-        && ['上装', '外套', '裙子', '连体装'].includes(category) && !base.includes('针织')) detail = '针织';
-      if (!detail && usable('length') && ['上装', '外套', '裙子', '连体装'].includes(category)) {
-        detail = { 超短: '超短款', 短: '短款', 中长: '中长款', 长: '长款' }[attributes.length] || '';
+      if ((attributes.materials || []).includes('针织')
+        && ['上装', '外套', '裙子', '连体装'].includes(category)) {
+        addDetail('针织', 'materials', .75);
       }
-      if (!detail && usable('fit', .75) && ['上装', '下装', '外套', '裙子', '连体装'].includes(category)) {
-        detail = { 修身: '修身', 宽松: '宽松', 廓形: '廓形' }[attributes.fit] || '';
+      if (['上装', '外套', '裙子', '连体装'].includes(category)) {
+        const length = { 超短: '超短款', 短: '短款', 中长: '中长款', 长: '长款' }[attributes.length] || '';
+        addDetail(length, 'length', .7);
       }
-      if (base.includes(detail)) detail = '';
+      if (['上装', '下装', '外套', '裙子', '连体装'].includes(category)) {
+        const fit = { 修身: '修身', 宽松: '宽松', 廓形: '廓形' }[attributes.fit] || '';
+        addDetail(fit, 'fit', .75);
+      }
     }
-    // Keep the complete item type; drop optional details before shortening a name.
-    if ((colorText + detail + base).length <= 12) return colorText + detail + base;
-    if ((colorText + base).length <= 12) return colorText + base;
+    // Preserve the existing priority: pattern, knit texture, length, then fit.
+    const selected = details.slice(0, 2);
+    while (selected.length && (colorText + selected.join('') + base).length > MAX_NAME_LENGTH) {
+      selected.pop();
+    }
+    const detailedName = colorText + selected.join('') + base;
+    if (detailedName.length <= MAX_NAME_LENGTH) return detailedName;
     return base;
   }
 

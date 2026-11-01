@@ -21,9 +21,11 @@ function wardrobeItemCardHtml(item) {
   const actions = job?.phase === 'error'
     ? `<div class="import-actions"><button type="button" data-import-action="retry">重试</button>${job.failedPhase === 'cutting' && !job.useOriginal ? '<button type="button" data-import-action="original">保留原图</button>' : ''}${job.originalPhotoUrl ? '<button type="button" data-import-action="edit">补充信息</button>' : ''}</div>`
     : job?.phase === 'sync_error' ? '<div class="import-actions"><button type="button" data-import-action="retry">同步到衣橱</button></div>' : '';
-  const meta = isWardrobeItemReady(item)
-    ? [item.category, item.season, item.occasion].filter(Boolean).join(' · ')
-    : '完成后自动保存';
+  const meta = job?.phase === 'error'
+    ? '处理未完成，请重试'
+    : isWardrobeItemReady(item)
+      ? [item.category, item.season, item.occasion].filter(Boolean).join(' · ')
+      : '完成后自动保存';
   return `<span class="tag-dot"></span><div class="item-img">${itemMediaHtml(item)}${overlay ? `<div class="import-overlay">${spinner}<span data-import-label>${escapeHtml(importLabel(job))}</span>${progress}${errorDetail}</div>` : ''}</div><div class="item-name">${escapeHtml(item.name || '新衣物')}</div><div class="item-meta">${escapeHtml(meta)}</div>${job?.phase === 'sync_error' ? '<div class="import-local-note">已保存本机，联网后自动同步</div>' : ''}${actions}`;
 }
 
@@ -51,8 +53,9 @@ function renderImportSummary() {
   const jobs = importQueue.jobs.filter(job => !job.deleted);
   const pending = jobs.filter(job => ['queued', 'preparing', 'cutting', 'recognizing', 'saving'].includes(job.phase)).length;
   const failed = jobs.filter(job => job.phase === 'error' || job.phase === 'sync_error').length;
-  summary.hidden = !pending && !failed && !importStorageWarning;
-  summary.textContent = importStorageWarning || (pending ? `正在导入 ${pending} 件，期间可继续使用其他功能${failed ? ` · ${failed} 件待处理` : ''}` : `${failed} 件衣物待处理，可在卡片上重试或补充信息`);
+  summary.hidden = !pending && !failed;
+  const status = pending ? `正在导入 ${pending} 件，期间可继续使用其他功能${failed ? ` · ${failed} 件待处理` : ''}` : `${failed} 件衣物待处理，可在卡片上重试或补充信息`;
+  summary.textContent = `${status}${importStorageWarning ? `。${importStorageWarning}` : ''}`;
 }
 
 function updateWardrobeSummary() {
@@ -130,12 +133,14 @@ async function processWardrobeImport(job, controls) {
     await controls.checkpoint({ cutoutUrl });
   }
   const image = job.cutoutUrl || job.originalPhotoUrl;
-  await controls.checkpoint({ phase: 'recognizing', failedPhase: 'recognizing', progress: 0, message: '' });
+  await controls.checkpoint({ phase: 'recognizing', failedPhase: 'recognizing', progress: 0, message: '', recognizeModelProgress: 0, recognizeSource: '', recognizeDownloadedBytes: 0, recognizeDownloadTotal: 0 });
   let raw;
   try {
     raw = await recognizeClothingV1(null, image, job.photoName, {}, message => {
-        const details = recognitionProgressDetails({ recognizeProgress: job.progress }, message);
-        controls.report({ requestId: message.request_id || job.requestId, progress: details.progress, message: details.message });
+        const details = recognitionProgressDetails({ ...job, recognizeProgress: job.progress }, message);
+        controls.report({ requestId: message.request_id || job.requestId, progress: details.progress, message: details.message,
+          recognizeModelProgress: details.modelProgress, recognizeSource: details.recognizeSource,
+          recognizeDownloadedBytes: details.recognizeDownloadedBytes, recognizeDownloadTotal: details.recognizeDownloadTotal });
     });
   } catch (error) {
     throw new Error(recognitionFailureMessage(error));

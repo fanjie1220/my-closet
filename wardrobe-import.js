@@ -11,6 +11,7 @@
       this.jobs = [];
       this.running = false;
       this.writes = Promise.resolve();
+      this.failedWrites = new Set();
       this.ready = this.restore();
       window.addEventListener('online', () => this.retrySync());
     }
@@ -57,14 +58,26 @@
       if (!this.db) return Promise.resolve();
       const { previewUrl, ...record } = job;
       // Capture now, so a delayed write cannot resurrect a deleted checkpoint.
-      const snapshot = structuredClone({ ...record, scope: this.options.scope, key: `${this.options.scope}:${job.id}` });
+      let snapshot;
+      try {
+        snapshot = structuredClone({ ...record, scope: this.options.scope, key: `${this.options.scope}:${job.id}` });
+      } catch (error) {
+        // Failure to save a checkpoint must not stop the in-memory import queue.
+        this.failedWrites.add(job.id);
+        this.storageWarning(error);
+        return Promise.resolve();
+      }
       this.writes = this.writes.then(() => new Promise((resolve, reject) => {
         const transaction = this.db.transaction('jobs', 'readwrite');
         transaction.objectStore('jobs').put(snapshot);
-        transaction.oncomplete = resolve;
+        transaction.oncomplete = () => {
+          this.failedWrites.delete(job.id);
+          if (this.warned && !this.failedWrites.size) { this.warned = false; this.options.onWarning?.(''); }
+          resolve();
+        };
         transaction.onerror = () => reject(transaction.error);
         transaction.onabort = () => reject(transaction.error);
-      })).catch(error => this.storageWarning(error));
+      })).catch(error => { this.failedWrites.add(job.id); this.storageWarning(error); });
       return this.writes;
     }
 
