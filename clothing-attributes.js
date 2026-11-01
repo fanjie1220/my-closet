@@ -185,6 +185,38 @@
     return rankPredictions(predictions, candidates, 'color');
   }
 
+  const namingThresholds = { subcategory: .65, pattern: .7 };
+  function clearNamingPrediction(prediction, field) {
+    return prediction && prediction.score >= namingThresholds[field] && prediction.margin >= .15;
+  }
+
+  function namingRefinementPrompts(category, current = {}) {
+    const groups = {};
+    if (!taxonomy.fields.subcategory.by_category[category]) return groups;
+    const subcategories = taxonomy.prompts('subcategory', 'subcategory', category);
+    if (!clearNamingPrediction(current.subcategory, 'subcategory')) {
+      groups.subcategory = subcategories.map(prompt => ({ ...prompt, label: `a product photo of ${prompt.label}` }));
+    }
+    if (!clearNamingPrediction(current.pattern, 'pattern')) {
+      const subjects = { 上装: 'a top', 下装: 'a pair of pants', 裙子: 'a skirt or dress', 外套: 'a jacket or coat', 连体装: 'a one-piece outfit', 鞋帽: 'footwear or a hat', 包包: 'a bag', 配饰: 'a fashion accessory' };
+      const subject = clearNamingPrediction(current.subcategory, 'subcategory')
+        ? subcategories.find(prompt => prompt.subcategory === current.subcategory.value)?.label || subjects[category]
+        : subjects[category];
+      groups.pattern = taxonomy.prompts('pattern', 'pattern').map(prompt => ({ ...prompt, label: `a product photo of ${subject} with ${prompt.label}` }));
+    }
+    return groups;
+  }
+
+  function refineNamingPredictions(predictions, groups, current) {
+    const refined = { ...current };
+    for (const [field, prompts] of Object.entries(groups)) {
+      const candidate = rankPredictions(predictions, prompts, field);
+      // Keep the actual relative score; a close tie must not become a precise name.
+      if (clearNamingPrediction(candidate, field)) refined[field] = candidate;
+    }
+    return refined;
+  }
+
   function generateItemName(item = {}) {
     const MAX_NAME_LENGTH = 12;
     const contract = item.contract || item.recognitionContract || item.recognition || {};
@@ -193,10 +225,13 @@
     const manual = new Set([...(item.manualFields || []), ...(contract.manualFields || [])]);
     if (manual.has('name') && typeof item.name === 'string' && item.name.trim()) return item.name;
     const review = new Set(contract.review?.fields || []);
+    const reviewActions = contract.review?.actions || {};
     const aliases = { colors: 'color', materials: 'material' };
     // These scores are selection signals, not calibrated accuracy probabilities.
     const usable = (field, threshold = .7) => manual.has(field) || manual.has(aliases[field])
-      || (!review.has(field) && Number(scores[field] ?? scores[aliases[field]]) >= threshold);
+      || ((!review.has(field) || reviewActions[field] === 'confirm')
+        && reviewActions[field] !== 'manual_required'
+        && Number(scores[field] ?? scores[aliases[field]]) >= threshold);
     const category = attributes.category || item.category || '';
     const categoryNames = { 上装: '上衣', 下装: '裤装', 裙子: '裙装', 外套: '外套', 连体装: '连体装', 鞋帽: '鞋帽', 包包: '包包', 配饰: '配饰' };
     const subcategory = String(attributes.subcategory || '').trim();
@@ -212,11 +247,12 @@
       if (base.includes(value) || details.includes(value)) return;
       details.push(value);
     };
+    // A clear pattern remains useful even if the exact garment type is uncertain.
+    const pattern = attributes.pattern;
+    if (['条纹', '格纹', '波点', '印花', '字母', '动物纹', '拼色', '渐变'].includes(pattern)) {
+      addDetail(pattern, 'pattern', .7);
+    }
     if (specific) {
-      const pattern = attributes.pattern;
-      if (['条纹', '格纹', '波点', '印花', '字母', '动物纹', '拼色', '渐变'].includes(pattern)) {
-        addDetail(pattern, 'pattern', .7);
-      }
       // Use visible knit texture, rather than claiming fiber composition from a photo.
       if ((attributes.materials || []).includes('针织')
         && ['上装', '外套', '裙子', '连体装'].includes(category)) {
@@ -241,5 +277,5 @@
     return base;
   }
 
-  return { analyzeColor, resolveColor, resolveContext, rankPredictions, rankColor, generateItemName };
+  return { analyzeColor, resolveColor, resolveContext, rankPredictions, rankColor, namingRefinementPrompts, refineNamingPredictions, generateItemName };
 });

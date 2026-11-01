@@ -304,7 +304,7 @@ body{display:block}
   <script src="api-client.js"></script>
   <script src="clip-vision-worker.js?v=clip-preload-q8-20261102"></script>
   <script src="clip-vision-client.js?v=clip-preload-q8-20261102"></script>
-  <script src="clothing-attributes.js"></script>
+  <script src="clothing-attributes.js?v=naming-refine-20261102-1"></script>
   <script src="wardrobe-import.js?v=import-recovery-20261102"></script>
   <script src="wardrobe-import-ui.js?v=import-recovery-20261102"></script>
   <script>
@@ -1607,7 +1607,7 @@ body{display:block}
       if(code==='clip_worker_cancelled') return '本次识别已取消。';
       return '手机端 AI 识别失败，请检查网络和设备空间后重试，或改为手动填写。';
     }
-    async function classifyAllPromptsWithRetry(image,requestId,onProgress){
+    async function classifyAllPromptsWithRetry(image,requestId,onProgress,labels=allClothingPromptLabels()){
       if(!window.ClipVision) throw new Error('当前浏览器无法启动本地 AI');
       let lastError=null;
       for(let attempt=0;attempt<2;attempt++){
@@ -1615,7 +1615,7 @@ body{display:block}
           if(attempt&&onProgress) onProgress({stage:'retrying',percent:0,request_id:requestId});
           return await ClipVision.recognize({
             image,
-            labels:allClothingPromptLabels(),
+            labels,
             requestId,
             onProgress
           });
@@ -1639,8 +1639,22 @@ body{display:block}
       const categoryTop=pickTopPrediction(predictions,clothingCategoryPromptsV1,'category');
       if(!categoryTop||!defaultCategories.includes(categoryTop.value)) throw new Error('未能确定衣物品类');
       const category=categoryTop.value;
-      const subcategoryTop=pickTopPrediction(predictions,clothingSubcategoryPrompts[category]||clothingSubcategoryPrompts.上装,'subcategory');
-      const patternTop=pickTopPrediction(predictions,clothingPatternPrompts,'pattern');
+      let subcategoryTop=pickTopPrediction(predictions,clothingSubcategoryPrompts[category]||clothingSubcategoryPrompts.上装,'subcategory');
+      let patternTop=pickTopPrediction(predictions,clothingPatternPrompts,'pattern');
+      const namingCurrent={subcategory:subcategoryTop,pattern:patternTop};
+      const namingGroups=ClothingAttributes.namingRefinementPrompts(category,namingCurrent);
+      const namingLabels=Object.values(namingGroups).flat().map(prompt=>prompt.label);
+      if(namingLabels.length){
+        try{
+          const checked=await classifyAllPromptsWithRetry(inferenceImage,requestId,message=>report(message),namingLabels);
+          const refined=ClothingAttributes.refineNamingPredictions(checked.predictions||[],namingGroups,namingCurrent);
+          subcategoryTop=refined.subcategory;
+          patternTop=refined.pattern;
+        }catch(error){
+          if(error.code==='clip_worker_cancelled') throw error;
+          console.warn('Naming recheck unavailable; retaining initial recognition.',error);
+        }
+      }
       const materialTop=pickTopPrediction(predictions,clothingMaterialPrompts,'material');
       const fitTop=pickTopPrediction(predictions,clothingFitPrompts,'fit');
       const lengthTop=pickTopPrediction(predictions,clothingLengthPrompts,'length');
