@@ -2050,20 +2050,12 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
       };
     }
     let bgRemoverPromise=null;
-    let bgRemoverWorker=null;
-    function releaseBackgroundRemover(){
-      const worker=bgRemoverWorker;
-      bgRemoverWorker=null;
-      bgRemoverPromise=null;
-      if(worker) worker.terminate();
-    }
     async function getBackgroundRemover(){
       if(!bgRemoverPromise){
         const sourceUrl=URL.createObjectURL(new Blob([`(${backgroundRemovalWorkerMain.toString()})();`],{type:'text/javascript'}));
         let worker;
         try{worker=new Worker(sourceUrl)}
         finally{URL.revokeObjectURL(sourceUrl)}
-        bgRemoverWorker=worker;
         bgRemoverPromise=Promise.resolve((image,config={},onProgress)=>new Promise((resolve,reject)=>{
           const fail=message=>{clearTimeout(timer);worker.terminate();bgRemoverPromise=null;reject(new Error(message))};
           const timer=setTimeout(()=>fail('抠图超时，请检查网络后重试'),6*60*1000);
@@ -2188,6 +2180,7 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
       else if(stage==='retrying') mapped=Math.max(previous,10);
       else if(stage==='inference') mapped=Math.max(previous,82+rawPercent*.12);
       else if(stage==='validating') mapped=Math.max(previous,96);
+      else if(stage==='quick') mapped=Math.max(previous,96);
       const messages={
         preparing:'正在准备衣物图片',
         boot:'正在启动衣物识别',
@@ -2196,6 +2189,7 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
         initializing:'正在初始化衣物识别模型，手机首次启动可能较慢',
         retrying:'首次识别失败，正在自动重试',
         inference:'正在识别衣物信息',
+        quick:'正在整理文件名和默认标签',
         validating:'正在校验结构化识别结果'
       };
       const downloaded=loaded>0?`${(loaded/1024/1024).toFixed(1)} MB`:'';
@@ -2212,9 +2206,9 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
       };
     }
     function scheduleModelPreload(){
+      if(isMobilePerformanceMode) return;
       const schedule=()=>{
         const preload=()=>Promise.resolve().then(()=>{
-          if(isMobilePerformanceMode&&(bgRemoverWorker||importQueue?.running)) return;
           return window.ClipVision?.preload();
         }).catch(()=>{});
         if(typeof window.requestIdleCallback==='function') window.requestIdleCallback(preload,{timeout:1000});
@@ -2253,7 +2247,34 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
       }
       throw lastError||new Error('本地 AI 识别失败');
     }
+    function recognizeClothingQuick(file,photoName='',fallback={},onProgress=null){
+      const name=String(photoName||(file&&file.name)||'').toLowerCase();
+      let category=defaultCategories.includes(fallback.category)?fallback.category:'下装';
+      let season=confirmationSeasons.includes(fallback.season)?fallback.season:'春';
+      let categoryMatched=false,seasonMatched=false;
+      const categories=[
+        ['裙子',/裙|dress|skirt/],['鞋帽',/鞋|帽|shoe|boot|hat|cap/],
+        ['包包',/包|bag/],['下装',/裤|pants|jeans|trouser/],
+        ['上装',/衣|上装|shirt|top|tee|coat|jacket|sweater|hoodie|blouse/]
+      ];
+      for(const [value,pattern] of categories){
+        if(pattern.test(name)){category=value;categoryMatched=true;break}
+      }
+      for(const [value,pattern] of [['春',/春|spring/],['夏',/夏|summer/],['秋',/秋|autumn|fall/],['冬',/冬|winter/]]){
+        if(pattern.test(name)){season=value;seasonMatched=true;break}
+      }
+      const requestId='quick_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);
+      if(onProgress) onProgress({request_id:requestId,stage:'quick',percent:100});
+      return {
+        requestId,category,subcategory:defaultSubcategory[category],season,
+        pattern:'未知',materials:['未知'],fit:'未知',length:'未知',
+        style:'简约',occasion:'日常',warmth:({夏:1,春:2,秋:3,冬:5}[season]||3),formality:2,
+        source:categoryMatched||seasonMatched?'文件名':'默认标签',score:0,fieldScores:{},
+        model:{provider:'filename-default',name:categoryMatched||seasonMatched?'filename-labels':'default-labels',version:'1.0'}
+      };
+    }
     async function recognizeClothingV1(file,originalPhotoUrl='',photoName='',fallback={},onProgress=null){
+      if(isMobilePerformanceMode) return recognizeClothingQuick(file,photoName,fallback,onProgress);
       const requestId='recognition_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);
       const report=payload=>{if(onProgress)onProgress({request_id:requestId,...payload})};
       report({stage:'preparing',percent:0});
@@ -2375,13 +2396,23 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
         materials:attributes.materials||['未知'],fit:attributes.fit,length:attributes.length,
         style:(attributes.styles||[])[0]||'简约',season:(attributes.seasons||[])[0]||'春',
         occasion:(attributes.occasions||[])[0]||'日常',warmth:attributes.warmth,formality:attributes.formality,
-        source:run.degraded?'CLIP（本地校验）':'CLIP',score:Number(contract.overall_confidence)||0,
+        source:contract.model?.provider==='filename-default'?(contract.model.name==='filename-labels'?'文件名':'默认标签'):(run.degraded?'CLIP（本地校验）':'CLIP'),score:Number(contract.overall_confidence)||0,
         fieldScores:{category:confidence.category,subcategory:confidence.subcategory,color:confidence.colors,pattern:confidence.pattern,material:confidence.materials,fit:confidence.fit,length:confidence.length,style:confidence.styles,season:confidence.seasons,occasion:confidence.occasions,warmth:confidence.warmth,formality:confidence.formality},
         contract,runId:run.run_id||'',degraded:!!run.degraded
       };
     }
     async function finalizeVisionRecognition(recognition,colorResult,imageDataUrl=''){
       const candidate=visionCandidateFromRecognition(recognition,colorResult);
+      if(recognition.model?.provider==='filename-default'){
+        const fields=Object.keys(candidate.field_confidence);
+        const colorScore=Math.max(0,Math.min(1,Number(colorResult&&colorResult.score)||0));
+        candidate.status='needs_review';
+        candidate.field_confidence=Object.fromEntries(fields.map(field=>[field,field==='colors'?colorScore:0]));
+        candidate.overall_confidence=0;
+        candidate.review={required:true,fields,actions:Object.fromEntries(fields.map(field=>[field,'manual_required']))};
+        candidate.warnings=['已使用文件名或默认标签入库，未执行衣物图像识别，请确认衣物信息。'];
+        return recognitionFromContract(candidate,{degraded:true});
+      }
       const dataUrl=String(imageDataUrl||'');
       const mimeMatch=dataUrl.match(/^data:(image\/(?:jpeg|png|webp));base64,/);
       const dataBase64=mimeMatch?dataUrl.slice(dataUrl.indexOf(',')+1):'';
@@ -2400,19 +2431,13 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
     async function removeBackground(file,originalPhotoUrl='',onProgress){
       const imageSource=file||originalPhotoUrl;
       if(!imageSource) throw new Error('missing image');
-      // Do not keep two large model runtimes resident together on a phone.
-      if(isMobilePerformanceMode) window.ClipVision?.reset('正在抠图，暂时释放识别模型','clip_worker_released',false);
-      try{
-        const imglyRemoveBackground=await getBackgroundRemover();
-        const blob=await imglyRemoveBackground(imageSource,{
-          model:'isnet_quint8',
-          output:{format:'image/png',type:'foreground'}
-        },onProgress);
-        const rawDataUrl=await blobToDataUrl(blob);
-        return await standardizeCutoutImage(rawDataUrl,{size:384,paddingRatio:.1});
-      }finally{
-        if(isMobilePerformanceMode) releaseBackgroundRemover();
-      }
+      const imglyRemoveBackground=await getBackgroundRemover();
+      const blob=await imglyRemoveBackground(imageSource,{
+        model:'isnet_quint8',
+        output:{format:'image/png',type:'foreground'}
+      },onProgress);
+      const rawDataUrl=await blobToDataUrl(blob);
+      return await standardizeCutoutImage(rawDataUrl,{size:384,paddingRatio:.1});
     }
     function renderSaveSceneChips(){
       const box=$('#saveSceneChips'); if(!box) return;
