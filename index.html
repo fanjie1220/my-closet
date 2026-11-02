@@ -39,6 +39,14 @@
     /* 折叠搭配画布 */
     .wardrobe-canvas-shell{position:absolute;right:18px;top:74px;z-index:20;pointer-events:none}.wardrobe-canvas-toggle{position:absolute;right:0;top:0;width:46px;height:46px;border:0;border-radius:18px;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 30px rgba(0,0,0,.24);cursor:pointer;pointer-events:auto;transition:.24s ease}.wardrobe-canvas-toggle.hide{display:none}.wardrobe-canvas-toggle svg{width:25px;height:25px;stroke:#fff}.wardrobe-canvas-toggle .canvas-count{position:absolute;right:-5px;top:-6px;min-width:18px;height:18px;border-radius:999px;background:#ff4b7a;color:#fff;font-size:10px;font-weight:850;display:flex;align-items:center;justify-content:center;padding:0 5px;border:2px solid #fbfbfb}.wardrobe-canvas{position:absolute;right:0;top:0;width:248px;height:338px;min-height:0;background:rgba(255,255,255,.96);border-radius:28px;box-shadow:0 22px 58px rgba(0,0,0,.20);border:1px solid rgba(238,238,238,.95);backdrop-filter:blur(18px);transform:scale(.82) translate(18px,-18px);transform-origin:top right;opacity:0;pointer-events:none;transition:.24s ease;overflow:hidden}.wardrobe-canvas.open{transform:scale(1) translate(0,0);opacity:1;pointer-events:auto}.canvas-head{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 12px 0 16px;border-bottom:1px solid #f3f3f3}.canvas-head strong{font-size:13px}.canvas-head span{font-size:10px;color:#aaa;margin-left:5px}.canvas-fold{border:0;background:#f3f3f3;color:#777;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:800}.wardrobe-canvas .save-outfit{right:12px;top:58px;border-radius:14px;font-size:10px;padding:8px 11px}.wardrobe-canvas .trash{right:67px;top:60px;font-size:15px}.wardrobe-canvas .canvas-placeholder{top:48px;font-size:11px;color:#cfcfcf}.wardrobe-canvas .canvas-item{width:78px;height:90px;border-radius:16px}.wardrobe-canvas .canvas-item .cloth{transform:scale(.72)}.wardrobe-canvas .canvas-item .remove{right:2px;top:2px;width:20px;height:20px;font-size:12px}.wardrobe-canvas .canvas-item.selected{outline-offset:-6px}.view.active{position:relative}.filter-panel{padding-right:58px}.item-card.added{box-shadow:0 12px 30px rgba(0,0,0,.05),0 0 0 2px rgba(17,17,17,.08) inset}
 
+    /* 今日页折叠穿搭助手，与推荐内容独立浮动 */
+    .today-assistant-shell{position:absolute;top:calc(74px + env(safe-area-inset-top));right:16px;bottom:max(calc(95px + env(safe-area-inset-bottom)),calc(var(--assistant-keyboard-inset,0px) + 12px));width:min(380px,calc(100% - 32px));z-index:20;pointer-events:none;display:none}.screen:has(#view-today.active) .today-assistant-shell{display:block}
+    .today-chat-entry{position:absolute;right:0;bottom:0;width:48px;height:52px;border:0;border-radius:18px;background:#242320;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;pointer-events:auto;box-shadow:0 12px 28px rgba(0,0,0,.2);transition:transform .2s}.today-chat-entry:hover{transform:translateY(-2px)}.today-chat-entry:focus-visible{outline:2px solid #968367;outline-offset:3px}.today-chat-entry[aria-expanded=true]{visibility:hidden;pointer-events:none}.today-chat-symbol{display:grid;place-items:center}.today-chat-symbol svg{width:24px;height:24px}.today-chat-label{font-size:9px;line-height:1.2;font-weight:700}
+    .today-chat-panel{position:absolute;right:0;bottom:0;width:100%;height:min(560px,100%);max-height:100%;border:1px solid #e9e7e2;border-radius:24px;background:rgba(255,255,255,.98);overflow:hidden;display:flex;flex-direction:column;pointer-events:auto;box-shadow:0 20px 55px rgba(0,0,0,.18);transform-origin:bottom right;animation:assistantOpen .2s ease-out}.today-chat-panel[hidden]{display:none}@keyframes assistantOpen{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}@media(prefers-reduced-motion:reduce){.today-chat-panel{animation:none}.today-chat-entry{transition:none}}
+    .outfit-chat-head{display:flex;align-items:center;gap:9px;padding:12px 14px;border-bottom:1px solid #f0efeb}.outfit-chat-title{font-size:14px;font-weight:850;flex:1}.outfit-chat-reset{background:none;border:0;color:#999;font-size:11px;cursor:pointer}.outfit-chat-close{height:30px;padding:0 10px;border:0;border-radius:99px;font-size:11px;font-weight:750;background:#f5f5f5;color:#777;cursor:pointer}
+    .outfit-chat-head,.outfit-chat-prompts,.outfit-chat-form{flex-shrink:0}.outfit-chat-messages{flex:1;min-height:0;overflow-y:auto;padding:16px;overscroll-behavior:contain;scrollbar-width:thin}.outfit-chat-message{display:flex;flex-direction:column;align-items:flex-start;margin-bottom:15px;gap:5px}.outfit-chat-message.user{align-items:flex-end}.outfit-chat-speaker{font-size:10px;color:#aaa;padding:0 3px}.outfit-chat-bubble{max-width:88%;padding:11px 13px;border-radius:4px 16px 16px;background:#f5f4f1;color:#59554d;font-size:12px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}.user .outfit-chat-bubble{background:#222;color:#fff;border-radius:16px 4px 16px 16px}.outfit-chat-result{width:100%;margin-top:3px;padding:12px;border:1px solid #efede8;border-radius:16px;background:#faf9f6}.outfit-chat-pieces{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.outfit-chat-piece{min-width:0;text-align:center;color:#827c71;font-size:10px;line-height:1.5;overflow-wrap:anywhere}.outfit-chat-piece img{display:block;width:100%;height:80px;object-fit:contain;margin-bottom:5px}.outfit-chat-apply{width:100%;height:35px;font-size:11px;margin-top:11px;border-radius:11px}
+    .outfit-chat-prompts{padding:0 14px 11px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}.outfit-chat-prompts button{border:1px solid #e9e6df;background:#fff;color:#8a8275;font-size:10px;padding:6px 9px;border-radius:99px;white-space:nowrap;cursor:pointer}.outfit-chat-form{margin:0 14px 9px;padding:9px;display:flex;gap:8px;align-items:flex-end;background:#f8f8f6;border:1px solid #e8e7e2;border-radius:15px}.outfit-chat-form:focus-within{border-color:#b5aa96}.outfit-chat-input{flex:1;min-width:0;width:100%;height:58px;resize:none;border:0;outline:none;background:transparent;padding:4px 3px;color:#333;font:inherit;font-size:13px;line-height:1.7}.outfit-chat-input::placeholder{color:#aaa}.outfit-chat-send{border:0;border-radius:11px;width:36px;height:36px;flex-shrink:0;display:grid;place-items:center;background:#222;color:#fff;cursor:pointer}.outfit-chat-send svg{width:19px;height:19px}.outfit-chat-send:disabled{background:#e8e6e0;color:#b6b2a8;cursor:default}.today-chat-entry:focus-visible,.outfit-chat-prompts button:focus-visible,.outfit-chat-reset:focus-visible,.outfit-chat-close:focus-visible,.outfit-chat-send:focus-visible{outline:2px solid #968367;outline-offset:3px}
+    @media(max-width:699px){.outfit-chat-input{font-size:16px;height:66px;line-height:1.6}}@media(min-width:700px){.outfit-chat-bubble{font-size:13px}}@media(max-height:500px){.today-assistant-shell{top:calc(58px + env(safe-area-inset-top));bottom:max(calc(84px + env(safe-area-inset-bottom)),calc(var(--assistant-keyboard-inset,0px) + 8px))}.outfit-chat-head{padding:8px 12px}.outfit-chat-input{height:42px}.outfit-chat-form{padding:6px;margin-bottom:6px}.outfit-chat-prompts{padding-bottom:8px}}
     /* 今日穿搭：复用衣橱图片展示推荐组合 */
     .today-panel{position:relative;display:grid;grid-template-columns:minmax(0,1fr);gap:8px;background:#fff;border:1px solid #f1f1f1;border-radius:20px;padding:10px;margin-bottom:10px;box-shadow:0 12px 30px rgba(0,0,0,.04)}
     .today-filter-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-items:start}.today-filter-title{width:100%;border:0;background:#f0f0f0;color:#555;border-radius:18px;min-height:50px;padding:7px 8px;font-size:12px;font-weight:900;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;line-height:1.1}.today-filter-label{font-size:10px;color:#999;font-weight:850}.today-filter-value{font-size:13px;color:#222;font-weight:950;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.today-filter-title.active,.today-filter-title:hover{background:#111;color:#fff}.today-filter-title.active .today-filter-label,.today-filter-title:hover .today-filter-label{color:rgba(255,255,255,.62)}.today-filter-title.active .today-filter-value,.today-filter-title:hover .today-filter-value{color:#fff}.today-filter-panel{margin-top:10px;display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}.today-filter-panel::-webkit-scrollbar{display:none}.today-filter-panel.empty{display:none}.today-filter-option{border:0;background:#f0f0f0;color:#888;border-radius:999px;height:36px;padding:0 18px;font-size:12px;font-weight:850;white-space:nowrap;flex:0 0 auto}.today-filter-option.active,.today-filter-option:hover{background:#111;color:#fff}.today-generate{width:100%;height:44px;margin-top:12px;border-radius:14px}
@@ -162,6 +170,19 @@ body{display:block}
         </div>
         <div id="todayRecommendation"></div>
       </div>
+
+      <aside class="today-assistant-shell" id="todayAssistantShell" aria-label="穿搭助手">
+        <button class="today-chat-entry" id="todayChatEntry" type="button" aria-label="打开穿搭助手" title="穿搭助手 · 聊聊今天怎么穿" aria-expanded="false" aria-controls="todayChatPanel" aria-haspopup="dialog">
+          <span class="today-chat-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 3l2.2 6.8L19 12l-6.8 2.2L10 21l-2.2-6.8L1 12l6.8-2.2L10 3zM19 3v5M16.5 5.5h5"/></svg></span>
+          <span class="today-chat-label" aria-hidden="true">助手</span>
+        </button>
+        <section class="today-chat-panel" id="todayChatPanel" role="dialog" aria-modal="false" aria-labelledby="outfitChatTitle" hidden>
+          <div class="outfit-chat-head"><span class="outfit-chat-title" id="outfitChatTitle">穿搭助手</span><button class="outfit-chat-reset" id="outfitChatReset" type="button">重新聊</button><button class="outfit-chat-close" id="outfitChatClose" type="button" aria-label="收起穿搭助手">收起</button></div>
+          <div class="outfit-chat-messages" id="outfitChatMessages" role="log" aria-label="穿搭对话" aria-live="polite" aria-relevant="additions"></div>
+          <div class="outfit-chat-prompts" aria-label="试试这样说"><button type="button" data-chat-prompt="今天要通勤，想穿得简约、舒服一点">上班也要舒服</button><button type="button" data-chat-prompt="今天约会，想要优雅一点，不穿高跟鞋">轻松去约会</button><button type="button" data-chat-prompt="我有点怕冷，帮我搭一套保暖的">今天想暖一点</button></div>
+          <form class="outfit-chat-form" id="outfitChatForm"><textarea class="outfit-chat-input" id="outfitChatInput" rows="2" maxlength="500" aria-label="描述今天的穿搭需求" placeholder="例如：今天见客户，走路多，不穿裙子…"></textarea><button class="outfit-chat-send" id="outfitChatSend" type="submit" aria-label="发送穿搭需求" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6"/></svg></button></form>
+        </section>
+      </aside>
 
       <div class="view" id="view-fav">
         <input class="search" id="lookSearch" placeholder="搜索场景 / 季节 / 衣服，例如：约会、春天、夏天衣服" />
@@ -917,6 +938,247 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
 })();
   </script>
   <!-- END INLINE VISION -->
+  <!-- BEGIN INLINE OUTFIT CHAT -->
+  <script id="inline-outfit-chat">
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.WardrobeOutfitChat = api;
+})(typeof window !== 'undefined' ? window : globalThis, function () {
+  const scenes = [['职场', /上班|通勤|见客户|开会|面试|工作|职场/], ['约会', /约会|见男友|见女友/], ['旅行', /旅行|旅游|出游/], ['运动', /运动|跑步|健身/], ['聚会', /聚会|聚餐|派对/], ['居家', /居家|在家|宅家/], ['户外', /户外|爬山|露营/], ['日常', /日常|逛街|买菜/]];
+  const styles = [['简约', /简约|简单|极简/], ['休闲', /休闲|随意/], ['优雅', /优雅|气质/], ['运动', /运动风/], ['复古', /复古/], ['甜美', /甜美|温柔/], ['商务', /商务|正式/], ['街头', /街头/]];
+  const colors = ['黑色', '白色', '灰色', '米色', '卡其色', '棕色', '蓝色', '藏青色', '绿色', '红色', '粉色', '紫色', '黄色', '橙色'];
+  const categories = [['裙子', /裙子|裙装|连衣裙|半身裙/], ['下装', /裤子|裤装|长裤|短裤|牛仔裤/], ['外套', /外套|大衣|风衣|夹克/], ['上装', /上衣|衬衫|毛衣|卫衣|t恤/i], ['包包', /包包|背包|手提包/]];
+  const negative = /不想|不要|不穿|不选|不喜欢|避免|别穿|拒绝/;
+  const unique = list => [...new Set(list)];
+  const ready = item => item && item.id != null && (!item.status || item.status === 'available');
+  const details = item => [item.name, item.category, item.subcategory, item.pattern, ...(item.colors || []), ...(item.styles || []), item.occasion, ...(item.occasions || [])].filter(Boolean).join(' ');
+  const outer = item => item.category === '外套' || /大衣|风衣|外套|羽绒|夹克|棉服/.test(item.subcategory || item.name || '');
+  const dress = item => item.category === '连体装' || /连衣裙|连体裤|连体装/.test(item.subcategory || item.name || '');
+  const itemColors = item => item.colors?.length ? item.colors : colors.filter(color => String(item.name || '').includes(color));
+  const hasCategory = (item, category) => item.category === category || (category === '外套' && outer(item));
+
+  function parse(text, previous = {}, items = []) {
+    text = String(text || '').trim().slice(0, 500);
+    const result = { scene: null, styles: [], colors: [], includeCategories: [], excludeColors: [], excludeCategories: [], excludeTokens: [], includeIds: [], comfort: false, warm: false, formal: null, ...previous, recognized: false };
+    for (const field of ['styles', 'colors', 'includeCategories', 'excludeColors', 'excludeCategories', 'excludeTokens', 'includeIds']) result[field] = [...(result[field] || [])];
+    for (const [scene, pattern] of scenes) if (pattern.test(text)) { result.scene = scene; result.recognized = true; break; }
+    const nextStyles = [];
+    const nextColors = [];
+    const nextCategories = [];
+    for (const clause of text.split(/[，,。；;！!？?\n]|但是|不过|而是|但/)) {
+      const negated = negative.test(clause);
+      for (const color of colors) if (clause.includes(color)) {
+        result.recognized = true;
+        if (negated) result.excludeColors.push(color);
+        else { nextColors.push(color); result.excludeColors = result.excludeColors.filter(value => value !== color); }
+      }
+      for (const [category, pattern] of categories) if (pattern.test(clause)) {
+        result.recognized = true;
+        if (negated) result.excludeCategories.push(category);
+        else { nextCategories.push(category); result.excludeCategories = result.excludeCategories.filter(value => value !== category); }
+      }
+      for (const [style, pattern] of styles) if (pattern.test(clause) && !negated) { nextStyles.push(style); result.recognized = true; }
+      for (const token of ['高跟鞋', '凉鞋', '短裤', '短裙']) if (clause.includes(token) && negated) { result.excludeTokens.push(token); result.recognized = true; }
+      for (const item of items.filter(ready)) if (String(item.name || '').length > 1 && clause.includes(item.name)) {
+        result.recognized = true;
+        if (negated) result.excludeTokens.push(item.name);
+        else result.includeIds = [String(item.id)];
+      }
+    }
+    if (nextStyles.length) result.styles = unique(nextStyles);
+    if (nextColors.length) result.colors = unique(nextColors);
+    if (nextCategories.length) result.includeCategories = unique(nextCategories);
+    if (/舒适|舒服|走路|走很多|步行|不累|平底/.test(text)) { result.comfort = true; result.recognized = true; }
+    if (/怕冷|保暖|暖和|厚一点|有点冷|很冷|降温/.test(text)) { result.warm = true; result.recognized = true; }
+    if (/不(?:要|想|用)?(?:穿得|太|那么|很)*正式/.test(text)) { result.formal = false; result.styles = result.styles.filter(value => value !== '商务'); result.recognized = true; }
+    else if (/正式|见客户|面试/.test(text)) { result.formal = true; result.recognized = true; }
+    if (/换一套|再来一套|换个搭配/.test(text)) result.recognized = true;
+    for (const field of ['excludeColors', 'excludeCategories', 'excludeTokens']) result[field] = unique(result[field]);
+    result.colors = result.colors.filter(value => !result.excludeColors.includes(value));
+    result.includeCategories = result.includeCategories.filter(value => !result.excludeCategories.includes(value));
+    result.includeIds = result.includeIds.filter(id => {
+      const item = items.find(value => String(value.id) === id);
+      return item && !result.excludeCategories.some(category => hasCategory(item, category))
+        && !result.excludeTokens.some(token => details(item).includes(token))
+        && !result.excludeColors.some(color => itemColors(item).includes(color))
+        && (!nextColors.length || nextColors.some(color => itemColors(item).includes(color)));
+    });
+    return result;
+  }
+
+  function recommend(items, intent, context = {}, variant = 0) {
+    const available = items.filter(ready);
+    const temperature = context.temperature === '--' || context.temperature == null || context.temperature === '' ? null : Number(context.temperature);
+    const cold = intent.warm || (Number.isFinite(temperature) && temperature < 16);
+    const season = cold ? '冬' : Number.isFinite(temperature) && temperature >= 26 ? '夏' : context.season || '春';
+    const filtered = available.filter(item => !intent.excludeColors.some(color => itemColors(item).includes(color))
+      && !intent.excludeCategories.some(category => hasCategory(item, category))
+      && !intent.excludeTokens.some(token => details(item).includes(token))
+      && !(intent.comfort && /高跟鞋/.test(details(item))));
+    function score(item) {
+      const text = details(item);
+      let value = 0;
+      if (item.season === season || (item.seasons || []).includes(season)) value += 5;
+      if (intent.scene && (item.occasion === intent.scene || (item.occasions || []).includes(intent.scene))) value += 7;
+      value += intent.styles.filter(style => text.includes(style)).length * 5;
+      value += intent.colors.filter(color => itemColors(item).includes(color)).length * 9;
+      if (intent.comfort && /运动鞋|平底鞋|休闲鞋|乐福鞋|宽松/.test(text)) value += 7;
+      if (cold && (outer(item) || Number(item.warmth) >= 4)) value += 4;
+      if (intent.formal === true) value += Number(item.formality || 2);
+      if (intent.formal === false) value -= Math.max(0, Number(item.formality || 2) - 3) * 5;
+      return value;
+    }
+    const ranked = filtered.slice().sort((a, b) => score(b) - score(a) || String(a.id).localeCompare(String(b.id)));
+    const tops = ranked.filter(item => ['上装', '外套'].includes(item.category)).slice(0, 6);
+    const bottoms = ranked.filter(item => ['下装', '裙子', '连体装'].includes(item.category)).slice(0, 6);
+    const shoes = ranked.filter(item => item.category === '鞋帽' && item.subcategory !== '帽子'
+      && !/棒球帽|渔夫帽|鸭舌帽|针织帽|遮阳帽|礼帽|帽子/.test(item.name || '')).slice(0, 4);
+    const bags = ranked.filter(item => item.category === '包包').slice(0, 3);
+    const candidates = [];
+    const signatures = new Set();
+    function add(top, bottom, shoe, bag) {
+      const chosen = [top, bottom, shoe, bag].filter(Boolean);
+      if (!chosen.length || !chosen.some(item => ['上装', '外套', '下装', '裙子', '连体装'].includes(item.category))) return;
+      if (new Set(chosen.map(item => String(item.id))).size !== chosen.length) return;
+      if (dress(bottom || {}) && top && !outer(top)) return;
+      if (intent.includeCategories.some(category => !chosen.some(item => hasCategory(item, category)))) return;
+      if (intent.includeIds.some(id => !chosen.some(item => String(item.id) === id))) return;
+      if (intent.colors.length && !chosen.some(item => intent.colors.some(color => itemColors(item).includes(color)))) return;
+      const signature = chosen.map(item => String(item.id)).sort().join('|');
+      if (signatures.has(signature)) return;
+      signatures.add(signature);
+      const complete = !!(dress(bottom || {}) || (top && bottom));
+      const rank = chosen.reduce((sum, item) => sum + score(item), 0) + (complete ? 25 : 0) + (shoe ? 5 : 0);
+      candidates.push({ top, bottom, shoes: shoe, bag, items: chosen, rank, complete });
+    }
+    const topPool = tops.length ? tops : [null];
+    const bottomPool = bottoms.length ? bottoms : [null];
+    for (const top of topPool) for (const bottom of bottomPool) for (const shoe of shoes.length ? shoes : [null]) for (const bag of bags.length ? bags : [null]) add(top, bottom, shoe, bag);
+    for (const bottom of bottoms.filter(dress)) for (const shoe of shoes.length ? shoes : [null]) for (const bag of bags.length ? bags : [null]) add(null, bottom, shoe, bag);
+    candidates.sort((a, b) => b.rank - a.rank);
+    const summary = [intent.scene, ...intent.styles, ...intent.colors, intent.comfort ? '方便走路' : '', intent.warm ? '保暖' : '', ...intent.excludeCategories.map(value => `不穿${value}`), ...intent.excludeColors.map(value => `避开${value}`)].filter(Boolean);
+    if (!candidates.length) return { recommendation: null, summary, reply: available.length ? '现有衣橱里暂时找不到同时满足这些条件的搭配。可以放宽颜色或单品要求，也可以点“重新聊”换个需求。' : '衣橱里还没有可用的衣物。先到衣橱添加几件单品，再回来聊聊今天怎么穿。' };
+    const selected = candidates[Math.abs(variant) % candidates.length];
+    const gaps = [];
+    if (!selected.complete) gaps.push(selected.top ? '下装' : '上装');
+    if (!selected.shoes) gaps.push('鞋子');
+    if (outer(selected.top || {}) && !dress(selected.bottom || {})) gaps.push('内搭');
+    const weather = Number.isFinite(temperature) ? `参考当前 ${temperature}℃ 的天气` : '目前没有可用温度，先按衣物季节挑选';
+    const reason = `${summary.length ? `按「${summary.join('、')}」挑选，` : ''}${weather}。${gaps.length ? `这组还需要你补充${gaps.join('、')}。` : '这组单品都来自你的衣橱。'}`;
+    const recommendation = { ...selected, reason, tags: summary.slice(0, 3), candidateCount: candidates.length, recommendationSource: 'text_rules' };
+    return { recommendation, summary, reply: `${reason}${candidates.length === 1 && variant > 0 ? '目前只有这一组符合条件，暂时没有另一套。' : ''}` };
+  }
+
+  function mount(options) {
+    const byId = id => document.getElementById(id);
+    const entry = byId('todayChatEntry'), panel = byId('todayChatPanel'), log = byId('outfitChatMessages');
+    const shell = byId('todayAssistantShell');
+    const input = byId('outfitChatInput'), form = byId('outfitChatForm'), send = byId('outfitChatSend');
+    let intent = {}, variant = 0;
+    const greeting = '今天有什么安排？告诉我想要的风格、颜色，或者想避开的单品，我们从你的衣橱里搭一套。';
+    function element(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text != null) node.textContent = text;
+      return node;
+    }
+    function message(role, text) {
+      const row = element('div', `outfit-chat-message ${role}`);
+      row.append(element('span', 'outfit-chat-speaker', role === 'user' ? '你' : '穿搭助手'), element('div', 'outfit-chat-bubble', text));
+      log.append(row);
+      while (log.children.length > 21) log.firstElementChild.remove();
+      log.scrollTop = log.scrollHeight;
+      return row;
+    }
+    function reset() {
+      intent = {}; variant = 0; log.replaceChildren(); input.value = ''; send.disabled = true;
+      message('assistant', greeting);
+    }
+    function close({ restoreFocus = true } = {}) {
+      if (panel.hidden) return;
+      panel.hidden = true; entry.setAttribute('aria-expanded', 'false');
+      if (restoreFocus) entry.focus({ preventScroll: true });
+      else input.blur();
+      options.onToggle?.();
+    }
+    function fitViewport() {
+      const viewport = window.visualViewport;
+      const inset = viewport ? Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop) : 0;
+      shell.style.setProperty('--assistant-keyboard-inset', `${inset}px`);
+    }
+    window.visualViewport?.addEventListener('resize', fitViewport);
+    window.visualViewport?.addEventListener('scroll', fitViewport);
+    window.addEventListener('resize', fitViewport);
+    entry.onclick = () => {
+      if (!panel.hidden) { close(); return; }
+      panel.hidden = false; entry.setAttribute('aria-expanded', 'true');
+      if (!log.children.length) reset();
+      fitViewport();
+      log.scrollTop = log.scrollHeight;
+      options.onToggle?.();
+      input.focus({ preventScroll: true });
+    };
+    byId('outfitChatClose').onclick = close;
+    document.addEventListener('pointerdown', event => {
+      if (!panel.hidden && !shell.contains(event.target)) close({ restoreFocus: false });
+    });
+    document.addEventListener('keydown', event => {
+      if (!panel.hidden && event.key === 'Escape' && !event.isComposing) { event.preventDefault(); close(); }
+    });
+    byId('outfitChatReset').onclick = () => { reset(); input.focus({ preventScroll: true }); };
+    panel.querySelectorAll('[data-chat-prompt]').forEach(button => button.onclick = () => {
+      input.value = button.dataset.chatPrompt; send.disabled = false; input.focus({ preventScroll: true });
+    });
+    input.oninput = () => { send.disabled = !input.value.trim(); };
+    input.onkeydown = event => {
+      if (event.key === 'Enter' && !event.shiftKey && !event.isComposing && event.keyCode !== 229) { event.preventDefault(); if (input.value.trim()) form.requestSubmit(); }
+    };
+    form.onsubmit = event => {
+      event.preventDefault();
+      const text = input.value.trim().slice(0, 500);
+      if (!text) return;
+      input.value = ''; send.disabled = true;
+      message('user', text);
+      const next = parse(text, intent, options.getItems());
+      if (!next.recognized) {
+        message('assistant', '可以再具体一点，例如“今天通勤，想穿白色，走路舒服一点”。也可以告诉我喜欢的风格、颜色，以及不想穿的单品。');
+        return;
+      }
+      variant = /换一套|再来一套|换个搭配/.test(text) ? variant + 1 : 0;
+      intent = next;
+      const result = recommend(options.getItems(), intent, options.getContext(), variant);
+      const row = message('assistant', result.reply);
+      if (result.recommendation) {
+        const rec = result.recommendation;
+        const card = element('div', 'outfit-chat-result');
+        const pieces = element('div', 'outfit-chat-pieces');
+        rec.items.forEach(item => {
+          const piece = element('div', 'outfit-chat-piece');
+          if (item.photoUrl) { const image = element('img'); image.src = item.photoUrl; image.alt = item.name || item.category; piece.append(image); }
+          piece.append(element('span', '', item.name || item.category)); pieces.append(piece);
+        });
+        card.append(pieces);
+        const apply = element('button', 'black outfit-chat-apply', '使用这套搭配'); apply.type = 'button';
+        apply.onclick = () => {
+          const current = options.getItems().filter(ready);
+          if (rec.items.some(item => !current.some(value => String(value.id) === String(item.id)))) {
+            message('assistant', '衣橱里的单品有变化，请再发一次需求，我会重新挑选。'); return;
+          }
+          const resolved = { ...rec, items: rec.items.map(item => current.find(value => String(value.id) === String(item.id))) };
+          for (const role of ['top', 'bottom', 'shoes', 'bag']) resolved[role] = rec[role] ? resolved.items.find(item => String(item.id) === String(rec[role].id)) : null;
+          options.onApply(resolved); close(); options.onApplied?.();
+        };
+        card.append(apply); row.append(card);
+      }
+      log.scrollTop = log.scrollHeight;
+    };
+    return { close, reset };
+  }
+  return { parse, recommend, mount };
+});
+  </script>
+  <!-- END INLINE OUTFIT CHAT -->
   <script src="clothing-attributes.js?v=naming-refine-20261102-1"></script>
   <script src="wardrobe-import.js?v=import-recovery-20261102"></script>
   <script src="wardrobe-import-ui.js?v=import-recovery-20261102"></script>
@@ -2655,6 +2917,7 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
         const bottom=Math.min(view.getBoundingClientRect().bottom,$('.nav').getBoundingClientRect().top);
         const top=stage.getBoundingClientRect().top+view.scrollTop;
         const ratio=Number(getComputedStyle(stage).getPropertyValue('--stage-ratio'));
+        if(bottom-top-16<140){stage.style.removeProperty('--stage-fit-width');return}
         const width=Math.floor(Math.max(0,bottom-top-16)*ratio);
         stage.style.setProperty('--stage-fit-width',`${width}px`);
       });
@@ -3113,7 +3376,7 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
         return;
       }
       box.innerHTML=`<article class="today-card">
-        <div class="today-card-head"><div><div class="today-card-title">今日推荐</div><div class="today-card-sub">适合：${escapeHtml(state.today.scene)} · ${escapeHtml(state.today.weather)} · ${escapeHtml(state.today.mood)}</div></div><span class="ai-badge">为你搭配</span></div>
+        <div class="today-card-head"><div><div class="today-card-title">${rec.recommendationSource==='text_rules'?'文字需求推荐':'今日推荐'}</div><div class="today-card-sub">${rec.recommendationSource==='text_rules'?'根据你刚才的穿搭需求':`适合：${escapeHtml(state.today.scene)} · ${escapeHtml(state.today.weather)} · ${escapeHtml(state.today.mood)}`}</div></div><span class="ai-badge">${rec.recommendationSource==='text_rules'?'文字试搭':'为你搭配'}</span></div>
         ${renderTodayOutfit(rec)}
         <div class="ai-reason"><div class="ai-reason-title">为什么这样搭</div><div class="ai-reason-text">${escapeHtml(rec.reason)}</div></div>
         <div class="today-actions">
@@ -3201,6 +3464,7 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
       const shell=$('#canvasShell');
       if(shell){shell.style.display=page==='wardrobe'?'block':'none'}
       if(page!=='wardrobe') setCanvasOpen(false);
+      if(page!=='today') outfitChat.close({restoreFocus:false});
       if(page==='today'){
         state.today.panel=null;
         $('#view-today').scrollTop=0;
@@ -3339,6 +3603,21 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
       }
     });
 
+    const outfitChat=WardrobeOutfitChat.mount({
+      getItems:()=>state.items,
+      getContext:()=>({temperature:state.today.temp,season:climateForToday().dateSeason}),
+      onApply:recommendation=>{
+        beginTodayRecommendationChange();
+        state.today.apiRecommendation=recommendation;
+        renderToday();
+        toast('已放到今日推荐');
+      },
+      onToggle:scheduleTodayOutfitFit,
+      onApplied:()=>{
+        const view=$('#view-today');
+        view.scrollTo({top:view.scrollTop+$('#todayRecommendation').getBoundingClientRect().top-view.getBoundingClientRect().top,behavior:'smooth'});
+      }
+    });
     renderTabs(); renderWardrobeSearch(); renderWardrobe(); renderCanvas(); renderLookFilters(); renderLooks(); renderDiscover(); renderToday(); setCanvasOpen(false); renderTopAction(); initLocalWeather(); initWardrobeImports();
     const queryParams=new URLSearchParams(location.search);
     const requestedPage=queryParams.get('page');
